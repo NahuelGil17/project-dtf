@@ -25,7 +25,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": []
           },
@@ -88,6 +89,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "project-dtf:build:production",
+              "serveTarget": "project-dtf:serve:production"
+            },
+            "development": {
+              "buildTarget": "project-dtf:build:development",
+              "serveTarget": "project-dtf:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

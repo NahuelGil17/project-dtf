@@ -1,0 +1,187 @@
+<form class="space-y-6" [formGroup]="registerForm">
+  <div>
+    <div class="mt-2">
+      <label
+        for="name"
+        class="block text-sm font-medium leading-6 text-gray-900"
+        >Nombre Completo</label
+      >
+      <input
+        id="name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        formControlName="fullName"
+        required
+        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      />
+      @if(registerForm.get('fullName')?.invalid &&
+      registerForm.get('fullName')?.touched) {
+        <div
+          
+        class="text-sm text-[#eb445a] pt-1"
+        >
+          Por favor, introduce tu nombre completo.
+        </div>
+      }
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div>
+      <label for="ci" class="block text-sm font-medium leading-6 text-gray-900"
+        >Cedula de Identidad</label
+      >
+      <div class="mt-2">
+        <input
+          id="ci"
+          [imask]="cedulaMask"
+          name="ci"
+          type="text"
+          autocomplete="ci"
+          formControlName="ci"
+          required
+          class="block min-w-[15rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        />
+      </div>
+      @if(registerForm.get('ci')?.invalid &&
+      registerForm.get('ci')?.touched) {
+      <div class="text-sm text-[#eb445a] pt-1">Por favor, introduce una cedula valido.</div>
+      }
+    </div>
+    <div>
+      <label
+        for="phoneNumber"
+        class="block text-sm font-medium leading-6 text-gray-900"
+        >Numero de celular</label
+      >
+      <div class="mt-2">
+        <input
+          id="phoneNumber"
+          [imask]="celularMask"
+          name="phoneNumber"
+          type="text"
+          autocomplete="phoneNumber"
+          formControlName="phoneNumber"
+          required
+          class="block min-w-[16rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        />
+        @if(  registerForm.get('phoneNumber')?.invalid &&
+        registerForm.get('phoneNumber')?.touched) {
+          <div
+          class="text-sm text-[#eb445a] pt-1"
+          >
+            Por favor, introduce tu numero de celular.
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div>
+    <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
+      >Correo electronico</label
+    >
+    <div class="mt-2">
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        formControlName="email"
+        required
+        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      />
+      @if(registerForm.get('email')?.invalid &&
+      registerForm.get('email')?.touched) {
+      <div class="text-sm text-[#eb445a] pt-1">
+        {{
+          registerForm.get('email')?.hasError('required')
+        ? 'El email es requerido'
+        : registerForm.get('email')?.hasError('email')
+        ? 'Email invalido debe contener \'@\'.'
+        : ''
+      }}
+      </div>
+      }
+    </div>
+  </div>
+  <div>
+    <label
+      for="password"
+      class="block text-sm font-medium leading-6 text-gray-900"
+      >Contraseña</label
+    >
+    <div class="mt-2">
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        formControlName="password"
+        required
+        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      />
+    </div>
+    @if(  registerForm.get('password')?.invalid &&
+    registerForm.get('password')?.touched) {
+      <div
+      class="text-sm text-[#eb445a] pt-1"
+      >
+      {{  registerForm.get('password')?.hasError('required')
+      ? 'La contraseña es requerida'
+      : registerForm.get('password')?.hasError('invalidPassword')
+      ? registerForm.get('password')?.getError('invalidPassword')
+          .message
+      : ''}}
+      </div>
+    }
+    
+  </div>
+
+  <div>
+    <label
+      for="confirmPassword"
+      class="block text-sm font-medium leading-6 text-gray-900"
+      >Confirmar contraseña</label
+    >
+    <div class="mt-2">
+      <input
+        id="confirmPassword"
+        name="confirmPassword"
+        type="password"
+        autocomplete="current-password"
+        formControlName="confirmPassword"
+        required
+        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      />
+      @if (
+        this.registerForm.get('confirmPassword')?.hasError &&
+        this.registerForm.get('confirmPassword')?.touched
+      ) {
+      <span
+      class="text-sm text-[#eb445a] pt-1"
+     
+      >{{
+        registerForm.get("confirmPassword")?.hasError("required")
+          ? "La contraseña es requerida"
+          : registerForm
+              .get("confirmPassword")
+              ?.hasError("invalidPassword")
+          ? registerForm
+              .get("confirmPassword")
+              ?.getError("invalidPassword").message
+          : ""
+      }}
+    </span>
+}
+    </div>
+  </div>
+
+  <div>
+    <app-button
+      (click)="emitFormValues()"
+      [isDisabled]="registerForm.invalid"
+      [isLoading]="isLoading"
+      >Registrarse</app-button
+    >
+  </div>
+</form>

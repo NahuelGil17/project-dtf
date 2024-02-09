@@ -1,0 +1,16 @@
+<div class="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Inicia sesion</h2>
+    </div>
+  
+    <div class="mt-5 sm:mx-auto sm:w-full sm:max-w-[38rem]">
+      <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <app-login-form (formValues)="login($event)" [isLoading]="loading$ | async"></app-login-form>
+      </div>
+  
+      <p class="mt-10 text-center text-sm text-gray-500">
+        No tienes cuenta ?
+        <a [routerLink]="['/registro']" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Registrate</a>
+      </p>
+    </div>
+  </div>

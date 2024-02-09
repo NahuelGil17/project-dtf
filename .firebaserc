@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "uruguaydft": {
+      "hosting": {
+        "project-dtf": [
+          "uruguaydft"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "uruguaydft"
+  }
+}

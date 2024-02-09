@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "project-dtf",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
