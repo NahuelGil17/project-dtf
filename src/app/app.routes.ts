@@ -4,6 +4,8 @@ import { ContactPageComponent } from './features/landing/pages/contact-page/cont
 import { RegisterPageComponent } from './features/auth/pages/register-page/register-page.component';
 import { LoginPageComponent } from './features/auth/pages/login-page/login-page.component';
 import { authGuard } from './core/guards/is-auth.guard';
+import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
+import { signInGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,5 +13,15 @@ export const routes: Routes = [
   { path: 'contact', component: ContactPageComponent },
   { path: 'registro', component: RegisterPageComponent, canLoad: [authGuard] },
   { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+  {
+    path: 'admin',
+    children: [
+      {
+        path: 'settings',
+        component: SettingsPagesComponent,
+        // canLoad: [signInGuard],
+      },
+    ],
+  },
   // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
 ];
