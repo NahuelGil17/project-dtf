@@ -1,5 +1,6 @@
 <div class="relative overflow-x-auto">
   <h2 class="text-center font-bold text-3xl mb-10">Tabla de precios</h2>
+  @if (table.columns.length && table.rows.length) {
   <table
     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
   >
@@ -7,65 +8,36 @@
       class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400"
     >
       <tr>
-        <th scope="col" class="px-4 py-3 rounded-s-lg">Product name</th>
-        <th scope="col" class="px-4 py-3 rounded-e-lg">Price</th>
+        <!-- Iterar sobre las columnas -->
+        @for (column of table.columns; track $index) {
+        <th scope="col" class="px-4 py-3">{{ column }}</th>
+        } >
       </tr>
     </thead>
     <tbody>
+      <!-- Iterar sobre las filas -->
+      @for (row of table.rows; track $index) {
       <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        <!-- Iterar sobre los valores de cada fila -->
+        @for (value of row; track $index) {
+        <td
+          class="px-6 py-4"
+          [class]="
+            $index === 0
+              ? 'font-medium text-gray-900 whitespace-nowrap dark:text-white'
+              : ''
+          "
         >
-          Precio por 1 metro
-        </th>
-        <td class="px-6 py-4">$2999</td>
+          {{ value }}
+        </td>
+        }
       </tr>
-      <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          De 2 a 5 metros
-        </th>
-        <td class="px-6 py-4">$1999</td>
-      </tr>
-      <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          De 6 a 10 metros
-        </th>
-        <td class="px-6 py-4">$99</td>
-      </tr>
-      <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          De 11 a 20 metros
-        </th>
-        <td class="px-6 py-4">$99</td>
-      </tr>
-      <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          De 21 a 50 metros
-        </th>
-        <td class="px-6 py-4">$99</td>
-      </tr>
-      <tr class="bg-gray-100 dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          Superiores
-        </th>
-        <td class="px-6 py-4">$99</td>
-      </tr>
+      }
     </tbody>
   </table>
+  } @else {
+  <p class="text-center text-gray-500 dark:text-gray-400">
+    No hay datos para mostrar
+  </p>
+  }
 </div>
