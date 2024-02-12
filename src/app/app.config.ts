@@ -9,6 +9,11 @@ import { NgxsModule } from '@ngxs/store';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { AuthState } from './features/auth/state/auth.state';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import {
+  NgxsStoragePluginModule,
+  SESSION_STORAGE_ENGINE,
+} from '@ngxs/storage-plugin';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +23,17 @@ export const appConfig: ApplicationConfig = {
         /* your state classes here */
         AuthState,
       ])
+    ),
+    importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
+    importProvidersFrom(
+      NgxsStoragePluginModule.forRoot({
+        key: [
+          {
+            key: AuthState,
+            engine: SESSION_STORAGE_ENGINE,
+          },
+        ],
+      })
     ),
     importProvidersFrom(
       provideFirebaseApp(() =>
