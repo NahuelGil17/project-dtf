@@ -6,20 +6,34 @@ import { LoginPageComponent } from './features/auth/pages/login-page/login-page.
 import { authGuard } from './core/guards/is-auth.guard';
 import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
 import { signInGuard } from './core/guards/auth.guard';
+import { LayoutComponent } from './core/components/layout/layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomePageComponent },
-  { path: 'contact', component: ContactPageComponent },
-  { path: 'registro', component: RegisterPageComponent, canLoad: [authGuard] },
-  { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
   {
-    path: 'admin',
+    path: '',
+    component: LayoutComponent,
     children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: 'home', component: HomePageComponent },
+      { path: 'contact', component: ContactPageComponent },
       {
-        path: 'settings',
-        component: SettingsPagesComponent,
-        // canLoad: [signInGuard],
+        path: 'registro',
+        component: RegisterPageComponent,
+        canLoad: [authGuard],
+      },
+      { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'settings',
+            loadChildren: () =>
+              import(
+                './features/settings/pages/settings-pages/settings-pages.component'
+              ).then((m) => m.SettingsPagesComponent),
+            // canLoad: [signInGuard],
+          },
+        ],
       },
     ],
   },
