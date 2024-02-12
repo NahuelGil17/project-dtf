@@ -9,7 +9,11 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'contact', component: ContactPageComponent },
-  { path: 'registro', component: RegisterPageComponent, canLoad: [authGuard] },
-  { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+  {
+    path: 'registro',
+    component: RegisterPageComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'login', component: LoginPageComponent, canActivate: [authGuard] },
   // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
 ];

@@ -11,6 +11,7 @@ export const authGuard: CanActivateFn = () => {
   const store = inject(Store);
 
   const isAuthenticated = store.selectSnapshot(AuthState.isAuthenticated);
+
   if (isAuthenticated) {
     return false;
   } else {
