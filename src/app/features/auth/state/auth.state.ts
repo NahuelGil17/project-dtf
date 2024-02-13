@@ -1,19 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { DocumentSnapshot } from '@angular/fire/firestore';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, exhaustMap, tap, throwError } from 'rxjs';
 import { UserPreferences } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
-import {
-  GetUserPreferences,
-  GoogleLogin,
-  Login,
-  Logout,
-  Register,
-} from './auth.actions';
+import { GetUserPreferences, Login, Logout, Register } from './auth.actions';
 import { AuthStateModel } from './auth.model';
-import { ToastrService } from 'ngx-toastr';
 
 @State<AuthStateModel>({
   name: 'auth',
@@ -44,6 +37,11 @@ export class AuthState {
   @Selector()
   static isAuthenticated(state: AuthStateModel): boolean {
     return !!state.auth?.idToken;
+  }
+
+  @Selector()
+  static isAdmin(state: AuthStateModel): boolean {
+    return state.preferences?.isAdmin ?? false;
   }
 
   @Selector()
