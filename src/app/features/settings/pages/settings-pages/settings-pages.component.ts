@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PriceFormComponent } from '../../components/price-form/price-form.component';
+import { SettingsService } from '../../serices/settings.service';
 
 @Component({
   selector: 'app-settings-pages',
@@ -8,4 +9,28 @@ import { PriceFormComponent } from '../../components/price-form/price-form.compo
   styleUrl: './settings-pages.component.css',
   imports: [PriceFormComponent],
 })
-export class SettingsPagesComponent {}
+export class SettingsPagesComponent implements OnInit {
+  tableData: { columns: string[]; rows: string[][] } = {
+    columns: [],
+    rows: [],
+  };
+  constructor(private settingsService: SettingsService) {}
+
+  ngOnInit(): void {
+    const settings = this.settingsService
+      .getSettings()
+      .subscribe((settings) => {
+        settings.map((setting: any) => {
+          if (setting.rows && setting.columns) {
+            this.tableData = {
+              columns: setting.columns,
+              rows: setting.rows.map((row: any) => {
+                const value = Object.values(row);
+                return value;
+              }),
+            };
+          }
+        });
+      });
+  }
+}

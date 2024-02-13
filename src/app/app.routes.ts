@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/is-auth.guard';
 import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
 import { signInGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
+import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
 
 export const routes: Routes = [
   {
@@ -16,22 +17,27 @@ export const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'contact', component: ContactPageComponent },
+      { path: 'precio', component: PricePageComponent },
       {
         path: 'registro',
         component: RegisterPageComponent,
-        canLoad: [authGuard],
+        canActivate: [authGuard],
       },
-      { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+      {
+        path: 'login',
+        component: LoginPageComponent,
+        canActivate: [authGuard],
+      },
       {
         path: 'admin',
         children: [
           {
             path: 'settings',
-            loadChildren: () =>
+            loadComponent: () =>
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'
               ).then((m) => m.SettingsPagesComponent),
-            // canLoad: [signInGuard],
+            // canActivate: [signInGuard],
           },
         ],
       },

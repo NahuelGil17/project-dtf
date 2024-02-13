@@ -3,13 +3,13 @@ import { TablePriceComponent } from '../../../../core/components/table-price/tab
 import { SettingsService } from '../../../settings/serices/settings.service';
 
 @Component({
-  selector: 'app-price-section',
+  selector: 'app-price-page',
   standalone: true,
+  templateUrl: './price-page.component.html',
+  styleUrl: './price-page.component.css',
   imports: [TablePriceComponent],
-  templateUrl: './price-section.component.html',
-  styleUrl: './price-section.component.css',
 })
-export class PriceSectionComponent {
+export class PricePageComponent {
   tableData: { columns: string[]; rows: string[][] } = {
     columns: [],
     rows: [],

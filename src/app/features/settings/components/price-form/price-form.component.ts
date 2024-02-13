@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  NgModel,
 } from '@angular/forms';
-import { PriceTableService } from '../../services/price-table.service';
+import { SettingsService } from '../../serices/settings.service';
 
 @Component({
   selector: 'app-price-form',
@@ -15,17 +16,30 @@ import { PriceTableService } from '../../services/price-table.service';
   styleUrl: './price-form.component.css',
 })
 export class PriceFormComponent {
+  @Input() table: { columns: string[]; rows: string[][] } = {} as {
+    columns: string[];
+    rows: string[][];
+  };
   priceForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private priceTableService: PriceTableService
+    private settingsService: SettingsService
   ) {
     this.priceForm = this.formBuilder.group({
       columns: this.formBuilder.array([]),
       rows: this.formBuilder.array([]),
     });
   }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['table'] && this.table) {
+  //     this.priceForm.patchValue({
+  //       columns: this.table.columns,
+  //       rows: this.table.rows,
+  //     });
+  //   }
+  // }
 
   get columnControls() {
     return (this.priceForm.get('columns') as FormArray).controls;
@@ -40,6 +54,11 @@ export class PriceFormComponent {
     columns.push(this.formBuilder.control(''));
   }
 
+  removeColumn(index: number) {
+    const columns = this.priceForm.get('columns') as FormArray;
+    columns.removeAt(index);
+  }
+
   newRow() {
     const rows = this.priceForm.get('rows') as FormArray;
     const newRow = this.formBuilder.array([]);
@@ -49,12 +68,17 @@ export class PriceFormComponent {
     rows.push(newRow);
   }
 
+  removeRow(index: number) {
+    const rows = this.priceForm.get('rows') as FormArray;
+    rows.removeAt(index);
+  }
+
   sendTable() {
     // Send table another component
     const tableData = {
       columns: this.priceForm.get('columns')?.value,
       rows: this.priceForm.get('rows')?.value,
     };
-    this.priceTableService.setTableData(tableData);
+    this.settingsService.createTable(tableData);
   }
 }
