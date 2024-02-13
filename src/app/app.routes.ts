@@ -4,11 +4,13 @@ import { ContactPageComponent } from './features/landing/pages/contact-page/cont
 import { RegisterPageComponent } from './features/auth/pages/register-page/register-page.component';
 import { LoginPageComponent } from './features/auth/pages/login-page/login-page.component';
 import { authGuard } from './core/guards/is-auth.guard';
+import { OrdersComponent } from './features/user_orders/components/orders/orders.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'contact', component: ContactPageComponent },
+  {path:'user-orders', component: OrdersComponent},
   {
     path: 'registro',
     component: RegisterPageComponent,
