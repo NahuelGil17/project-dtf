@@ -1,0 +1,28 @@
+<form [formGroup]="priceForm">
+  <div formArrayName="columns">
+    @for (column of columnControls; track $index) {
+    <input
+      type="text"
+      [formControlName]="$index"
+      placeholder="Columna {{ $index + 1 }}"
+    />
+    }
+    <button type="button" (click)="newColumn()">Agregar Columna</button>
+  </div>
+
+  <div formArrayName="rows">
+    @for (row of rowControls; track $index) {
+    <div [formGroupName]="$index" class="flex">
+      @for (column of columnControls; track $index) {
+      <input
+        type="text"
+        [formControlName]="$index"
+        placeholder="Fila {{ $index + 1 }}, Columna {{ $index + 1 }}"
+      />
+      }
+    </div>
+    }
+    <button type="button" (click)="newRow()">Agregar Fila</button>
+  </div>
+  <button (click)="sendTable()">Guardar Tabla</button>
+</form>

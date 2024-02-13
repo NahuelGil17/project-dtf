@@ -4,16 +4,38 @@ import { ContactPageComponent } from './features/landing/pages/contact-page/cont
 import { RegisterPageComponent } from './features/auth/pages/register-page/register-page.component';
 import { LoginPageComponent } from './features/auth/pages/login-page/login-page.component';
 import { authGuard } from './core/guards/is-auth.guard';
+import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
+import { signInGuard } from './core/guards/auth.guard';
+import { LayoutComponent } from './core/components/layout/layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomePageComponent },
-  { path: 'contact', component: ContactPageComponent },
   {
-    path: 'registro',
-    component: RegisterPageComponent,
-    canActivate: [authGuard],
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: 'home', component: HomePageComponent },
+      { path: 'contact', component: ContactPageComponent },
+      {
+        path: 'registro',
+        component: RegisterPageComponent,
+        canLoad: [authGuard],
+      },
+      { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'settings',
+            loadComponent: () =>
+              import(
+                './features/settings/pages/settings-pages/settings-pages.component'
+              ).then((m) => m.SettingsPagesComponent),
+            // canLoad: [signInGuard],
+          },
+        ],
+      },
+    ],
   },
-  { path: 'login', component: LoginPageComponent, canActivate: [authGuard] },
   // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
 ];
