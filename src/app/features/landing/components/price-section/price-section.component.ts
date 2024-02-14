@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TablePriceComponent } from '../../../../core/components/table-price/table-price.component';
-import { SettingsService } from '../../../settings/serices/settings.service';
+import { SettingsService } from '../../../settings/services/settings.service';
 
 @Component({
   selector: 'app-price-section',
