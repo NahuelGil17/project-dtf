@@ -14,7 +14,7 @@ export class OrderStatusPipe implements PipeTransform {
     let textColor: string = '';
 
     switch (value) {
-      case 'inProgress':
+      case 'inprogress':
         statusText = 'EN PROCESO';
         backgroundColor = '#4CAF50';
         textColor = '#000000';
