@@ -7,13 +7,15 @@ import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 import { AuthState } from '../../../auth/state/auth.state';
 import { CommonModule } from '@angular/common';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
+import { OrderStatusPipe } from '../../pipes/order-status.pipe';
+
 
 
 @Component({
   selector: 'app-orders',
   standalone: true,
   templateUrl: './orders.component.html',
-  imports: [CommonModule,FormatDatePipe],
+  imports: [CommonModule,FormatDatePipe, OrderStatusPipe],
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {

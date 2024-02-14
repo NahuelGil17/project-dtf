@@ -75,7 +75,7 @@
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ order.id }}</th>
                             <td class="px-4 py-3">{{ order.title }}</td>
                             <td class="px-4 py-3">{{ order.creationDate | formatDate}}</td>
-                            <td class="px-4 py-3">{{ order.status }}</td>
+                            <td class="px-4 py-3" [innerHTML]="order.status | orderStatus"></td>
                           </tr>
                     </tbody>
                 </table>
