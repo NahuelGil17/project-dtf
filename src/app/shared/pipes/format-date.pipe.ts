@@ -1,16 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'formatDate'
+  name: 'formatDate',
+  standalone: true,
 })
 export class FormatDatePipe implements PipeTransform {
 
-  transform(value: number): string {
-    if (!value) return ''; // Manejo de valor nulo o indefinido
+  transform(value: Date): string {
 
-    const date = new Date(value);
+    if (!value) return '';
+
+    const date = new Date();
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Los meses comienzan desde 0
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
     // Formato de la fecha dd/mm/yyyy
