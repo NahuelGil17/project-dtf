@@ -43,7 +43,6 @@ export class OrderStatusPipe implements PipeTransform {
         statusText = 'Desconocido';
         break;
     }
-    debugger
     return this.sanitizer.bypassSecurityTrustHtml(`
     <div style="
       background-color: ${backgroundColor};
@@ -51,6 +50,7 @@ export class OrderStatusPipe implements PipeTransform {
       padding: 5px 10px;
       border-radius: 5px;
       display: inline-block;
+      font-weight: bold;
     ">
       ${statusText}
     </div>

@@ -8,17 +8,15 @@ import { AuthState } from '../../../auth/state/auth.state';
 import { CommonModule } from '@angular/common';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
-
-
-
 @Component({
-  selector: 'app-orders',
+  selector: 'app-user-orders-table',
   standalone: true,
-  templateUrl: './orders.component.html',
   imports: [CommonModule,FormatDatePipe, OrderStatusPipe],
-  styleUrls: ['./orders.component.css']
+  templateUrl: './user-orders-table.component.html',
+  styleUrl: './user-orders-table.component.css'
 })
-export class OrdersComponent implements OnInit {
+export class UserOrdersTableComponent {
+
   orders: Order[] = [];
   userId: string = '';
 
@@ -48,4 +46,5 @@ export class OrdersComponent implements OnInit {
       
       
   }
+
 }
