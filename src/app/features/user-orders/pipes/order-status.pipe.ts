@@ -1,40 +1,45 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Status } from './../../../shared/enums/status.enum';
 
 @Pipe({
   name: 'orderStatus',
   standalone: true,
 })
 export class OrderStatusPipe implements PipeTransform {
+
+  statusEnum = Status;
+
+
   constructor(private sanitizer: DomSanitizer) { }
 
-  transform(value: string): SafeHtml {
+  transform(value: number): SafeHtml {
     let statusText: string = '';
     let backgroundColor: string = '';
     let textColor: string = '';
 
     switch (value) {
-      case 'inprogress':
+      case this.statusEnum.INPROGRESS:
         statusText = 'EN PROCESO';
         backgroundColor = '#4CAF50';
         textColor = '#000000';
         break;
-      case 'pending':
+      case this.statusEnum.PENDING:
         statusText = 'PENDIENTE';
         backgroundColor = '#FFEB3B';
         textColor = '#000000';
         break;
-      case 'canceled':
+      case this.statusEnum.CANCELLED:
         statusText = 'CANCELADO';
         backgroundColor = '#F44336';
         textColor = '#FFFFFF';
         break;
-      case 'finished':
+      case this.statusEnum.FINISHED:
         statusText = 'TERMINADO';
         backgroundColor = '#2196F3';
         textColor = '#FFFFFF';
         break;
-      case 'delivered':
+      case this.statusEnum.DELIVERED:
         statusText = 'ENTREGADO';
         backgroundColor = '#03A9F4';
         textColor = '#FFFFFF';

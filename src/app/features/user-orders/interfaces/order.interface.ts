@@ -3,6 +3,6 @@ export interface Order {
   title: string;
   ci: string;
   creationDate: Date;
-  status: string;
+  status: number;
   userId: string;
 }
