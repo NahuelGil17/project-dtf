@@ -1,10 +1,9 @@
-import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  NgModel,
 } from '@angular/forms';
 import { SettingsService } from '../../services/settings.service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +21,7 @@ export class PriceFormComponent {
     columns: string[];
     rows: string[][];
   };
+  nameButton: string = '';
   priceForm!: FormGroup;
 
   constructor(
@@ -37,6 +37,10 @@ export class PriceFormComponent {
     });
   }
 
+  changeTitleButton() {
+    this.nameButton = this.table.id.length > 0 ? 'Actualizar' : 'Guardar';
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['table'] && this.table) {
       this.priceForm?.patchValue({
@@ -46,6 +50,7 @@ export class PriceFormComponent {
       });
       this.initializeFormWithTableData();
     }
+    this.changeTitleButton();
   }
 
   initializeFormWithTableData() {
@@ -69,84 +74,138 @@ export class PriceFormComponent {
   }
 
   get columnControls() {
-    if (this.table.columns.length > 0) {
-      return this.table.columns.map((column) =>
-        this.formBuilder.control(column)
-      );
-    }
-    return (this.priceForm?.get('columns') as FormArray).controls;
+    let columns = this.priceForm?.get('columns') as FormArray;
+    return columns.controls;
   }
 
   get rowControls() {
-    if (this.table.rows.length > 0) {
-      return this.table.rows.map((row) =>
-        this.formBuilder.array(
-          row.map((cell) => this.formBuilder.control(cell))
-        )
-      );
-    }
-    return (this.priceForm?.get('rows') as FormArray).controls;
+    let rows = this.priceForm?.get('rows') as FormArray;
+    return rows.controls;
   }
 
   newColumn() {
-    if (this.priceForm && this.priceForm.get('columns') instanceof FormArray) {
-      const columns = this.table.columns.map((column) => {
-        return this.formBuilder.control(column);
-      }) as unknown as FormArray;
+    if (
+      this.priceForm &&
+      this.priceForm.get('columns') instanceof FormArray &&
+      this.priceForm.get('rows') instanceof FormArray
+    ) {
+      const columns = this.priceForm.get('columns') as FormArray;
+      const rows = this.priceForm.get('rows') as FormArray;
+
+      // Agrega una nueva columna
       columns.push(this.formBuilder.control(''));
+
+      // Agrega una nueva celda a cada fila para la nueva columna
+      rows.controls.forEach((row) => {
+        (row as FormArray).push(this.formBuilder.control(''));
+      });
     } else {
       console.error(
-        'priceForm is not initialized or columns is not a FormArray'
+        'priceForm is not initialized or columns/rows is not a FormArray'
       );
     }
   }
 
   removeColumn(index: number) {
-    const columns = this.priceForm?.get('columns') as FormArray;
-    columns.removeAt(index);
+    if (
+      this.priceForm &&
+      this.priceForm.get('columns') instanceof FormArray &&
+      this.priceForm.get('rows') instanceof FormArray
+    ) {
+      const columns = this.priceForm.get('columns') as FormArray;
+      const rows = this.priceForm.get('rows') as FormArray;
+
+      // Elimina la columna
+      columns.removeAt(index);
+
+      // Elimina la celda correspondiente de cada fila
+      rows.controls.forEach((row) => {
+        (row as FormArray).removeAt(index);
+      });
+    } else {
+      console.error(
+        'priceForm is not initialized or columns/rows is not a FormArray'
+      );
+    }
   }
 
   newRow() {
-    const rows = this.priceForm?.get('rows') as FormArray;
-    const newRow = this.formBuilder.array([]);
-    for (let i = 0; i < this.columnControls.length; i++) {
-      newRow.push(this.formBuilder.control(''));
+    if (this.priceForm && this.priceForm.get('rows') instanceof FormArray) {
+      const rows = this.priceForm.get('rows') as FormArray;
+      const rowControls = this.priceForm
+        .get('columns')
+        ?.value.map(() => this.formBuilder.control(''));
+      rows.push(this.formBuilder.array(rowControls));
+    } else {
+      console.error('priceForm is not initialized or rows is not a FormArray');
     }
-    rows.push(newRow);
   }
 
   removeRow(index: number) {
-    const rows = this.priceForm?.get('rows') as FormArray;
-    rows.removeAt(index);
-  }
-
-  sendTable() {
-    try {
-      // Send table to the server
-      const tableData = {
-        columns: this.priceForm?.get('columns')?.value,
-        rows: this.priceForm?.get('rows')?.value,
-      };
-      this.settingsService.createTable(tableData);
-      this.toastService.success('Tabla guardada correctamente!');
-    } catch (error) {
-      console.error(error);
-      this.toastService.error('Error al guardar la tabla');
+    if (this.priceForm && this.priceForm.get('rows') instanceof FormArray) {
+      const rows = this.priceForm.get('rows') as FormArray;
+      rows.removeAt(index);
+    } else {
+      console.error('priceForm is not initialized or rows is not a FormArray');
     }
   }
 
-  saveChanges() {
+  sendTable() {
+    //Envia la tabla nueva al servidor
+    if (!(this.table.id.length > 0)) {
+      try {
+        // Send table to the server
+        const tableData = {
+          columns: this.priceForm?.get('columns')?.value,
+          rows: this.priceForm?.get('rows')?.value,
+        };
+        this.settingsService.createTable(tableData);
+        this.toastService.success('Tabla guardada correctamente!');
+      } catch (error) {
+        console.error(error);
+        this.toastService.error('Error al guardar la tabla');
+      }
+    }
+    // Si llega un id de la tabla la actualiza
+    else {
+      try {
+        // Send table to the server
+        const tableData = {
+          columns: this.priceForm?.get('columns')?.value,
+          rows: this.priceForm?.get('rows')?.value,
+        };
+        this.settingsService.updateTable(this.table.id, tableData);
+        this.toastService.success('Cambios guardados correctamente!');
+      } catch (error) {
+        console.error(error);
+        this.toastService.error('Error al guardar los cambios');
+      }
+    }
+  }
+
+  deleteTable() {
     try {
-      // Send table to the server
-      const tableData = {
-        columns: this.priceForm?.get('columns')?.value,
-        rows: this.priceForm?.get('rows')?.value,
-      };
-      this.settingsService.updateTable(this.table.id, tableData);
-      this.toastService.success('Cambios guardados correctamente!');
+      this.settingsService.removeTable(this.table.id);
+      this.priceForm.reset();
+
+      // Obtén los FormArray para 'columns' y 'rows'
+      const columns = this.priceForm.get('columns') as FormArray;
+      const rows = this.priceForm.get('rows') as FormArray;
+
+      // Limpia los FormArray
+      while (columns.length) {
+        columns.removeAt(0);
+      }
+      while (rows.length) {
+        rows.removeAt(0);
+      }
+
+      this.table = { id: '', columns: [], rows: [] };
+      this.changeTitleButton();
+      this.toastService.success('Tabla eliminada correctamente!');
     } catch (error) {
       console.error(error);
-      this.toastService.error('Error al guardar los cambios');
+      this.toastService.error('Error al eliminar la tabla');
     }
   }
 }

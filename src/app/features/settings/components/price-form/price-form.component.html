@@ -1,53 +1,104 @@
 <form [formGroup]="priceForm">
-  <div formArrayName="columns" class="flex">
-    @for (column of columnControls; track $index) {
-    <input
-      class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-      type="text"
-      [formControlName]="$index"
-      placeholder="Titulo {{ $index + 1 }}"
-    />
-    }
-    <button
-      class="inline-flex items-center justify-center px-3 py-1 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-      type="button"
-      (click)="newColumn()"
-    >
-      +
-    </button>
-  </div>
+  <div class="flex">
+    <div>
+      <div formArrayName="columns" class="flex gap-3 mb-2">
+        @for (column of columnControls; track $index) {
+        <input
+          class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+          type="text"
+          [formControlName]="$index"
+          placeholder="Titulo {{ $index + 1 }}"
+        />
 
-  <div formArrayName="rows">
-    @for (row of rowControls; track $index) {
-    <div [formGroupName]="$index" class="flex">
-      @for (column of columnControls; track $index) {
-      <input
-        class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-        type="text"
-        [formControlName]="$index"
-        placeholder="Fila {{ $index + 1 }}, Columna {{ $index + 1 }}"
-      />
-      }
+        <button
+          class="center w-8 h-4 border-2 border-gray-950 px-1 mr-1 rounded-lg bg-white text-2xl font-medium text-center m-2 text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+          type="button"
+          (click)="removeColumn($index)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-minus"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 12l14 0" />
+          </svg>
+        </button>
+        }
+      </div>
+
+      <div formArrayName="rows">
+        @for (row of rowControls; track $index) {
+        <div [formGroupName]="$index" class="flex gap-3">
+          @for (column of columnControls; track $index) {
+          <input
+            class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+            type="text"
+            [formControlName]="$index"
+            placeholder="Fila {{ $index + 1 }}, Columna {{ $index + 1 }}"
+          />
+          }
+        </div>
+        <button
+          class="center w-8 h-4 border-2 border-gray-950 px-1 mr-1 rounded-lg bg-white text-2xl font-medium text-center m-2 text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+          type="button"
+          (click)="removeRow($index)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-minus"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 12l14 0" />
+          </svg>
+        </button>
+        }
+      </div>
     </div>
-    }
+    <div class="flex flex-col w-44 gap-2 mb-2">
+      <button
+        class="center px-3 py-1 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+        type="button"
+        (click)="newColumn()"
+      >
+        Agregar Columna
+      </button>
+      <button
+        class="center px-3 py-1 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+        type="button"
+        (click)="newRow()"
+      >
+        Agregar Fila
+      </button>
+    </div>
+  </div>
+  <div class="flex">
     <button
-      class="inline-flex items-center justify-center px-3 py-1 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-      type="button"
-      (click)="newRow()"
+      class="center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+      (click)="sendTable()"
     >
-      +
+      {{ nameButton }}
+    </button>
+    <button
+      class="center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-900 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+      (click)="deleteTable()"
+    >
+      Eliminar Tabla
     </button>
   </div>
-  <button
-    class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-    (click)="sendTable()"
-  >
-    Guardar Tabla
-  </button>
-  <button
-    class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-    (click)="saveChanges()"
-  >
-    Actualizar Tabla
-  </button>
 </form>

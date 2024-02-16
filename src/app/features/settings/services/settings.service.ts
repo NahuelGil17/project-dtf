@@ -5,6 +5,7 @@ import {
   addDoc,
   updateDoc,
   collectionData,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
 import { collection } from '@firebase/firestore';
@@ -25,11 +26,10 @@ export class SettingsService {
   createTable(tableData: { columns: string[]; rows: string[][] }) {
     const newDoc = collection(this.firestore, 'settings');
     const convertedRows = tableData.rows.map((row) => {
-      const obj: { [key: string]: string } = {}; // Add index signature
-      tableData.columns.forEach((column, index) => {
-        obj[column] = row[index] || '';
-      });
-      return obj;
+      return row.reduce((obj: { [key: string]: any }, cell, index) => {
+        obj[index] = cell || '';
+        return obj;
+      }, {});
     });
 
     const data = {
@@ -46,11 +46,10 @@ export class SettingsService {
   ) {
     const tableRef = doc(this.firestore, 'settings', tableId);
     const convertedRows = tableData.rows.map((row) => {
-      const obj: { [key: string]: string } = {}; // Add index signature
-      tableData.columns.forEach((column, index) => {
-        obj[column] = row[index] || '';
-      });
-      return obj;
+      return row.reduce((obj: { [key: string]: any }, cell, index) => {
+        obj[index] = cell || '';
+        return obj;
+      }, {});
     });
 
     const data = {
@@ -59,5 +58,9 @@ export class SettingsService {
     };
 
     return from(updateDoc(tableRef, data));
+  }
+
+  removeTable(tableId: string): Observable<void> {
+    return from(deleteDoc(doc(this.firestore, 'settings', tableId)));
   }
 }

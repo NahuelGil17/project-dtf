@@ -17,6 +17,7 @@ export const authGuard: CanActivateFn = () => {
 
   if (isAuthenticated) {
     utils.isBrowser ? router.navigate(['/']) : router.navigate(['loading']);
+    return false;
   } else {
     return true;
   }
