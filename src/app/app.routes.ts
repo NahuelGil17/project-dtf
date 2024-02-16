@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/is-auth.guard';
 import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
 import { signInGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
+import { isAdmin } from './core/guards/is-admin.guard';
 
 export const routes: Routes = [
   {
@@ -31,7 +32,7 @@ export const routes: Routes = [
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'
               ).then((m) => m.SettingsPagesComponent),
-            // canLoad: [signInGuard],
+            canActivate: [signInGuard, isAdmin],
           },
         ],
       },
