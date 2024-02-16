@@ -16,4 +16,5 @@ export interface TokenResponse {
 }
 export interface UserPreferences {
   uid: string;
+  isAdmin?: boolean;
 }
