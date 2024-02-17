@@ -1,0 +1,4 @@
+<form [formGroup]="videoForm">
+  <input type="text" formControlName="url" ngModel="{{ url }}" />
+  <button (click)="saveVideo()">Cambiar Video</button>
+</form>

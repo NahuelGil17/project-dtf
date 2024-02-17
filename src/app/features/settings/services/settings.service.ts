@@ -63,4 +63,22 @@ export class SettingsService {
   removeTable(tableId: string): Observable<void> {
     return from(deleteDoc(doc(this.firestore, 'settings', tableId)));
   }
+
+  createVideo(url: string) {
+    const newDoc = collection(this.firestore, 'settings');
+    const data = {
+      url,
+    };
+
+    return from(addDoc(newDoc, data));
+  }
+
+  updateVideo(videoId: string, url: string) {
+    const videoRef = doc(this.firestore, 'settings', videoId);
+    const data = {
+      url,
+    };
+
+    return from(updateDoc(videoRef, data));
+  }
 }

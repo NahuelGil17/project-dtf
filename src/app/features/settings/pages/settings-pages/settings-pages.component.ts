@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PriceFormComponent } from '../../components/price-form/price-form.component';
 import { SettingsService } from '../../services/settings.service';
+import { VideoFormComponent } from '../../components/video-form/video-form.component';
 
 @Component({
   selector: 'app-settings-pages',
   standalone: true,
   templateUrl: './settings-pages.component.html',
   styleUrl: './settings-pages.component.css',
-  imports: [PriceFormComponent],
+  imports: [PriceFormComponent, VideoFormComponent],
 })
 export class SettingsPagesComponent implements OnInit {
   tableData: { columns: string[]; rows: string[][]; id: string } = {
@@ -15,6 +16,8 @@ export class SettingsPagesComponent implements OnInit {
     columns: [],
     rows: [],
   };
+
+  videoData: { url: string; id: string } = { url: '', id: '' };
   constructor(private settingsService: SettingsService) {}
 
   ngOnInit(): void {
@@ -30,6 +33,12 @@ export class SettingsPagesComponent implements OnInit {
                 const value = Object.values(row);
                 return value;
               }),
+            };
+          }
+          if (setting.url) {
+            this.videoData = {
+              id: setting.id,
+              url: setting.url,
             };
           }
         });
