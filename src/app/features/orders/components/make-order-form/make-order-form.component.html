@@ -1,0 +1,87 @@
+<!-- <form>
+  <section class="space-y-4">
+    <div class="flex justify-between">
+      <div>
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Your email</label
+        >
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="bg-gray-50 md:min-w-96 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          placeholder="name@company.com"
+          required
+        />
+      </div>
+      <div>
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Your email</label
+        >
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="bg-gray-50 border w-full md:min-w-96 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          placeholder="name@company.com"
+          required
+        />
+      </div>
+    </div>
+    <div>
+      <label
+        for="email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Your email</label
+      >
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+        placeholder="name@company.com"
+        required
+      />
+    </div>
+  </section>
+  <section>
+    <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700" />
+    <h3 class="text-center py-4 font-bold text-3xl text-slate-600">Archivos</h3>
+  </section>
+</form> -->
+<form [formGroup]="form">
+  <input formControlName="nombre" placeholder="Nombre" />
+  <input
+    title="count"
+    type="number"
+    formControlName="filesCount"
+    min="1"
+    max="10"
+    (input)="updateFiles()"
+  />
+  <div formArrayName="files" class="mt-4 grid grid-cols-3 gap-6">
+    @for(item of files.controls; track item; let i = $index;) {
+    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" [formGroup]="getFormGroup(i)">
+      <div class="text-lg text-slate-500 font-light py-2">Archivo {{ i + 1 }}</div>
+      <div class="space-y-4">
+        <input
+          title="file"
+          type="file"
+          formControlName="file"
+          accept="image/*"
+        />
+        <label for="count" class="px-2">Cantidad Impresiones</label>
+        <select id="count" title="count" formControlName="count">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+    </div>
+    }
+  </div>
+</form>

@@ -8,6 +8,7 @@ import { SettingsPagesComponent } from './features/settings/pages/settings-pages
 import { signInGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
 import { isAdmin } from './core/guards/is-admin.guard';
+import { MakeOrderComponent } from './features/landing/components/make-order/make-order.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,13 @@ export const routes: Routes = [
         canLoad: [authGuard],
       },
       { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+      {
+        path: 'pedido',
+        loadComponent: () =>
+          import(
+            './features/orders/pages/make-order/make-order.component'
+          ).then((m) => m.MakeOrderComponent),
+      },
       {
         path: 'admin',
         children: [
