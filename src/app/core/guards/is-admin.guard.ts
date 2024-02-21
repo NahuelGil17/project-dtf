@@ -8,7 +8,7 @@ import { Store } from '@ngxs/store';
  * A guard that checks if the user is authenticated before allowing access to a route.
  * @returns A boolean indicating whether the user is authenticated or not.
  */
-export const signInGuard: CanActivateFn = () => {
+export const isAdmin: CanActivateFn = () => {
   const router = inject(Router);
   const store = inject(Store);
   const utils = inject(UtilsService);
