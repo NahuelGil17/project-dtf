@@ -35,7 +35,7 @@ export class VideoFormComponent {
       this.videoForm.patchValue({
         url: this.video.url,
       });
-      this.url = Object.values(this.video.url).toString();
+      this.url = this.video.url;
     }
     console.log(this.video.url);
   }

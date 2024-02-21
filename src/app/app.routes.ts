@@ -41,7 +41,7 @@ export const routes: Routes = [
         path: 'admin',
         children: [
           {
-            path: 'settings',
+            path: 'configuraciones',
             loadComponent: () =>
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'

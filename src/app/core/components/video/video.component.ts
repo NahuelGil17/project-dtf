@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SafePipe } from '../../pipes/safe/safe.pipe';
 
@@ -11,12 +11,18 @@ import { SafePipe } from '../../pipes/safe/safe.pipe';
 })
 export class VideoComponent {
   @Input() video: string = '';
+  videoUrl: string = '';
   sanitizedSrc: SafeResourceUrl;
-
   constructor(private sanitizer: DomSanitizer) {
-    // Usa DomSanitizer para sanear la URL al inicializar el componente
     this.sanitizedSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.video
+      this.videoUrl
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['video'] && this.video) {
+      this.videoUrl = `https://www.youtube.com/embed/${this.video}`;
+      console.log(this.videoUrl);
+    }
   }
 }

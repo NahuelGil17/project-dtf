@@ -38,7 +38,7 @@ export class SettingsPagesComponent implements OnInit {
           if (setting.url) {
             this.videoData = {
               id: setting.id,
-              url: setting.url,
+              url: Object.values(setting.url).toString(),
             };
           }
         });
