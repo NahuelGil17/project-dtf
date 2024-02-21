@@ -20,7 +20,6 @@ export class VideoSectionComponent {
         if (setting.url) {
           this.videoId = Object.values(setting.url).toString();
           this.videoId = this.videoId.split('v=')[1];
-          console.log(this.videoId);
         }
       });
     });

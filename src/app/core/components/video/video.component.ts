@@ -22,7 +22,6 @@ export class VideoComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['video'] && this.video) {
       this.videoUrl = `https://www.youtube.com/embed/${this.video}`;
-      console.log(this.videoUrl);
     }
   }
 }

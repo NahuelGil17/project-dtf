@@ -37,7 +37,6 @@ export class VideoFormComponent {
       });
       this.url = this.video.url;
     }
-    console.log(this.video.url);
   }
 
   saveVideo() {
@@ -58,7 +57,6 @@ export class VideoFormComponent {
         this.toastService.success('Video guardado');
       } catch (error) {
         this.toastService.error('Error al guardar el video');
-        console.log(error);
       }
     }
   }
