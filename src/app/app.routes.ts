@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/is-auth.guard';
 import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
 import { signInGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
+import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
 import { isAdmin } from './core/guards/is-admin.guard';
 import { MakeOrderComponent } from './features/landing/components/make-order/make-order.component';
 
@@ -18,12 +19,17 @@ export const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'contact', component: ContactPageComponent },
+      { path: 'precio', component: PricePageComponent },
       {
         path: 'registro',
         component: RegisterPageComponent,
-        canLoad: [authGuard],
+        canActivate: [authGuard],
       },
-      { path: 'login', component: LoginPageComponent, canLoad: [authGuard] },
+      {
+        path: 'login',
+        component: LoginPageComponent,
+        canActivate: [authGuard],
+      },
       {
         path: 'pedido',
         loadComponent: () =>
@@ -35,7 +41,7 @@ export const routes: Routes = [
         path: 'admin',
         children: [
           {
-            path: 'settings',
+            path: 'configuraciones',
             loadComponent: () =>
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'

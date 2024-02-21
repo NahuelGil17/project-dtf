@@ -10,8 +10,14 @@
       <tr>
         <!-- Iterar sobre las columnas -->
         @for (column of table.columns; track $index) {
-        <th scope="col" class="px-4 py-3">{{ column }}</th>
-        } >
+        <th
+          scope="col"
+          class="px-4 py-3"
+          ng-class="{ 'rounded-l-lg': $index === 0 }"
+        >
+          {{ column }}
+        </th>
+        }
       </tr>
     </thead>
     <tbody>
@@ -21,12 +27,11 @@
         <!-- Iterar sobre los valores de cada fila -->
         @for (value of row; track $index) {
         <td
-          class="px-6 py-4"
-          [class]="
-            $index === 0
-              ? 'font-medium text-gray-900 whitespace-nowrap dark:text-white'
-              : ''
-          "
+          class="px-6 py-4 rounded-lg"
+          ng-class="{
+            'font-medium text-gray-900 whitespace-nowrap dark:text-white':
+              $index === 0
+          }"
         >
           {{ value }}
         </td>
