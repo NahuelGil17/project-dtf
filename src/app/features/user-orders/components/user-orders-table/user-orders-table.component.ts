@@ -18,6 +18,10 @@ import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 })
 export class UserOrdersTableComponent {
 
+  // isLoading$: Observable<Boolean>;
+  // orders$: Observable<Order[]>;
+  // userId$: Observable<string>;
+
   isLoading: boolean = true;
   orders: Order[] = [];
   userId: string = '';

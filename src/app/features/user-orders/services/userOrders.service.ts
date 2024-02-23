@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, where, getDocs,startAt,endAt,orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, startAt, endAt, orderBy, startAfter, limit } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
 
@@ -7,7 +7,7 @@ import { Order } from '../interfaces/order.interface';
   providedIn: 'root',
 })
 export class OrderService {
-
+  pageSize: number = 10;
   constructor(private firestore: Firestore) { }
 
   getOrdersByUserId(userId: string): Observable<Order[]> {
@@ -17,7 +17,7 @@ export class OrderService {
       getDocs(ordersQuery).then((snapshot) => {
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);   
+          orders.push(doc.data() as Order);
         });
         observer.next(orders);
       }).catch((error) => {
@@ -47,7 +47,29 @@ export class OrderService {
       });
     });
   }
-  
 
-
+  nextPage(userId: string, lastOrder: any): Observable<Order[]> {
+    const ordersRef = collection(this.firestore, 'orders');
+    let ordersQuery = query(
+      ordersRef,
+      where('userId', '==', userId),
+      orderBy('title'),
+      startAfter(lastOrder),
+      limit(this.pageSize)
+    );
+    return new Observable((observer) => {
+      getDocs(ordersQuery).then((snapshot) => {
+        const orders: Order[] = [];
+        snapshot.forEach((doc) => {
+          orders.push(doc.data() as Order);
+        });
+        observer.next(orders);
+      }).catch((error) => {
+        observer.error(error);
+      });
+    });
+  }
 }
+
+
+
