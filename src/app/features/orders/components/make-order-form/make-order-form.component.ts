@@ -6,13 +6,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-make-order-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './make-order-form.component.html',
   styleUrl: './make-order-form.component.css',
+  imports: [ReactiveFormsModule, ButtonComponent],
 })
 export class MakeOrderFormComponent {
   form!: FormGroup;
@@ -21,7 +22,10 @@ export class MakeOrderFormComponent {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      nombre: [''],
+      workName: ['', Validators.required],
+      mode: ['', Validators.required],
+      type: ['', Validators.required],
+      note: [''],
       filesCount: [
         '1',
         [Validators.required, Validators.min(1), Validators.max(10)],
@@ -37,7 +41,7 @@ export class MakeOrderFormComponent {
   createFile(): FormGroup {
     return this.fb.group({
       file: ['', Validators.required],
-      count: ['', Validators.required],
+      count: ['1', Validators.required],
     });
   }
 
@@ -53,5 +57,9 @@ export class MakeOrderFormComponent {
     while (this.files.length > filesCount) {
       this.files.removeAt(this.files.length - 1);
     }
+  }
+
+  sendFormValues() {
+    console.log(this.form.value);
   }
 }
