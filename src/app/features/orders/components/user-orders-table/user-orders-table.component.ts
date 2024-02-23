@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../interfaces/order.interface';
-import { OrderService } from '../../services/userOrders.service';
+import { OrderService } from '../../services/order.service';
 import { Select } from '@ngxs/store';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';

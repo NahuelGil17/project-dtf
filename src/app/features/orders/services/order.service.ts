@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, where, getDocs, startAt, endAt, orderBy, startAfter, limit } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Firestore, collection, query, where, getDocs, startAt, endAt, orderBy, startAfter, limit, getDoc, doc, setDoc } from "@angular/fire/firestore";
+import { Observable, from } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
 
 @Injectable({
@@ -8,11 +8,11 @@ import { Order } from '../interfaces/order.interface';
 })
 export class OrderService {
   pageSize: number = 10;
-  constructor(private firestore: Firestore) { }
+  constructor(private fireStore: Firestore) { }
 
   getOrdersByUserId(userId: string): Observable<Order[]> {
     return new Observable((observer) => {
-      const ordersRef = collection(this.firestore, 'orders');
+      const ordersRef = collection(this.fireStore, 'orders');
       const ordersQuery = query(ordersRef, where('userId', '==', userId));
       getDocs(ordersQuery).then((snapshot) => {
         const orders: Order[] = [];
@@ -28,11 +28,11 @@ export class OrderService {
 
   searchOrders(input: string): Observable<Order[]> {
     return new Observable((observer) => {
-      const ordersRef = collection(this.firestore, 'orders');
+      const ordersRef = collection(this.fireStore, 'orders');
       const ordersQuery = query(
         ordersRef,
-        where('title', '>=', input),
-        orderBy('title'),
+        where('workName', '>=', input),
+        orderBy('workName'),
         startAt(input),
         endAt(input + '\uf8ff')
       );
@@ -49,11 +49,11 @@ export class OrderService {
   }
 
   nextPage(userId: string, lastOrder: any): Observable<Order[]> {
-    const ordersRef = collection(this.firestore, 'orders');
+    const ordersRef = collection(this.fireStore, 'orders');
     let ordersQuery = query(
       ordersRef,
       where('userId', '==', userId),
-      orderBy('title'),
+      orderBy('workName'),
       startAfter(lastOrder),
       limit(this.pageSize)
     );
@@ -69,6 +69,19 @@ export class OrderService {
       });
     });
   }
+
+  getOrders() {
+    return from(getDocs(collection(this.fireStore, 'orders')));
+  }
+
+  getOrderById(id: string) {
+    return from(getDoc(doc(this.fireStore, 'orders', id)));
+  }
+
+  saveOrder(order: any) {
+    return from(setDoc(doc(this.fireStore, 'orders', order.id), order));
+  }
+
 }
 
 

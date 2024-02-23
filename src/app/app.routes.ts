@@ -58,7 +58,7 @@ export const routes: Routes = [
             path: 'ordenes',
             loadComponent: () =>
               import(
-                './features/user-orders/pages/user-orders/user-orders.component'
+                './features/orders/pages/user-orders/user-orders.component'
               ).then((m) => m.UserOrdersComponent),
             canActivate: [signInGuard],
           },
