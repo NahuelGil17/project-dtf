@@ -25,4 +25,22 @@ export class OrderService {
       });
     });
   }
+
+  searchOrders(input: string): Observable<Order[]> {
+    return new Observable((observer) => {
+      const ordersRef = collection(this.firestore, 'orders');
+      const ordersQuery = query(ordersRef, where('name', '>=', input));
+      getDocs(ordersQuery).then((snapshot) => {
+        const orders: Order[] = [];
+        snapshot.forEach((doc) => {
+          orders.push(doc.data() as Order);
+        });
+        observer.next(orders);
+      }).catch((error) => {
+        observer.error(error);
+      });
+    });
+  }
+
+
 }

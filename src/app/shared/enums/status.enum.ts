@@ -1,7 +1,7 @@
 export enum Status {
-    INPROGRESS,
     PENDING,
-    CANCELLED,
+    INPROGRESS,
     FINISHED,
-    DELIVERED
+    DELIVERED,
+    CANCELLED
     }

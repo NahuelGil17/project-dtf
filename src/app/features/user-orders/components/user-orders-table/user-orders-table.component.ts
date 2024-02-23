@@ -11,7 +11,7 @@ import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 @Component({
   selector: 'app-user-orders-table',
   standalone: true,
-  imports: [CommonModule,FormatDatePipe, OrderStatusPipe],
+  imports: [CommonModule, FormatDatePipe, OrderStatusPipe],
   templateUrl: './user-orders-table.component.html',
   styleUrl: './user-orders-table.component.css'
 })
@@ -29,7 +29,7 @@ export class UserOrdersTableComponent {
     this.preferences$.subscribe(preferences => {
       if (preferences) {
         console.log(preferences);
-        
+
         //this.userId = preferences.ci;
         this.userId = preferences.uid;
         this.getOrdersByUserId(this.userId);
@@ -41,10 +41,18 @@ export class UserOrdersTableComponent {
     this.orderService.getOrdersByUserId(userId)
       .subscribe(orders => {
         this.orders = orders;
-        console.log(this.orders);
       });
-      
-      
+  }
+
+  searchOrders(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputSearch = inputElement.value.trim();
+    if (inputSearch.length > 3) {
+      this.orderService.searchOrders(inputSearch)
+        .subscribe(orders => {
+          this.orders = orders;
+        });
+    }
   }
 
 }
