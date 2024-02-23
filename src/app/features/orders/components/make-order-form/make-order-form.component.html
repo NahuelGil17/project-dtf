@@ -1,0 +1,90 @@
+<form [formGroup]="form">
+  <section class="space-y-4">
+    <h3 class="text-left py-4 font-bold text-3xl text-slate-600">Completa los datos 📝</h3>
+    <div class="flex justify-between pb-4">
+      <div>
+        <label
+          for="workName"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Nombre del trabajo</label
+        >
+        <input
+          type="text"
+          name="workName"
+          id="workName"
+          class="bg-gray-50 md:min-w-96 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          placeholder="Nombre para tu trabajo"
+          required
+        />
+      </div>
+      <div>
+        <label
+          for="mode"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Modo</label
+        >
+        <select
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          name="mode"
+          id="mode"
+        >
+          <option [value]="1">Normal (24 a 96h)</option>
+          <option [value]="2">
+            Uregente (entrega en 24h, costo 25% extra, sujeto a disponibilidad)
+          </option>
+        </select>
+      </div>
+      <div>
+        <label
+          for="count"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Cantidad archivos </label
+        >
+  
+        <input
+          title="count"
+          type="number"
+          formControlName="filesCount"
+          min="1"
+          max="10"
+          (input)="updateFiles()"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+        />
+      </div>
+    </div>
+  </section>
+  <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700" />
+  <section class="py-4">
+    <h3 class="text-left py-4 font-bold text-3xl text-slate-600">Archivos 📁</h3>
+    <div formArrayName="files" class="grid grid-cols-3 gap-6 ">
+      @for(item of files.controls; track item; let i = $index;) {
+      <div
+        class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        [formGroup]="getFormGroup(i)"
+      >
+        <div class="text-lg text-slate-500 font-light py-2">
+          Archivo {{ i + 1 }}
+        </div>
+        <div class="space-y-4">
+          <input title="file" type="file" formControlName="file" />
+          <label
+            for="count"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Cantidad Impresiones</label
+          >
+          <select
+            class="bg-gray-50 border w-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="count"
+            title="count"
+            formControlName="count"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+</form>

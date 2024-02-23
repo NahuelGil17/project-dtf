@@ -3,14 +3,15 @@ import { TablePriceComponent } from '../../../../core/components/table-price/tab
 import { SettingsService } from '../../../settings/services/settings.service';
 
 @Component({
-  selector: 'app-price-section',
+  selector: 'app-price-page',
   standalone: true,
+  templateUrl: './price-page.component.html',
+  styleUrl: './price-page.component.css',
   imports: [TablePriceComponent],
-  templateUrl: './price-section.component.html',
-  styleUrl: './price-section.component.css',
 })
-export class PriceSectionComponent {
-  tableData: { columns: string[]; rows: string[][] } = {
+export class PricePageComponent {
+  tableData: { columns: string[]; rows: string[][]; id: string } = {
+    id: '',
     columns: [],
     rows: [],
   };
@@ -20,13 +21,14 @@ export class PriceSectionComponent {
       settings.map((setting: any) => {
         if (setting.rows && setting.columns) {
           const newData = {
+            id: setting.id,
             columns: setting.columns,
             rows: setting.rows.map((row: any) => {
               const value = Object.values(row);
               return value;
             }),
           };
-          this.tableData = newData;
+          this.tableData = { ...newData };
         }
       });
     });

@@ -61,14 +61,15 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ auth: auth._tokenResponse, preferences: auth.user });
         ctx.patchState({ loading: false });
+        this.toastService.success('Sesión iniciada con éxito');
       }),
-      exhaustMap((auth: any) =>
-        ctx.dispatch(new GetUserPreferences(auth.user.uid))
-      ),
+      exhaustMap((auth: any) => {
+        return ctx.dispatch(new GetUserPreferences(auth.user.uid));
+      }),
       catchError((err: HttpErrorResponse) => {
-        ctx.patchState({ loading: false });
         const errMessage = this.getErrorMessage(err);
         this.toastService.error(errMessage, 'Error al iniciar sesión');
+        ctx.patchState({ loading: false });
         return throwError(() => err);
       })
     );
@@ -156,6 +157,9 @@ export class AuthState {
           errorMessage = 'Correo electrónico inválido.';
           break;
         case 'auth/invalid-login-credentials':
+          errorMessage = 'Credenciales invalidas.';
+          break;
+        case 'auth/invalid-credential':
           errorMessage = 'Credenciales invalidas.';
           break;
       }

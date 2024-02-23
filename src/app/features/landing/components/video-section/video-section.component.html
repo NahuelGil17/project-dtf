@@ -1,5 +1,5 @@
 <section
-  class="relative flex items-center justify-center border-t border-gray-200 bg-gray-900 py-20 sm:py-32 overflow-hidden"
+  class="relative center border-t border-gray-200 bg-gray-900 py-20 sm:py-32 overflow-hidden"
 >
   <div
     class="absolute left-20 top-1/2 -translate-y-1/2 sm:left-1/2 sm:-translate-x-1/2"
@@ -38,13 +38,13 @@
     </svg>
   </div>
   <div
-    class="mx-auto w-4/5 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center"
+    class="z-20 mx-auto w-4/5 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center"
   >
     <h2
-      class="text-center mb-10 text-6xl font-medium tracking-tight text-gray-400"
+      class="text-center mb-10 text-6xl font-medium tracking-tight text-white"
     >
       Video explicativo
     </h2>
-    <app-video video="https://www.youtube.com/embed/wS2w8hVofZU"></app-video>
+    <app-video [video]="videoId"></app-video>
   </div>
 </section>

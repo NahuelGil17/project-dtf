@@ -7,6 +7,9 @@ import { authGuard } from './core/guards/is-auth.guard';
 import { SettingsPagesComponent } from './features/settings/pages/settings-pages/settings-pages.component';
 import { signInGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
+import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
+import { isAdmin } from './core/guards/is-admin.guard';
+import { MakeOrderComponent } from './features/landing/components/make-order/make-order.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +19,7 @@ export const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'contact', component: ContactPageComponent },
+      { path: 'precio', component: PricePageComponent },
       {
         path: 'registro',
         component: RegisterPageComponent,
@@ -27,15 +31,23 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'pedido',
+        loadComponent: () =>
+          import(
+            './features/orders/pages/make-order/make-order.component'
+          ).then((m) => m.MakeOrderComponent),
+      },
+      {
         path: 'admin',
         children: [
           {
-            path: 'settings',
+            path: 'configuraciones',
             loadComponent: () =>
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'
               ).then((m) => m.SettingsPagesComponent),
             // canActivate: [signInGuard],
+            canActivate: [signInGuard, isAdmin],
           },
         ],
       },

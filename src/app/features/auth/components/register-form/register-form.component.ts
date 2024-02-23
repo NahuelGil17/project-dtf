@@ -61,7 +61,6 @@ export class RegisterFormComponent {
   }
 
   emitFormValues() {
-    console.log('Emitting form values');
     if (this.registerForm.valid) {
       this.formValues.emit(this.registerForm.value);
     } else {
