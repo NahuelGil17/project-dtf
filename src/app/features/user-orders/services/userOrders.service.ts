@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs,startAt,endAt,orderBy } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
 
@@ -29,7 +29,13 @@ export class OrderService {
   searchOrders(input: string): Observable<Order[]> {
     return new Observable((observer) => {
       const ordersRef = collection(this.firestore, 'orders');
-      const ordersQuery = query(ordersRef, where('name', '>=', input));
+      const ordersQuery = query(
+        ordersRef,
+        where('title', '>=', input),
+        orderBy('title'),
+        startAt(input),
+        endAt(input + '\uf8ff')
+      );
       getDocs(ordersQuery).then((snapshot) => {
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
@@ -41,6 +47,7 @@ export class OrderService {
       });
     });
   }
+  
 
 
 }

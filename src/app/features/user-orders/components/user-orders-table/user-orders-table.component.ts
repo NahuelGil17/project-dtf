@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Order } from '../../interfaces/order.interface';
 import { OrderService } from '../../services/userOrders.service';
 import { Select } from '@ngxs/store';
+import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 import { AuthState } from '../../../auth/state/auth.state';
@@ -11,12 +12,13 @@ import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 @Component({
   selector: 'app-user-orders-table',
   standalone: true,
-  imports: [CommonModule, FormatDatePipe, OrderStatusPipe],
+  imports: [CommonModule, FormatDatePipe, OrderStatusPipe,RouterModule],
   templateUrl: './user-orders-table.component.html',
   styleUrl: './user-orders-table.component.css'
 })
 export class UserOrdersTableComponent {
 
+  isLoading: boolean = true;
   orders: Order[] = [];
   userId: string = '';
 
@@ -28,9 +30,6 @@ export class UserOrdersTableComponent {
   ngOnInit(): void {
     this.preferences$.subscribe(preferences => {
       if (preferences) {
-        console.log(preferences);
-
-        //this.userId = preferences.ci;
         this.userId = preferences.uid;
         this.getOrdersByUserId(this.userId);
       }
@@ -40,6 +39,7 @@ export class UserOrdersTableComponent {
   getOrdersByUserId(userId: string): void {
     this.orderService.getOrdersByUserId(userId)
       .subscribe(orders => {
+        this.isLoading = false;
         this.orders = orders;
       });
   }
@@ -52,6 +52,8 @@ export class UserOrdersTableComponent {
         .subscribe(orders => {
           this.orders = orders;
         });
+    }else{
+      this.getOrdersByUserId(this.userId);
     }
   }
 
