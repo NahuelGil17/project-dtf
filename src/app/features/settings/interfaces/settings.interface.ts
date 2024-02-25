@@ -5,4 +5,5 @@ export interface Table {
 
 export interface Video {
   url: string;
+  id: string;
 }

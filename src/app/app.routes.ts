@@ -46,7 +46,7 @@ export const routes: Routes = [
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'
               ).then((m) => m.SettingsPagesComponent),
-            canActivate: [signInGuard, isAdmin],
+            // canActivate: [signInGuard, isAdmin],
           },
         ],
       },
