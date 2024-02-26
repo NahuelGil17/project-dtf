@@ -36,7 +36,6 @@ export class SettingsPagesComponent {
     this.actions
       .pipe(ofActionSuccessful(GetSettings), take(1))
       .subscribe(() => {
-        console.log('Settings loaded');
         this.store.selectSnapshot(SettingsState).subscribe((settings: any) => {
           console.log(settings);
           if (!settings.loading) {
@@ -58,6 +57,7 @@ export class SettingsPagesComponent {
             }
           }
         });
+        console.log('Settings loaded');
       });
     setTimeout(() => {
       this.store.dispatch(new GetSettings());

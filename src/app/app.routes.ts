@@ -21,7 +21,6 @@ export const routes: Routes = [
       { path: 'home', component: HomePageComponent },
       { path: 'contacto', component: ContactPageComponent },
       { path: 'precio', component: PricePageComponent },
-      // { path: '**', component: NotFoundPageComponent },
       {
         path: 'registro',
         component: RegisterPageComponent,
@@ -68,4 +67,5 @@ export const routes: Routes = [
     ],
   },
   // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
+  { path: '**', component: NotFoundPageComponent },
 ];

@@ -172,7 +172,9 @@ export class PriceFormComponent {
           },
         };
         this.store.dispatch(new CreateTable(tableData));
-        this.toastService.success('Tabla guardada correctamente!');
+        this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {
+          this.toastService.success('Tabla guardada correctamente!');
+        });
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar la tabla');
@@ -190,7 +192,9 @@ export class PriceFormComponent {
           },
         };
         this.store.dispatch(new UpdateTable(tableData));
-        this.toastService.success('Cambios guardados correctamente!');
+        this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {
+          this.toastService.success('Cambios guardados correctamente!');
+        });
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar los cambios');
@@ -201,6 +205,9 @@ export class PriceFormComponent {
   deleteTable() {
     try {
       this.store.dispatch(new RemoveTable(this.table.id));
+      this.actions.pipe(ofActionSuccessful(RemoveTable)).subscribe(() => {
+        this.toastService.success('Tabla eliminada correctamente!');
+      });
       this.priceForm.reset();
 
       // Obtén los FormArray para 'columns' y 'rows'
@@ -217,7 +224,6 @@ export class PriceFormComponent {
 
       this.table = { id: '', columns: [], rows: [] };
       this.changeTitleButton();
-      this.toastService.success('Tabla eliminada correctamente!');
     } catch (error) {
       console.error(error);
       this.toastService.error('Error al eliminar la tabla');
