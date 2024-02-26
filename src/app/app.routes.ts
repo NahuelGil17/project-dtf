@@ -10,6 +10,7 @@ import { LayoutComponent } from './core/components/layout/layout.component';
 import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
 import { isAdmin } from './core/guards/is-admin.guard';
 import { MakeOrderComponent } from './features/landing/components/make-order/make-order.component';
+import { NotFoundPageComponent } from './core/landing/pages/not-found-page/not-found-page.component';
 
 export const routes: Routes = [
   {
@@ -18,8 +19,9 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
-      { path: 'contact', component: ContactPageComponent },
+      { path: 'contacto', component: ContactPageComponent },
       { path: 'precio', component: PricePageComponent },
+      { path: '**', component: NotFoundPageComponent },
       {
         path: 'registro',
         component: RegisterPageComponent,

@@ -7,7 +7,6 @@ import {
 
 export class GetSettings {
   static readonly type = '[Settings] Get Settings';
-  constructor() {}
 }
 
 export class CreateTable {
