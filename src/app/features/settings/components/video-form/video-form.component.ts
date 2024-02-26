@@ -16,8 +16,9 @@ import { SettingsService } from '../../services/settings.service';
   styleUrl: './video-form.component.css',
 })
 export class VideoFormComponent {
-  videoForm!: FormGroup;
   @Input() video: { url: string; id: string } = { url: '', id: '' };
+  @Input() isLoading: boolean | null = false;
+  videoForm!: FormGroup;
   url: string = '';
   constructor(
     private toastService: ToastrService,

@@ -1,4 +1,4 @@
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SettingsStateModel } from './setting.model';
 import { Injectable, inject } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
@@ -25,6 +25,11 @@ import { ToastrService } from 'ngx-toastr';
 export class SettingsState {
   settingsService = inject(SettingsService);
   toastService = inject(ToastrService);
+
+  @Selector()
+  static settingsloading(state: SettingsStateModel): boolean | undefined {
+    return state.loading;
+  }
 
   @Action(GetSettings)
   getSettings(
@@ -68,14 +73,15 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: CreateTable
   ): Observable<void> {
-    return this.settingsService.createTable(action.payload).pipe(
+    const { table } = action.payload;
+    return this.settingsService.createTable(table).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
         this.toastService.success('Tabla creada con éxito');
       }),
       catchError((error) => {
         this.toastService.error('Error creando tabla');
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
@@ -85,15 +91,16 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: UpdateTable
   ): Observable<void> {
-    const { tableId, table } = action.payload;
-    return this.settingsService.updateTable(tableId, table).pipe(
+    const { id, table } = action.payload;
+    ctx.patchState({ loading: true });
+    return this.settingsService.updateTable(id, table).pipe(
       tap((settings: any) => {
-        ctx.patchState(settings);
+        ctx.patchState({ loading: false });
         this.toastService.success('Tabla actualizada con éxito');
       }),
       catchError((error) => {
         this.toastService.error('Error actualizando tabla');
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

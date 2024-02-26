@@ -1,6 +1,16 @@
 export interface Table {
-  columns: string[];
-  rows: string[][];
+  id: string;
+  table: {
+    columns: string[];
+    rows: string[][];
+  };
+}
+
+export interface TableSend {
+  table: {
+    columns: string[];
+    rows: string[][];
+  };
 }
 
 export interface Video {

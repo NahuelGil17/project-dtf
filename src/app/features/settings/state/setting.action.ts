@@ -1,4 +1,9 @@
-import { Settings, Table, Video } from '../interfaces/settings.interface';
+import {
+  Settings,
+  Table,
+  TableSend,
+  Video,
+} from '../interfaces/settings.interface';
 
 export class GetSettings {
   static readonly type = '[Settings] Get Settings';
@@ -7,12 +12,12 @@ export class GetSettings {
 
 export class CreateTable {
   static readonly type = '[Settings] Create Table';
-  constructor(public readonly payload: Table) {}
+  constructor(public readonly payload: TableSend) {}
 }
 
 export class UpdateTable {
   static readonly type = '[Settings] Update Table';
-  constructor(public readonly payload: { tableId: string; table: Table }) {}
+  constructor(public readonly payload: Table) {}
 }
 
 export class RemoveTable {

@@ -6,14 +6,15 @@ import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { GetSettings } from '../../state/setting.action';
 import { Video, Table, Settings } from '../../interfaces/settings.interface';
 import { SettingsState } from '../../state/setting.state';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-settings-pages',
   standalone: true,
   templateUrl: './settings-pages.component.html',
   styleUrl: './settings-pages.component.css',
-  imports: [PriceFormComponent, VideoFormComponent],
+  imports: [PriceFormComponent, VideoFormComponent, CommonModule],
 })
 export class SettingsPagesComponent {
   tableData: { columns: string[]; rows: string[][]; id: string } = {
@@ -24,8 +25,19 @@ export class SettingsPagesComponent {
 
   videoData: Video = {} as Video;
   @Select(SettingsState) settings$!: Observable<Settings>;
-  constructor(private actions: Actions, private store: Store) {
+
+  @Select(SettingsState.settingsloading) loading$!: Observable<void>;
+  constructor(private actions: Actions, private store: Store) {}
+
+  ngOnInit() {
+    this.getSettings();
+  }
+
+  getSettings() {
     this.store.dispatch(new GetSettings());
+    // this.actions.pipe(ofActionSuccessful(GetSettings)).subscribe(() => {
+    //   console.log('Settings loaded', this.settings$);
+    // });
     this.store.select(SettingsState).subscribe((settings) => {
       if (!settings.loading) {
         if (settings.tables) {
@@ -46,6 +58,5 @@ export class SettingsPagesComponent {
         }
       }
     });
-    console.log('Settings:', this.tableData, this.videoData);
   }
 }
