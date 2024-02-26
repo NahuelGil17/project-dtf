@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
 import { PriceFormComponent } from '../../components/price-form/price-form.component';
 import { VideoFormComponent } from '../../components/video-form/video-form.component';
-import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
+import {
+  Actions,
+  Select,
+  Store,
+  ofActionCompleted,
+  ofActionSuccessful,
+} from '@ngxs/store';
 import { GetSettings } from '../../state/setting.action';
 import { Video, Settings } from '../../interfaces/settings.interface';
 import { SettingsState } from '../../state/setting.state';
-import { Observable, take } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-settings-pages',
@@ -21,46 +28,67 @@ export class SettingsPagesComponent {
     columns: [],
     rows: [],
   };
-
   videoData: Video = {} as Video;
   @Select(SettingsState) settings$!: Observable<Settings>;
-
-  @Select(SettingsState.settingsloading) loading$!: Observable<void>;
-  constructor(private actions: Actions, private store: Store) {}
+  @Select(SettingsState.settingsLoading) loading$!: Observable<void>;
+  constructor(
+    private actions: Actions,
+    private store: Store,
+    private settingsSvc: SettingsService
+  ) {}
 
   ngOnInit() {
+    this.store.dispatch(new GetSettings());
     this.getSettings();
   }
 
   getSettings() {
     this.actions
-      .pipe(ofActionSuccessful(GetSettings), take(1))
-      .subscribe(() => {
-        this.store.selectSnapshot(SettingsState).subscribe((settings: any) => {
-          console.log(settings);
-          if (!settings.loading) {
-            if (settings.tables) {
-              this.tableData = {
-                id: settings.tables.id,
-                columns: settings.tables.columns,
-                rows: settings.tables.rows.map((row: any) => {
-                  const value = Object.values(row);
-                  return value;
-                }),
-              };
-            }
-            if (settings.videos) {
-              this.videoData = {
-                id: settings.videos.id,
-                url: Object.values(settings.videos.url).toString(),
-              };
-            }
+      .pipe(
+        ofActionSuccessful(GetSettings),
+        tap(() => {
+          const settings = this.store.selectSnapshot(SettingsState);
+          console.log('Settings received 2:', settings);
+          if (settings.tables) {
+            this.tableData = {
+              id: settings.tables.id,
+              rows: settings.tables.rows.map((row: any) => {
+                const value = Object.values(row);
+                return value;
+              }),
+              columns: settings.tables.columns,
+            };
           }
-        });
+          if (settings.videos) {
+            this.videoData = {
+              id: settings.videos.id,
+              url: Object.values(settings.videos.url).toString(),
+            };
+          }
+        })
+      )
+      .subscribe(() => {
         console.log('Settings loaded');
+        // this.store.selectSnapshot(SettingsState).pipe(
+        //   tap((settings: any) => {
+        //
+        //     settings.forEach((setting: any) => {
+        //       if (setting.rows && setting.columns) {
+        //         this.tableData = {
+        //           id: setting.id,
+        //           rows: setting.rows,
+        //           columns: setting.columns,
+        //         };
+        //       }
+        //       if (setting.url) {
+        //         this.videoData = {
+        //           id: setting.id,
+        //           url: setting.url,
+        //         };
+        //       }
+        //     });
+        //   })
+        // );
       });
-    setTimeout(() => {
-      this.store.dispatch(new GetSettings());
-    }, 1000);
   }
 }

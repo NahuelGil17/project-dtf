@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
-  query,
-  where,
-  getDocs,
-  startAt,
-  endAt,
-  orderBy,
-  startAfter,
-  limit,
-  getDoc,
   doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
   setDoc,
+  startAfter,
+  where
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Order } from '../interfaces/order.interface';

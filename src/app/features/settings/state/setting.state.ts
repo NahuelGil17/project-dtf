@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
     loading: false,
     tables: [],
     videos: [],
+    test: [],
   },
 })
 @Injectable({ providedIn: 'root' })
@@ -27,11 +28,11 @@ export class SettingsState {
   toastService = inject(ToastrService);
 
   @Selector()
-  static settingsloading(state: SettingsStateModel): boolean | undefined {
+  static settingsLoading(state: SettingsStateModel): boolean | undefined {
     return state.loading;
   }
 
-  @Action(GetSettings)
+  @Action(GetSettings, { cancelUncompleted: true })
   getSettings(
     ctx: StateContext<SettingsStateModel>,
     action: GetSettings
@@ -57,8 +58,7 @@ export class SettingsState {
           }
         });
 
-        ctx.patchState(stateToUpdate);
-        ctx.patchState({ loading: false });
+        ctx.patchState({ loading: false, ...stateToUpdate });
         this.toastService.success('Settings fetched successfully');
       }),
       catchError((error) => {
@@ -127,7 +127,9 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: CreateVideo
   ): Observable<void> {
-    return this.settingsService.createVideo(action.payload).pipe(
+    console.log(action.payload.url);
+
+    return this.settingsService.createVideo(action.payload.url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
         this.toastService.success('Video creado con éxito');

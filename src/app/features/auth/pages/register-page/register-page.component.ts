@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
 import { RegisterFormComponent } from '../../components/register-form/register-form.component';
 import { Register } from '../../state/auth.actions';
 import { AuthState } from '../../state/auth.state';
@@ -28,7 +28,7 @@ export class RegisterPageComponent implements OnDestroy {
 
   register(registerForm: any) {
     this.store.dispatch(new Register(registerForm));
-    this.actions.pipe(ofActionSuccessful(Register)).subscribe(() => {
+    this.actions.pipe(ofActionSuccessful(Register), take(1)).subscribe(() => {
       this.router.navigate(['/login']);
     });
   }

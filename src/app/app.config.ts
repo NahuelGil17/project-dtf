@@ -21,12 +21,17 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(
-      NgxsModule.forRoot([
-        /* your state classes here */
-        AuthState,
-        SettingsState,
-        OrdersState,
-      ])
+      NgxsModule.forRoot(
+        [
+          /* your state classes here */
+          AuthState,
+          SettingsState,
+          OrdersState,
+        ],
+        {
+          developmentMode: true,
+        }
+      )
     ),
     importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
     importProvidersFrom(
