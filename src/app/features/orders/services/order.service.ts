@@ -26,11 +26,36 @@ export class OrderService {
     });
   }
 
-  searchOrders(input: string): Observable<Order[]> {
+  _searchOrders(userId: string, input: string): Observable<Order[]> {
     return new Observable((observer) => {
       const ordersRef = collection(this.fireStore, 'orders');
       const ordersQuery = query(
         ordersRef,
+        where('userId', '==', userId),
+        where('workName', '>=', input),
+       // orderBy('workName'),
+        startAt(input),
+        endAt(input + '\uf8ff')
+      );
+      getDocs(ordersQuery).then((snapshot) => {
+        const orders: Order[] = [];
+        snapshot.forEach((doc) => {
+          orders.push(doc.data() as Order);
+        });
+        observer.next(orders);
+      }).catch((error) => {        
+        observer.error(error);
+      });
+    });
+  }
+
+
+  searchOrders(userId: string, input: string): Observable<Order[]> {
+    return new Observable((observer) => {
+      const ordersRef = collection(this.fireStore, 'orders');
+      const ordersQuery = query(
+        ordersRef,
+        where('userId', '==', userId),
         where('workName', '>=', input),
         orderBy('workName'),
         startAt(input),
@@ -43,10 +68,13 @@ export class OrderService {
         });
         observer.next(orders);
       }).catch((error) => {
+        console.log(error);
+        
         observer.error(error);
       });
     });
   }
+
 
   nextPage(userId: string, lastOrder: any): Observable<Order[]> {
     const ordersRef = collection(this.fireStore, 'orders');

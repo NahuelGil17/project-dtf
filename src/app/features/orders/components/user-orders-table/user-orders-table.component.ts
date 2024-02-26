@@ -9,7 +9,7 @@ import { AuthState } from '../../../auth/state/auth.state';
 import { CommonModule } from '@angular/common';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
-import { GetOrdersByUserId } from '../../state/orders.actions';
+import { GetOrdersByUserId, getOrdersBySearch } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 @Component({
   selector: 'app-user-orders-table',
@@ -24,8 +24,6 @@ export class UserOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
   @Select(OrdersState.orders) orders$!: Observable<Order[]>;
 
-  // orders$: Observable<Order[]>;
-  // userId$: Observable<string>;
 
   orders: Order[] = [];
   userId: string = '';
@@ -49,13 +47,11 @@ export class UserOrdersTableComponent {
   }
 
   searchOrders(event: Event): void {
+
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 3) {
-      this.orderService.searchOrders(inputSearch)
-        .subscribe(orders => {
-          this.orders = orders;
-        });
+      this.store.dispatch(new getOrdersBySearch(this.userId, inputSearch));
     }else{
       this.getOrdersByUserId(this.userId);
     }
