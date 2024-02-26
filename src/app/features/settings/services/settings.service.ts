@@ -6,9 +6,14 @@ import {
   updateDoc,
   collectionData,
   deleteDoc,
+  getDocs,
 } from '@angular/fire/firestore';
-import { Observable, from } from 'rxjs';
-import { collection } from '@firebase/firestore';
+import { Observable, from, map } from 'rxjs';
+import {
+  CollectionReference,
+  DocumentData,
+  collection,
+} from '@firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +23,15 @@ export class SettingsService {
 
   getSettings(): Observable<any> {
     const settingsCollection = collection(this.firestore, 'settings');
-    return collectionData(settingsCollection, {
-      idField: 'id',
-    }) as Observable<any>;
+    return from(getDocs(settingsCollection)).pipe(
+      map((snapshot: any) => {
+        const settings: any = [];
+        snapshot.forEach((doc: any) => {
+          settings.push({ id: doc.id, ...doc.data() });
+        });
+        return settings;
+      })
+    );
   }
 
   createTable(tableData: { columns: string[]; rows: string[][] }) {
@@ -64,13 +75,12 @@ export class SettingsService {
     return from(deleteDoc(doc(this.firestore, 'settings', tableId)));
   }
 
-  createVideo(url: string) {
+  createVideo(urlInput: string) {
     const newDoc = collection(this.firestore, 'settings');
-    const data = {
-      url,
-    };
+    console.log('urlInput', urlInput);
+    const url = urlInput;
 
-    return from(addDoc(newDoc, data));
+    return from(addDoc(newDoc, { url }));
   }
 
   updateVideo(videoId: string, url: string) {
@@ -82,3 +92,7 @@ export class SettingsService {
     return from(updateDoc(videoRef, data));
   }
 }
+
+
+
+
