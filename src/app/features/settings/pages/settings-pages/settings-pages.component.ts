@@ -33,7 +33,6 @@ export class SettingsPagesComponent {
   }
 
   getSettings() {
-    this.store.dispatch(new GetSettings());
     this.actions
       .pipe(ofActionSuccessful(GetSettings), take(1))
       .subscribe(() => {
@@ -60,5 +59,8 @@ export class SettingsPagesComponent {
           }
         });
       });
+    setTimeout(() => {
+      this.store.dispatch(new GetSettings());
+    }, 1000);
   }
 }
