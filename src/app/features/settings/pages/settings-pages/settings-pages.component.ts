@@ -31,11 +31,7 @@ export class SettingsPagesComponent {
   videoData: Video = {} as Video;
   @Select(SettingsState) settings$!: Observable<Settings>;
   @Select(SettingsState.settingsLoading) loading$!: Observable<void>;
-  constructor(
-    private actions: Actions,
-    private store: Store,
-    private settingsSvc: SettingsService
-  ) {}
+  constructor(private actions: Actions, private store: Store) {}
 
   ngOnInit() {
     this.store.dispatch(new GetSettings());
@@ -48,8 +44,11 @@ export class SettingsPagesComponent {
         ofActionSuccessful(GetSettings),
         tap(() => {
           const settings = this.store.selectSnapshot(SettingsState);
-          console.log('Settings received 2:', settings);
-          if (settings.tables) {
+          if (
+            settings.tables &&
+            settings.tables.rows &&
+            settings.tables.columns
+          ) {
             this.tableData = {
               id: settings.tables.id,
               rows: settings.tables.rows.map((row: any) => {
@@ -67,28 +66,6 @@ export class SettingsPagesComponent {
           }
         })
       )
-      .subscribe(() => {
-        console.log('Settings loaded');
-        // this.store.selectSnapshot(SettingsState).pipe(
-        //   tap((settings: any) => {
-        //
-        //     settings.forEach((setting: any) => {
-        //       if (setting.rows && setting.columns) {
-        //         this.tableData = {
-        //           id: setting.id,
-        //           rows: setting.rows,
-        //           columns: setting.columns,
-        //         };
-        //       }
-        //       if (setting.url) {
-        //         this.videoData = {
-        //           id: setting.id,
-        //           url: setting.url,
-        //         };
-        //       }
-        //     });
-        //   })
-        // );
-      });
+      .subscribe(() => {});
   }
 }

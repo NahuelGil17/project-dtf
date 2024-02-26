@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
   Firestore,
-  doc,
   addDoc,
-  updateDoc,
-  collectionData,
   deleteDoc,
+  doc,
   getDocs,
+  updateDoc,
 } from '@angular/fire/firestore';
+import { collection } from '@firebase/firestore';
 import { Observable, from, map } from 'rxjs';
-import {
-  CollectionReference,
-  DocumentData,
-  collection,
-} from '@firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -92,7 +87,3 @@ export class SettingsService {
     return from(updateDoc(videoRef, data));
   }
 }
-
-
-
-

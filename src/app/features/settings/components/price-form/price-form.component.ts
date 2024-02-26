@@ -5,21 +5,20 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TableSend } from '../../interfaces/settings.interface';
 import {
   CreateTable,
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
-import { Table, TableSend } from '../../interfaces/settings.interface';
-import { SettingsState } from '../../state/setting.state';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-price-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
 })
@@ -172,9 +171,7 @@ export class PriceFormComponent {
           },
         };
         this.store.dispatch(new CreateTable(tableData));
-        this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {
-          this.toastService.success('Tabla guardada correctamente!');
-        });
+        this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar la tabla');
@@ -192,9 +189,7 @@ export class PriceFormComponent {
           },
         };
         this.store.dispatch(new UpdateTable(tableData));
-        this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {
-          this.toastService.success('Cambios guardados correctamente!');
-        });
+        this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar los cambios');
