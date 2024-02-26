@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Order } from '../../interfaces/order.interface';
-import { OrderService } from '../../services/order.service';
-import {Actions, ofActionSuccessful, Select, Store } from '@ngxs/store';
-import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 import { AuthState } from '../../../auth/state/auth.state';
-import { CommonModule } from '@angular/common';
-import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
+import { Order } from '../../interfaces/order.interface';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
+import { OrderService } from '../../services/order.service';
 import { GetOrdersByUserId, getOrdersBySearch } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 @Component({
@@ -50,7 +50,7 @@ export class UserOrdersTableComponent {
 
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
-    if (inputSearch.length > 3) {
+    if (inputSearch.length > 0) {
       this.store.dispatch(new getOrdersBySearch(this.userId, inputSearch));
     }else{
       this.getOrdersByUserId(this.userId);

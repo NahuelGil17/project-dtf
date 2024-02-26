@@ -1,6 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, where, getDocs, startAt, endAt, orderBy, startAfter, limit, getDoc, doc, setDoc } from "@angular/fire/firestore";
-import { Observable, from } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  startAt,
+  endAt,
+  orderBy,
+  startAfter,
+  limit,
+  getDoc,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
+import { Observable, from, map } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
 
 @Injectable({
@@ -8,73 +22,53 @@ import { Order } from '../interfaces/order.interface';
 })
 export class OrderService {
   pageSize: number = 10;
-  constructor(private fireStore: Firestore) { }
+  constructor(private fireStore: Firestore) {}
 
   getOrdersByUserId(userId: string): Observable<Order[]> {
-    return new Observable((observer) => {
-      const ordersRef = collection(this.fireStore, 'orders');
-      const ordersQuery = query(ordersRef, where('userId', '==', userId));
-      getDocs(ordersQuery).then((snapshot) => {
+    const ordersRef = collection(this.fireStore, 'orders');
+    const ordersQuery = query(ordersRef, where('userId', '==', userId));
+
+    return from(getDocs(ordersQuery)).pipe(
+      map((snapshot) => {
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
           orders.push(doc.data() as Order);
         });
-        observer.next(orders);
-      }).catch((error) => {
-        observer.error(error);
-      });
-    });
+        return orders;
+      })
+    );
   }
 
-  _searchOrders(userId: string, input: string): Observable<Order[]> {
-    return new Observable((observer) => {
-      const ordersRef = collection(this.fireStore, 'orders');
-      const ordersQuery = query(
-        ordersRef,
-        where('userId', '==', userId),
-        where('workName', '>=', input),
-       // orderBy('workName'),
-        startAt(input),
-        endAt(input + '\uf8ff')
-      );
-      getDocs(ordersQuery).then((snapshot) => {
+  searchOrders(userId: string, input: string): Observable<Order[] | void> {
+    input = input.toLowerCase();
+    const ordersRef = collection(this.fireStore, 'orders');
+
+    const startName = input;
+    const endName = input + '\uf8ff';
+
+    const ordersQuery = query(
+      ordersRef,
+      where('userId', '==', userId),
+
+      where('workName', '>=', startName),
+      where('workName', '<=', endName),
+      orderBy('workName')
+      //    where('workName', '>=', input),
+      //     orderBy('workName'),
+      //     startAt(input),
+      //     endAt(input + '\uf8ff')
+    );
+
+    return from(getDocs(ordersQuery)).pipe(
+      map((snapshot) => {
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
           orders.push(doc.data() as Order);
         });
-        observer.next(orders);
-      }).catch((error) => {        
-        observer.error(error);
-      });
-    });
+        return orders;
+      })
+    );
   }
-
-
-  searchOrders(userId: string, input: string): Observable<Order[]> {
-    return new Observable((observer) => {
-      const ordersRef = collection(this.fireStore, 'orders');
-      const ordersQuery = query(
-        ordersRef,
-        where('userId', '==', userId),
-        where('workName', '>=', input),
-        orderBy('workName'),
-        startAt(input),
-        endAt(input + '\uf8ff')
-      );
-      getDocs(ordersQuery).then((snapshot) => {
-        const orders: Order[] = [];
-        snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);
-        });
-        observer.next(orders);
-      }).catch((error) => {
-        console.log(error);
-        
-        observer.error(error);
-      });
-    });
-  }
-
 
   nextPage(userId: string, lastOrder: any): Observable<Order[]> {
     const ordersRef = collection(this.fireStore, 'orders');
@@ -86,15 +80,17 @@ export class OrderService {
       limit(this.pageSize)
     );
     return new Observable((observer) => {
-      getDocs(ordersQuery).then((snapshot) => {
-        const orders: Order[] = [];
-        snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);
+      getDocs(ordersQuery)
+        .then((snapshot) => {
+          const orders: Order[] = [];
+          snapshot.forEach((doc) => {
+            orders.push(doc.data() as Order);
+          });
+          observer.next(orders);
+        })
+        .catch((error) => {
+          observer.error(error);
         });
-        observer.next(orders);
-      }).catch((error) => {
-        observer.error(error);
-      });
     });
   }
 
@@ -109,8 +105,4 @@ export class OrderService {
   saveOrder(order: any) {
     return from(setDoc(doc(this.fireStore, 'orders', order.id), order));
   }
-
 }
-
-
-

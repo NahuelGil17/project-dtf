@@ -55,7 +55,7 @@ export class OrdersState {
   getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService.searchOrders(action.userId, action.search).pipe(
-     tap((orders: Order[]) => {
+     tap((orders: Order[] | void) => { 
         ctx.patchState({ orders, loading: false });
       },
       catchError((error: any) => {
