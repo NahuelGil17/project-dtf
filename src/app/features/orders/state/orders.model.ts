@@ -1,7 +1,9 @@
+import { Order } from "../interfaces/order.interface";
+
 export class OrdersStateModel {
   loading?: boolean;
-  orders?: any[] | null;
-  filteredOrders?: any[] | null;
-  paginatedOrders?: any[] | null;
+  orders?: Order[] | null;
   selectedOrder?: any | null;
+  page?: number;
+  filterInput?: string;
 }

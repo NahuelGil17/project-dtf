@@ -14,6 +14,7 @@ import {
   NgxsStoragePluginModule,
   SESSION_STORAGE_ENGINE,
 } from '@ngxs/storage-plugin';
+import { OrdersState } from './features/orders/state/orders.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
       NgxsModule.forRoot([
         /* your state classes here */
         AuthState,
+        OrdersState
       ])
     ),
     importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
