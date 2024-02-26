@@ -8,4 +8,13 @@
         justify-content: center;
         align-items: center;
     }
+    .full-screen{
+        height: calc(100vh - 4rem);
+    }
+    .full-screen-mobile{
+        height: calc(100vh - 5rem);
+    
+    }
 }
+
+

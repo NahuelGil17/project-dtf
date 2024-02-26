@@ -1,5 +1,5 @@
-<section class="bg-white dark:bg-gray-900">
-  <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-xl">
+<section class="h-full sm:full-screen bg-gray-50 dark:bg-gray-900">
+  <div class="py-8 lg:py-8 px-8 mx-auto max-w-screen-xl">
     <div class="text-center mb-8 lg:mb-10">
       <h2
         class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white mb-4"
@@ -12,7 +12,7 @@
         Háganoslo saber.
       </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:gap-10">
+    <div class="bg-white px-8 py-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 lg:gap-10">
       <app-contact-form
         (contactFormEmitter)="handleContactForm($event)"
       ></app-contact-form>
