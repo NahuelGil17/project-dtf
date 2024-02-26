@@ -7,3 +7,9 @@ export interface Video {
   url: string;
   id: string;
 }
+
+export interface Settings {
+  map(arg0: (setting: any) => void): unknown;
+  tables: Table[];
+  videos: Video[];
+}

@@ -3,12 +3,12 @@ import { SettingsStateModel } from './setting.model';
 import { Injectable, inject } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 import {
-  createTable,
-  createVideo,
-  getSettings,
-  removeTable,
-  updateTable,
-  updateVideo,
+  CreateTable,
+  CreateVideo,
+  GetSettings,
+  RemoveTable,
+  UpdateTable,
+  UpdateVideo,
 } from './setting.action';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -26,14 +26,35 @@ export class SettingsState {
   settingsService = inject(SettingsService);
   toastService = inject(ToastrService);
 
-  @Action(getSettings)
-  getSettings(ctx: StateContext<SettingsStateModel>): Observable<void> {
+  @Action(GetSettings)
+  getSettings(
+    ctx: StateContext<SettingsStateModel>,
+    action: GetSettings
+  ): Observable<void> {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
         console.log('Settings received:', settings);
-        ctx.patchState(settings);
+        const stateToUpdate: any = {};
+        settings.forEach((setting: any) => {
+          if (setting.rows && setting.columns) {
+            stateToUpdate.tables = {
+              id: setting.id,
+              rows: setting.rows,
+              columns: setting.columns,
+            };
+          }
+          if (setting.url) {
+            stateToUpdate.videos = {
+              id: setting.id,
+              url: setting.url,
+            };
+          }
+        });
+
+        ctx.patchState(stateToUpdate);
         ctx.patchState({ loading: false });
+        this.toastService.success('Settings fetched successfully');
       }),
       catchError((error) => {
         this.toastService.error('Error fetching settings');
@@ -42,10 +63,10 @@ export class SettingsState {
     );
   }
 
-  @Action(createTable)
+  @Action(CreateTable)
   createTable(
     ctx: StateContext<SettingsStateModel>,
-    action: createTable
+    action: CreateTable
   ): Observable<void> {
     return this.settingsService.createTable(action.payload).pipe(
       tap((settings: any) => {
@@ -59,10 +80,10 @@ export class SettingsState {
     );
   }
 
-  @Action(updateTable)
+  @Action(UpdateTable)
   updateTable(
     ctx: StateContext<SettingsStateModel>,
-    action: updateTable
+    action: UpdateTable
   ): Observable<void> {
     const { tableId, table } = action.payload;
     return this.settingsService.updateTable(tableId, table).pipe(
@@ -77,10 +98,10 @@ export class SettingsState {
     );
   }
 
-  @Action(removeTable)
+  @Action(RemoveTable)
   removeTable(
     ctx: StateContext<SettingsStateModel>,
-    action: removeTable
+    action: RemoveTable
   ): Observable<void> {
     return this.settingsService.removeTable(action.payload).pipe(
       tap((settings: any) => {
@@ -94,10 +115,10 @@ export class SettingsState {
     );
   }
 
-  @Action(createVideo)
+  @Action(CreateVideo)
   createVideo(
     ctx: StateContext<SettingsStateModel>,
-    action: createVideo
+    action: CreateVideo
   ): Observable<void> {
     return this.settingsService.createVideo(action.payload).pipe(
       tap((settings: any) => {
@@ -111,10 +132,10 @@ export class SettingsState {
     );
   }
 
-  @Action(updateVideo)
+  @Action(UpdateVideo)
   updateVideo(
     ctx: StateContext<SettingsStateModel>,
-    action: updateVideo
+    action: UpdateVideo
   ): Observable<void> {
     const { videoId, url } = action.payload;
     return this.settingsService.updateVideo(videoId, url).pipe(
