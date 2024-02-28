@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SettingsService } from '../../services/settings.service';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { CreateVideo } from '../../state/setting.action';
 
 @Component({
   selector: 'app-video-form',
@@ -16,12 +18,14 @@ import { SettingsService } from '../../services/settings.service';
   styleUrl: './video-form.component.css',
 })
 export class VideoFormComponent {
-  videoForm!: FormGroup;
   @Input() video: { url: string; id: string } = { url: '', id: '' };
+  @Input() isLoading: boolean | null = false;
+  videoForm!: FormGroup;
   url: string = '';
   constructor(
     private toastService: ToastrService,
-    private settingsService: SettingsService
+    private actions: Actions,
+    private store: Store
   ) {
     this.videoForm = new FormGroup({
       url: new FormControl('', [Validators.required]),
@@ -41,23 +45,10 @@ export class VideoFormComponent {
 
   saveVideo() {
     if (this.videoForm.valid) {
-      try {
-        // Save video
-        if (!this.video.id) {
-          this.settingsService.createVideo(this.videoForm.value);
-        }
-        // Update video
-        else
-          [
-            this.settingsService.updateVideo(
-              this.video.id,
-              this.videoForm.value
-            ),
-          ];
-        this.toastService.success('Video guardado');
-      } catch (error) {
-        this.toastService.error('Error al guardar el video');
-      }
+      this.store.dispatch(new CreateVideo(this.videoForm.value));
+      this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
+        this.toastService.success('Video saved');
+      });
     }
   }
 }
