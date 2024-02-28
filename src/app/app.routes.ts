@@ -8,6 +8,7 @@ import { RegisterPageComponent } from './features/auth/pages/register-page/regis
 import { ContactPageComponent } from './features/landing/pages/contact-page/contact-page.component';
 import { HomePageComponent } from './features/landing/pages/home-page/home-page.component';
 import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
+import { isAdmin } from './core/guards/is-admin.guard';
 
 export const routes: Routes = [
   {
@@ -44,7 +45,7 @@ export const routes: Routes = [
               import(
                 './features/settings/pages/settings-pages/settings-pages.component'
               ).then((m) => m.SettingsPagesComponent),
-            // canActivate: [signInGuard, isAdmin],
+            canActivate: [signInGuard, isAdmin],
           },
         ],
       },
