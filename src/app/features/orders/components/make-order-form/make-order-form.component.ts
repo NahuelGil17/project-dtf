@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -17,7 +17,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 })
 export class MakeOrderFormComponent {
   form!: FormGroup;
-
+  @Output() formValues = new EventEmitter();
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -59,7 +59,14 @@ export class MakeOrderFormComponent {
     }
   }
 
+  onFileSelected(index: number, event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.getFormGroup(index).patchValue({ file });
+    }
+  }
+
   sendFormValues() {
-    console.log(this.form.value);
+    this.formValues.emit(this.form.value);
   }
 }
