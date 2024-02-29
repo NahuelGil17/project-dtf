@@ -14,17 +14,24 @@ import {
   NgxsStoragePluginModule,
   SESSION_STORAGE_ENGINE,
 } from '@ngxs/storage-plugin';
+import { SettingsState } from './features/settings/state/setting.state';
 import { OrdersState } from './features/orders/state/orders.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(
-      NgxsModule.forRoot([
-        /* your state classes here */
-        AuthState,
-        OrdersState
-      ])
+      NgxsModule.forRoot(
+        [
+          /* your state classes here */
+          AuthState,
+          SettingsState,
+          OrdersState,
+        ],
+        {
+          developmentMode: true,
+        }
+      )
     ),
     importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
     importProvidersFrom(

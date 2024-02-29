@@ -1,47 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PriceFormComponent } from '../../components/price-form/price-form.component';
-import { SettingsService } from '../../services/settings.service';
 import { VideoFormComponent } from '../../components/video-form/video-form.component';
+import {
+  Actions,
+  Select,
+  Store,
+  ofActionCompleted,
+  ofActionSuccessful,
+} from '@ngxs/store';
+import { GetSettings } from '../../state/setting.action';
+import { Video, Settings } from '../../interfaces/settings.interface';
+import { SettingsState } from '../../state/setting.state';
+import { Observable, take, tap } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-settings-pages',
   standalone: true,
   templateUrl: './settings-pages.component.html',
   styleUrl: './settings-pages.component.css',
-  imports: [PriceFormComponent, VideoFormComponent],
+  imports: [PriceFormComponent, VideoFormComponent, CommonModule],
 })
-export class SettingsPagesComponent implements OnInit {
+export class SettingsPagesComponent {
   tableData: { columns: string[]; rows: string[][]; id: string } = {
     id: '',
     columns: [],
     rows: [],
   };
+  videoData: Video = {} as Video;
+  @Select(SettingsState) settings$!: Observable<Settings>;
+  @Select(SettingsState.settingsLoading) loading$!: Observable<void>;
+  constructor(private actions: Actions, private store: Store) {}
 
-  videoData: { url: string; id: string } = { url: '', id: '' };
-  constructor(private settingsService: SettingsService) {}
+  ngOnInit() {
+    this.store.dispatch(new GetSettings());
+    this.getSettings();
+  }
 
-  ngOnInit(): void {
-    const settings = this.settingsService
-      .getSettings()
-      .subscribe((settings) => {
-        settings.map((setting: any) => {
-          if (setting.rows && setting.columns) {
+  getSettings() {
+    this.actions
+      .pipe(
+        ofActionSuccessful(GetSettings),
+        tap(() => {
+          const settings = this.store.selectSnapshot(SettingsState);
+          if (
+            settings.tables &&
+            settings.tables.rows &&
+            settings.tables.columns
+          ) {
             this.tableData = {
-              id: setting.id,
-              columns: setting.columns,
-              rows: setting.rows.map((row: any) => {
+              id: settings.tables.id,
+              rows: settings.tables.rows.map((row: any) => {
                 const value = Object.values(row);
                 return value;
               }),
+              columns: settings.tables.columns,
             };
           }
-          if (setting.url) {
+          if (settings.videos) {
             this.videoData = {
-              id: setting.id,
-              url: Object.values(setting.url).toString(),
+              id: settings.videos.id,
+              url: Object.values(settings.videos.url).toString(),
             };
           }
-        });
-      });
+        })
+      )
+      .subscribe(() => {});
   }
 }

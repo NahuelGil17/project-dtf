@@ -5,13 +5,20 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { SettingsService } from '../../services/settings.service';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TableSend } from '../../interfaces/settings.interface';
+import {
+  CreateTable,
+  RemoveTable,
+  UpdateTable,
+} from '../../state/setting.action';
 
 @Component({
   selector: 'app-price-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
 })
@@ -21,13 +28,15 @@ export class PriceFormComponent {
     columns: string[];
     rows: string[][];
   };
+  @Input() isLoading: boolean | null = false;
   nameButton: string = '';
   priceForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private settingsService: SettingsService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private actions: Actions,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -155,12 +164,14 @@ export class PriceFormComponent {
     if (!(this.table.id.length > 0)) {
       try {
         // Send table to the server
-        const tableData = {
-          columns: this.priceForm?.get('columns')?.value,
-          rows: this.priceForm?.get('rows')?.value,
+        const tableData: TableSend = {
+          table: {
+            columns: this.priceForm?.get('columns')?.value,
+            rows: this.priceForm?.get('rows')?.value,
+          },
         };
-        this.settingsService.createTable(tableData);
-        this.toastService.success('Tabla guardada correctamente!');
+        this.store.dispatch(new CreateTable(tableData));
+        this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar la tabla');
@@ -171,11 +182,14 @@ export class PriceFormComponent {
       try {
         // Send table to the server
         const tableData = {
-          columns: this.priceForm?.get('columns')?.value,
-          rows: this.priceForm?.get('rows')?.value,
+          id: this.table.id,
+          table: {
+            columns: this.priceForm?.get('columns')?.value,
+            rows: this.priceForm?.get('rows')?.value,
+          },
         };
-        this.settingsService.updateTable(this.table.id, tableData);
-        this.toastService.success('Cambios guardados correctamente!');
+        this.store.dispatch(new UpdateTable(tableData));
+        this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
         this.toastService.error('Error al guardar los cambios');
@@ -185,7 +199,10 @@ export class PriceFormComponent {
 
   deleteTable() {
     try {
-      this.settingsService.removeTable(this.table.id);
+      this.store.dispatch(new RemoveTable(this.table.id));
+      this.actions.pipe(ofActionSuccessful(RemoveTable)).subscribe(() => {
+        this.toastService.success('Tabla eliminada correctamente!');
+      });
       this.priceForm.reset();
 
       // Obtén los FormArray para 'columns' y 'rows'
@@ -202,7 +219,6 @@ export class PriceFormComponent {
 
       this.table = { id: '', columns: [], rows: [] };
       this.changeTitleButton();
-      this.toastService.success('Tabla eliminada correctamente!');
     } catch (error) {
       console.error(error);
       this.toastService.error('Error al eliminar la tabla');
