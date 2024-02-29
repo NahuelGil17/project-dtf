@@ -19,6 +19,7 @@
     <div
       class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
     >
+      @if (isAuthenticated$ | async) {
       <button
         type="button"
         class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -50,28 +51,14 @@
         <ul class="py-2" aria-labelledby="user-menu-button">
           <li>
             <a
-              href="#"
+              routerLink="/admin/configuraciones"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >Dashboard</a
+              >Configuraciones</a
             >
           </li>
-          <li>
+          <li class="cursor-pointer">
             <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >Settings</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >Earnings</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
+              (click)="signOut()"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
               >Sign out</a
             >
@@ -102,6 +89,12 @@
           />
         </svg>
       </button>
+      } @if (!(isAuthenticated$ | async)) {
+      <div>
+        <a routerLink="/login">Iniciar Sesion</a>
+        <a routerLink="/registro">Registrarse</a>
+      </div>
+      }
     </div>
     <div
       class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"

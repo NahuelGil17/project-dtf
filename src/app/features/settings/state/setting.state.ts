@@ -59,7 +59,6 @@ export class SettingsState {
         });
 
         ctx.patchState({ loading: false, ...stateToUpdate });
-        this.toastService.success('Configuración cargada con éxito');
       }),
       catchError((error) => {
         this.toastService.error('Error al cargar configuración');

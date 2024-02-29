@@ -60,6 +60,14 @@ export const routes: Routes = [
               ).then((m) => m.UserOrdersComponent),
             canActivate: [signInGuard],
           },
+          {
+            path: 'perfil',
+            loadComponent: () =>
+              import(
+                './features/user/pages/user-profile-page/user-profile-page.component'
+              ).then((m) => m.UserProfilePageComponent),
+            canActivate: [signInGuard],
+          },
         ],
       },
     ],

@@ -27,10 +27,10 @@ export const appConfig: ApplicationConfig = {
           AuthState,
           SettingsState,
           OrdersState,
-        ],
-        {
-          developmentMode: true,
-        }
+        ]
+        // {
+        //   developmentMode: true,
+        // }
       )
     ),
     importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
