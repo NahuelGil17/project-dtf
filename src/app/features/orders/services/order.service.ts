@@ -13,6 +13,8 @@ import {
   getDoc,
   doc,
   setDoc,
+  endBefore,
+  limitToLast,
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
@@ -22,41 +24,33 @@ import { Order } from '../interfaces/order.interface';
 })
 export class OrderService {
   pageSize: number = 10;
+  ordersRef = collection(this.fireStore, 'orders');
+  lastDoc: any;
+
   constructor(private fireStore: Firestore) {}
 
-  getOrdersByUserId(userId: string): Observable<Order[]> {
-    const ordersRef = collection(this.fireStore, 'orders');
-    const ordersQuery = query(ordersRef, where('userId', '==', userId));
-
+  GetTotalOrdersByUserId(userId: string): Observable<number> {
+    const ordersQuery = query(this.ordersRef, where('userId', '==', userId));
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
-        const orders: Order[] = [];
-        snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);
-        });
-        return orders;
+        return snapshot.size;
       })
     );
   }
 
   searchOrders(userId: string, input: string): Observable<Order[] | void> {
     input = input.toLowerCase();
-    const ordersRef = collection(this.fireStore, 'orders');
 
     const startName = input;
     const endName = input + '\uf8ff';
 
     const ordersQuery = query(
-      ordersRef,
+      this.ordersRef,
       where('userId', '==', userId),
 
       where('workName', '>=', startName),
       where('workName', '<=', endName),
       orderBy('workName')
-      //    where('workName', '>=', input),
-      //     orderBy('workName'),
-      //     startAt(input),
-      //     endAt(input + '\uf8ff')
     );
 
     return from(getDocs(ordersQuery)).pipe(
@@ -70,28 +64,52 @@ export class OrderService {
     );
   }
 
-  nextPage(userId: string, lastOrder: any): Observable<Order[]> {
-    const ordersRef = collection(this.fireStore, 'orders');
-    let ordersQuery = query(
-      ordersRef,
-      where('userId', '==', userId),
-      orderBy('workName'),
-      startAfter(lastOrder),
-      limit(this.pageSize)
-    );
-    return new Observable((observer) => {
-      getDocs(ordersQuery)
-        .then((snapshot) => {
-          const orders: Order[] = [];
-          snapshot.forEach((doc) => {
-            orders.push(doc.data() as Order);
-          });
-          observer.next(orders);
-        })
-        .catch((error) => {
-          observer.error(error);
+  getOrdersByPage(userId: string, isNextPage?: boolean): Observable<Order[] | void> {
+    const pageSize = this.pageSize;
+    let ordersQuery: any;
+    
+    if (isNextPage && this.lastDoc) {
+      console.log('IF');
+      
+      ordersQuery = query(
+        this.ordersRef,
+        where('userId', '==', userId),
+        orderBy('workName'),
+        startAfter(this.lastDoc),
+        limit(pageSize)
+      );
+    } else if (!isNextPage && this.lastDoc) {
+      console.log('ELSE IF');
+      ordersQuery = query(
+        this.ordersRef,
+        where('userId', '==', userId),
+        orderBy('workName'),
+        endBefore(this.lastDoc),
+        limit(pageSize)
+      );
+    } else {
+      console.log('ELSE');
+      ordersQuery = query(
+        this.ordersRef,
+        where('userId', '==', userId),
+        orderBy('workName'),
+        limit(pageSize)
+      );
+    }
+  
+    return from(getDocs(ordersQuery)).pipe(
+      map((snapshot) => {
+        console.log(snapshot.docs);
+        
+        const orders: Order[] = [];
+        snapshot.forEach((doc) => {
+          orders.push(doc.data() as Order);
         });
-    });
+        // Actualiza lastDoc con el último documento de esta página.
+        this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        return orders;
+      })
+    );
   }
 
   getOrders() {

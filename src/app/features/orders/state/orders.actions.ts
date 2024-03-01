@@ -3,7 +3,7 @@ export class SaveOrder {
     constructor(public readonly payload: any) { }
 }
 
-export class GetOrdersByUserId {
+export class GetTotalOrdersByUserId {
     static readonly type = '[Orders] Get Orders By User Id';
     constructor(public readonly userId: string) { }
 }
@@ -11,4 +11,9 @@ export class GetOrdersByUserId {
 export class getOrdersBySearch {
     static readonly type = '[Orders] Get Orders By Search';
     constructor(public readonly userId: string, public readonly search: string) { }
+}
+
+export class getOrdersByPage {
+    static readonly type = '[Orders] Get Orders By Page';
+    constructor(public readonly userId: string, public readonly isNextPage: boolean) { }
 }

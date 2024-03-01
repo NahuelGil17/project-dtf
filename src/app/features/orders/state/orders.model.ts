@@ -5,5 +5,7 @@ export class OrdersStateModel {
   orders?: Order[] | null;
   selectedOrder?: any | null;
   page?: number;
+  totalOrders?: number;
+  pageSize?: number;
   filterInput?: string;
 }
