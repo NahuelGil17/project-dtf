@@ -16,6 +16,7 @@ import {
 } from '@ngxs/storage-plugin';
 import { SettingsState } from './features/settings/state/setting.state';
 import { OrdersState } from './features/orders/state/orders.state';
+import { UserState } from './features/user/state/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
           AuthState,
           SettingsState,
           OrdersState,
+          UserState,
         ]
         // {
         //   developmentMode: true,

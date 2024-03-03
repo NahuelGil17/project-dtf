@@ -40,7 +40,6 @@ export class SettingsState {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
-        console.log('Settings received:', settings);
         const stateToUpdate: any = {};
         settings.forEach((setting: any) => {
           if (setting.rows && setting.columns) {
@@ -126,8 +125,6 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: CreateVideo
   ): Observable<void> {
-    console.log(action.payload.url);
-
     return this.settingsService.createVideo(action.payload.url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);

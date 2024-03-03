@@ -15,6 +15,10 @@
         height: calc(100vh - 5rem);
     
     }
+
+    .select a {
+        color: blue;
+    }
 }
 
 

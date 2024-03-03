@@ -72,7 +72,6 @@ export class SettingsService {
 
   createVideo(urlInput: string) {
     const newDoc = collection(this.firestore, 'settings');
-    console.log('urlInput', urlInput);
     const url = urlInput;
 
     return from(addDoc(newDoc, { url }));

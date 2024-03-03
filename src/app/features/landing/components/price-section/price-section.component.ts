@@ -24,7 +24,7 @@ export class PriceSectionComponent {
     this.store.dispatch(new GetSettings());
     this.actions.subscribe(() => {
       const settings = this.store.selectSnapshot(SettingsState);
-      if (settings.tables) {
+      if (settings.tables && settings.tables.columns && settings.tables.rows) {
         this.tableData = {
           rows: settings.tables.rows.map((row: any) => {
             const value = Object.values(row);
