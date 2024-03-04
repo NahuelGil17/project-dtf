@@ -26,7 +26,9 @@
         class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
       >
         <div class="w-8 h-8 rounded-full text-center">
-          <span id="user-menu" class="text-white text-xl">{{ userName }}</span>
+          <span id="user-menu" class="text-white text-xl">{{
+            userName | titlecase
+          }}</span>
         </div>
       </button>
       <!-- Dropdown menu -->

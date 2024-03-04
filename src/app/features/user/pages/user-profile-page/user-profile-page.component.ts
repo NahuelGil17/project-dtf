@@ -4,8 +4,9 @@ import { AuthState } from '../../../auth/state/auth.state';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { Preferences } from '../../intefaces/preferences.interface';
 import { getUserPreferencesByUid } from '../../state/user.actions';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { UserState } from '../../state/user.state';
+import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 
 @Component({
   selector: 'app-user-profile-page',
@@ -15,16 +16,19 @@ import { UserState } from '../../state/user.state';
   imports: [UserProfileComponent],
 })
 export class UserProfilePageComponent {
+  @Select(AuthState.preferences)
+  preferences$!: Observable<UserPreferences>;
   preferences: Preferences | null = null;
   uid: string = '';
   constructor(private store: Store, private actions: Actions) {}
 
   ngOnInit() {
-    let auth = sessionStorage.getItem('auth');
-    if (auth) {
-      this.uid = JSON.parse(auth).preferences.uid;
-    }
-    this.getPreferences();
+    this.preferences$.subscribe((preferences) => {
+      if (preferences) {
+        this.uid = preferences.uid;
+        this.getPreferences();
+      }
+    });
   }
 
   getPreferences() {
