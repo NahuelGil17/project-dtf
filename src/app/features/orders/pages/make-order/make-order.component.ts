@@ -26,7 +26,6 @@ export class MakeOrderComponent {
     }
     this.store.dispatch(new saveOrderFiles(formData.files));
     this.actions.pipe(ofActionSuccessful(saveOrderFiles)).subscribe(() => {
-      console.log(formData);
       const currentUrl = this.store.selectSnapshot(OrdersState).currentFiles;
       const filesUrl = formData.files.map((file: any, index) => {
         return {
@@ -45,6 +44,8 @@ export class MakeOrderComponent {
         creationDate: new Date().valueOf(),
         userId: this.store.selectSnapshot(AuthState).preferences.uid,
       };
+      console.log(newOrder);
+
       this.store.dispatch(new SaveOrder(newOrder));
     });
   }
