@@ -100,6 +100,7 @@ export class OrdersState {
   @Action(SaveOrder, { cancelUncompleted: true })
   saveOrder(ctx: any, action: SaveOrder) {
     ctx.patchState({ loading: true });
+    const order = action.payload;
     return this.orderService.saveOrder(action.payload).pipe(
       tap(
         (order: any) => {
@@ -136,6 +137,7 @@ export class OrdersState {
       })
     );
   }
+
   @Action(GetAvatarUrl, { cancelUncompleted: true })
   getAvatarUrl(
     ctx: StateContext<OrdersStateModel>,
@@ -179,6 +181,9 @@ export class OrdersState {
           break;
         case 'auth/invalid-login-credentials':
           errorMessage = 'Credenciales invalidas.';
+          break;
+        default:
+          errorMessage = 'Error inesperado';
           break;
       }
     }

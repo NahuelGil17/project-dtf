@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -10,7 +11,7 @@ import {
   query,
   setDoc,
   startAfter,
-  where
+  where,
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
@@ -106,13 +107,11 @@ export class OrderService {
   saveOrderFile(file: any) {
     console.log(file);
     const storageRef = ref(this.storage, `orders/${this.getRandomUid()}`);
-    return from(
-      uploadBytes(storageRef, file.file, { contentType: 'image/png' })
-    );
+    return from(uploadBytes(storageRef, file.file));
   }
 
   saveOrder(order: any) {
-    return from(setDoc(doc(this.fireStore, 'orders', order.id), order));
+    return from(addDoc(collection(this.fireStore, 'orders'), order));
   }
 
   getAvatarUrl(ref: any) {
