@@ -98,7 +98,6 @@ export class OrdersState {
     this.orderService.getOrdersByPage(action.userId, action.isNextPage).pipe(
       tap(
         (orders: Order[] | void) => {
-          console.log('GETORDERSBYPAGE', orders);
           ctx.patchState({ orders, loading: false });
         },
         catchError((error: any) => {

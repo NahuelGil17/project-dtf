@@ -57,20 +57,24 @@ export class OrderService {
       map((snapshot) => {
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);
+          const data = doc.data();
+          if (data) {
+            orders.push({ id: doc.id, ...data } as Order);
+          }
         });
         return orders;
       })
     );
   }
 
-  getOrdersByPage(userId: string, isNextPage?: boolean): Observable<Order[] | void> {
+  getOrdersByPage(
+    userId: string,
+    isNextPage?: boolean
+  ): Observable<Order[] | void> {
     const pageSize = this.pageSize;
     let ordersQuery: any;
-    
+
     if (isNextPage && this.lastDoc) {
-      console.log('IF');
-      
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -79,7 +83,6 @@ export class OrderService {
         limit(pageSize)
       );
     } else if (!isNextPage && this.lastDoc) {
-      console.log('ELSE IF');
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -88,7 +91,6 @@ export class OrderService {
         limit(pageSize)
       );
     } else {
-      console.log('ELSE');
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -96,14 +98,15 @@ export class OrderService {
         limit(pageSize)
       );
     }
-  
+
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
-        console.log(snapshot.docs);
-        
         const orders: Order[] = [];
         snapshot.forEach((doc) => {
-          orders.push(doc.data() as Order);
+          const data = doc.data();
+          if (data) {
+            orders.push({ id: doc.id, ...data } as Order);
+          }
         });
         // Actualiza lastDoc con el último documento de esta página.
         this.lastDoc = snapshot.docs[snapshot.docs.length - 1];

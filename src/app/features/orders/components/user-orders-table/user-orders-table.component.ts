@@ -12,7 +12,7 @@ import { OrderService } from '../../services/order.service';
 import {
   GetTotalOrdersByUserId,
   getOrdersBySearch,
-  getOrdersByPage
+  getOrdersByPage,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 @Component({
@@ -26,16 +26,39 @@ export class UserOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
   @Select(OrdersState.orders) orders$!: Observable<Order[]>;
   @Select(OrdersState.totalOrders) totalOrders$!: Observable<number>;
-  @Select(OrdersState.pageSize) pageSize$!: Observable<number> ;
+  @Select(OrdersState.pageSize) pageSize$!: Observable<number>;
+  @Select(AuthState.preferences)
+  preferences$!: Observable<UserPreferences>;
 
   userId: string = '';
   currentPage: number = 1;
   startIndex: number = 1;
+  endIndex: number = 0;
+  totalOrders: number = 0;
+  pageSize: number = 0;
+  isLastPage: boolean = false;
+  isFirstPage: boolean = true;
 
-  @Select(AuthState.preferences)
-  preferences$!: Observable<UserPreferences>;
+  
 
-  constructor(private orderService: OrderService, private store: Store) {}
+  constructor(private orderService: OrderService, private store: Store) {
+    this.totalOrders$.subscribe((totalOrders) => {
+      this.totalOrders = totalOrders;
+      this.calculateEndIndex();
+    });
+
+    this.pageSize$.subscribe((pageSize) => {
+      this.pageSize = pageSize;
+      this.calculateEndIndex();
+    });
+  }
+
+  calculateEndIndex() {
+    if (this.totalOrders !== undefined && this.pageSize !== undefined) {
+      this.endIndex = Math.ceil(this.totalOrders / this.pageSize);
+      console.log('endIndex', this.endIndex);
+    }
+  }
 
   ngOnInit(): void {
     this.preferences$.subscribe((preferences) => {
@@ -70,15 +93,14 @@ export class UserOrdersTableComponent {
 
   calculateRange(): void {
     this.pageSize$.subscribe((pageSize) => {
-      this.totalOrders$.subscribe((totalOrders) => {
-      });
+      this.totalOrders$.subscribe((totalOrders) => {});
     });
   }
 
-  getOrderByPage(isNextPage:boolean): void {
+  getOrderByPage(isNextPage: boolean): void {
     this.pageSize$.subscribe((pageSize) => {
       console.log('pageSize', pageSize);
-      
+
       this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
     });
   }
@@ -86,11 +108,31 @@ export class UserOrdersTableComponent {
   previousPage(): void {
     this.currentPage--;
     this.getOrderByPage(false);
+    this.calculateLastPage();
+    this.calculateFirstPage();
   }
 
   nextPage(): void {
     this.currentPage++;
     this.getOrderByPage(true);
     this.calculateRange();
+    this.calculateLastPage();
+    this.calculateFirstPage();
+  }
+
+  calculateLastPage(): void {
+    if (this.currentPage >= this.endIndex) {
+      this.isLastPage = true;
+    } else {
+      this.isLastPage = false;
+    }
+  }
+
+  calculateFirstPage(): void {
+    if (this.currentPage <= 1) {
+      this.isFirstPage = true;
+    } else {
+      this.isFirstPage = false;
+    }
   }
 }
