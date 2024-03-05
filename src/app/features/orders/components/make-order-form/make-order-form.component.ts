@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -17,6 +17,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 })
 export class MakeOrderFormComponent {
   form!: FormGroup;
+  @Input() isLoading: boolean | null = false;
   @Output() formValues = new EventEmitter();
   constructor(private fb: FormBuilder) {}
 

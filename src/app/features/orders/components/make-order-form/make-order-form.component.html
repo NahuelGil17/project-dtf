@@ -134,6 +134,6 @@
   </section>
   <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700 my-6"  />
   <div class="flex justify-end">
-    <app-button (click)="sendFormValues()" [isDisabled]="form.invalid" >Hacer pedido</app-button>
+    <app-button (click)="sendFormValues()" [isLoading]="isLoading" [isDisabled]="form.invalid" >Hacer pedido</app-button>
   </div>
 </form>
