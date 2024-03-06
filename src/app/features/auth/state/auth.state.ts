@@ -124,7 +124,6 @@ export class AuthState {
     ctx.patchState({ loading: true });
     return this.authService.getUserPreferences(action.uid).pipe(
       tap((preferences: any) => {
-        console.log(preferences.data());
         ctx.patchState({ preferences: preferences.data() });
         ctx.patchState({ loading: false });
       }),

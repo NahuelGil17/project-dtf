@@ -38,6 +38,7 @@ export class UserOrdersTableComponent {
   pageSize: number = 0;
   isLastPage: boolean = false;
   isFirstPage: boolean = true;
+  onpenModal: boolean = false;
 
   
 
@@ -56,7 +57,6 @@ export class UserOrdersTableComponent {
   calculateEndIndex() {
     if (this.totalOrders !== undefined && this.pageSize !== undefined) {
       this.endIndex = Math.ceil(this.totalOrders / this.pageSize);
-      console.log('endIndex', this.endIndex);
     }
   }
 
@@ -64,17 +64,12 @@ export class UserOrdersTableComponent {
     this.preferences$.subscribe((preferences) => {
       if (preferences) {
         this.userId = preferences.uid;
-        //this.getOrdersByUserId(this.userId);
         this.getTotalOrdersByUserId(this.userId);
         this.getOrderByPage(false);
         this.calculateRange();
       }
     });
   }
-
-  // getOrdersByUserId(userId: string): void {
-  //   this.store.dispatch(new GetOrdersByUserId(this.userId));
-  // }
 
   getTotalOrdersByUserId(userId: string): void {
     this.store.dispatch(new GetTotalOrdersByUserId(this.userId));
@@ -99,8 +94,6 @@ export class UserOrdersTableComponent {
 
   getOrderByPage(isNextPage: boolean): void {
     this.pageSize$.subscribe((pageSize) => {
-      console.log('pageSize', pageSize);
-
       this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
     });
   }
@@ -134,5 +127,9 @@ export class UserOrdersTableComponent {
     } else {
       this.isFirstPage = false;
     }
+  }
+
+  openOrderDetails(orderId: Order): void {
+    console.log('orderId', orderId);
   }
 }
