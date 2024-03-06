@@ -22,10 +22,12 @@
     "@auth0/angular-jwt": "^5.2.0",
     "@ngxs/storage-plugin": "^3.8.2",
     "@ngxs/store": "^3.8.2",
+    "@sweetalert2/ngx-sweetalert2": "^12.3.0",
     "angular-imask": "^7.4.0",
     "flowbite": "^2.2.1",
     "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.10.5",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
   },

@@ -2,10 +2,10 @@
   <h2 class="text-center font-semibold text-6xl mb-10">Precios</h2>
   @if (table.columns.length && table.rows.length) {
   <table
-    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    class="w-full text-sm text-left rtl:text-right  text-gray-700 dark:text-gray-400"
   >
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400"
+      class="text-xs text-gray-700  uppercase rounded-md bg-gray-300"
     >
       <tr>
         <!-- Iterar sobre las columnas -->
@@ -13,7 +13,6 @@
         <th
           scope="col"
           class="px-4 py-3"
-          ng-class="{ 'rounded-l-lg': $index === 0 }"
         >
           {{ column }}
         </th>
@@ -23,7 +22,7 @@
     <tbody>
       <!-- Iterar sobre las filas -->
       @for (row of table.rows; track $index) {
-      <tr class="bg-gray-100 dark:bg-gray-800">
+      <tr class=" border-b">
         <!-- Iterar sobre los valores de cada fila -->
         @for (value of row; track $index) {
         <td

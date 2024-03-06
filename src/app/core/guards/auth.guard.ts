@@ -18,7 +18,9 @@ export const signInGuard: CanActivateFn = () => {
   if (isAuthenticated) {
     return true;
   } else {
-    utils.isBrowser ? router.navigate(['/']) : router.navigate(['loading']);
+    utils.isBrowser
+      ? router.navigate(['/login'])
+      : router.navigate(['loading']);
     return false;
   }
 };

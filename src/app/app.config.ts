@@ -17,6 +17,7 @@ import {
 import { SettingsState } from './features/settings/state/setting.state';
 import { OrdersState } from './features/orders/state/orders.state';
 import { UserState } from './features/user/state/user.state';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -61,6 +62,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     importProvidersFrom(provideStorage(() => getStorage())),
+
+    importProvidersFrom(SweetAlert2Module.forRoot()),
 
     provideAnimations(), // required animations providers
     provideToastr(), // Toastr providers
