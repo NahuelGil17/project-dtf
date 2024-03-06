@@ -14,11 +14,12 @@ import {
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-price-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, NgClass],
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
 })
