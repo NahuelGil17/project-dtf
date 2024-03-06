@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, exhaustMap, tap, throwError } from 'rxjs';
-import { UserPreferences } from '../interfaces/auth.interface';
+import { RegisterForm, UserPreferences } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { GetUserPreferences, Login, Logout, Register } from './auth.actions';
 import { AuthStateModel } from './auth.model';

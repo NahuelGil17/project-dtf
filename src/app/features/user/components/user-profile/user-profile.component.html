@@ -1,0 +1,61 @@
+<div class="m-5 p-5 rounded-lg">
+  <h1 class="text-6xl font-bold mb-4 text-center">Perfil</h1>
+  <div class="flex justify-between rounded-md p-10 m-10">
+    <div class="flex flex-col justify-center gap-6 bg-white">
+      <div class="flex">
+        <section class="w-40 h-40 rounded-full text-center bg-gray-700 center">
+          <span class="text-6xl text-white">{{
+            nameFirstLetter | titlecase
+          }}</span>
+        </section>
+        <section class="gap-4">
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Nombre</label>
+            <span class="mb-2">{{ preferences?.fullName }}</span>
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Email</label>
+            <span class="mb-2">{{ preferences?.email }}</span>
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Cedula de Identidad</label>
+            <span class="mb-2">{{ preferences?.ci }}</span>
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Celular</label>
+            <span class="mb-2">{{ preferences?.phoneNumber }}</span>
+          </div>
+        </section>
+      </div>
+      <section class="mt-10 w-full">
+        <button (click)="toggleEdit()">Editar Perfil</button>
+      </section>
+    </div>
+    @if (isEditing) {
+    <div class="m-5 p-5 rounded-lg bg-white">
+      <h1 class="text-6xl font-bold mb-4 text-center">Editar Perfil</h1>
+      <div class="flex flex-col bg-white rounded-md p-10 m-10">
+        <form [formGroup]="profileForm" (submit)="saveChanges()">
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Nombre</label>
+            <input formControlName="fullName" class="mb-2" />
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Email</label>
+            <input formControlName="email" class="mb-2" />
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Cedula de Identidad</label>
+            <input formControlName="ci" class="mb-2" />
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-0 text-2xl font-bold">Celular</label>
+            <input formControlName="phoneNumber" class="mb-2" />
+          </div>
+          <button type="submit">Guardar Cambios</button>
+        </form>
+      </div>
+    </div>
+    }
+  </div>
+</div>
