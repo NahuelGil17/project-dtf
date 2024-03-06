@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-
+import { OrderType } from '../../../../shared/enums/order-type.enum';
 @Component({
   selector: 'app-make-order-form',
   standalone: true,
@@ -16,6 +16,14 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   imports: [ReactiveFormsModule, ButtonComponent],
 })
 export class MakeOrderFormComponent {
+  typesEnum = OrderType;
+  TYPE_VALUES = [
+    { value: this.typesEnum.PAPEL, label: 'Papel' },
+    { value: this.typesEnum.DTF, label: 'DTF' },
+    { value: this.typesEnum.TELA, label: 'Tela' },
+    { value: this.typesEnum.YZBEK, label: 'Yzbek' },
+    { value: this.typesEnum.DEPORTIVAS, label: 'Deportivas' },
+  ];
   form!: FormGroup;
   @Input() isLoading: boolean | null = false;
   @Output() formValues = new EventEmitter();

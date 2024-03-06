@@ -1,6 +1,8 @@
 <form [formGroup]="form">
   <section class="space-y-4">
-    <h3 class="text-left py-4 font-bold text-3xl text-slate-600">Completa los datos 📝</h3>
+    <h3 class="text-left py-4 font-bold text-3xl text-slate-600">
+      Completa los datos 📝
+    </h3>
     <div class="xs:flex-col lg:flex justify-between pb-4">
       <div>
         <label
@@ -36,7 +38,6 @@
           </option>
         </select>
       </div>
-      
     </div>
     <div class="flex justify-between">
       <div>
@@ -45,17 +46,15 @@
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >Tipo</label
         >
-        <select 
+        <select
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block md:min-w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           name="type"
           formControlName="type"
-          id="type">
-        <option value="0">
-          Blanco
-        </option>
-        <option value="1">
-          Color
-        </option>
+          id="type"
+        >
+          @for(type of TYPE_VALUES; track type) {
+          <option [value]="type.value">{{ type.label }}</option>
+          }
         </select>
       </div>
       <div>
@@ -64,7 +63,7 @@
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >Nota</label
         >
-        <textarea 
+        <textarea
           type="text"
           name="note"
           id="note"
@@ -80,14 +79,16 @@
   <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700" />
   <section class="py-4">
     <div class="flex justify-between pb-4">
-      <h3 class="text-left py-4 font-bold text-3xl text-slate-600">Archivos 📁</h3>
+      <h3 class="text-left py-4 font-bold text-3xl text-slate-600">
+        Archivos 📁
+      </h3>
       <div>
         <label
           for="count"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Cantidad archivos* </label
-        >
-  
+          >Cantidad archivos*
+        </label>
+
         <input
           title="count"
           type="number"
@@ -99,19 +100,29 @@
         />
       </div>
     </div>
-    <div formArrayName="files" class="grid grid-cols-1 sm:grid-cols-2 order-last  gap-x-32 gap-y-6 overflow-auto max-h-[36rem] ">
+    <div
+      formArrayName="files"
+      class="grid grid-cols-1 sm:grid-cols-2 order-last gap-x-32 gap-y-6 overflow-auto max-h-[36rem]"
+    >
       @for(item of files.controls; track item; let i = $index;) {
       <div
         class="w-full sm:w-[29rem] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
         [formGroup]="getFormGroup(i)"
       >
-        <div class="text-lg text-slate-500 font-light ">
-          Archivo {{ i + 1 }}
-        </div>
-        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 my-4"  />
+        <div class="text-lg text-slate-500 font-light">Archivo {{ i + 1 }}</div>
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 my-4" />
         <div class="space-y-4 py-2">
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Selecciona un archivo</label>
-<input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" (change)="onFileSelected(i, $event)">
+          <label
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            for="file_input"
+            >Selecciona un archivo</label
+          >
+          <input
+            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            id="file_input"
+            type="file"
+            (change)="onFileSelected(i, $event)"
+          />
           <label
             for="count"
             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -132,8 +143,13 @@
       }
     </div>
   </section>
-  <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700 my-6"  />
+  <hr class="h-px mt-8 bg-gray-200 border-0 dark:bg-gray-700 my-6" />
   <div class="flex justify-end">
-    <app-button (click)="sendFormValues()" [isLoading]="isLoading" [isDisabled]="form.invalid" >Hacer pedido</app-button>
+    <app-button
+      (click)="sendFormValues()"
+      [isLoading]="isLoading"
+      [isDisabled]="form.invalid"
+      >Hacer pedido</app-button
+    >
   </div>
 </form>

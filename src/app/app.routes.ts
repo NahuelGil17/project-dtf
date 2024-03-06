@@ -35,6 +35,7 @@ export const routes: Routes = [
           import(
             './features/orders/pages/make-order/make-order.component'
           ).then((m) => m.MakeOrderComponent),
+        canActivate: [signInGuard],
       },
       {
         path: 'admin',
@@ -62,8 +63,8 @@ export const routes: Routes = [
           },
         ],
       },
+      // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
+      { path: '**', component: NotFoundPageComponent },
     ],
   },
-  // signInGuard para las rutas que solo puedan acceder los usuarios autenticados
-  { path: '**', component: NotFoundPageComponent },
 ];
