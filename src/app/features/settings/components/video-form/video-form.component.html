@@ -1,6 +1,6 @@
-<form [formGroup]="videoForm" class="center flex-col w-full">
-  <h3 class="text-2xl mb-2">Video</h3>
-  <div class="w-[30rem] center flex-col">
+<form [formGroup]="videoForm" class="center flex-col min-w-[70rem] pl-6 items-start ">
+  <h3 class="text-4xl text-left mb-6">Video</h3>
+  <div class="w-[30rem] flex-col">
     <input
       class="w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
       type="text"
@@ -8,7 +8,7 @@
       ngModel="{{ url }}"
     />
     <button
-      class="w-44 center px-3 py-1 mt-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+      class="w-44 center p-3 mt-6 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
       (click)="saveVideo()"
     >
       Cambiar Video

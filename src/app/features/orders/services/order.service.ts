@@ -1,23 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  addDoc,
   collection,
-  query,
-  where,
-  getDocs,
-  startAt,
-  endAt,
-  orderBy,
-  startAfter,
-  limit,
-  getDoc,
   doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
   setDoc,
   endBefore,
   limitToLast,
+  startAfter,
+  where,
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
+import {
+  Storage,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +32,7 @@ export class OrderService {
   ordersRef = collection(this.fireStore, 'orders');
   lastDoc: any;
 
+  storage = inject(Storage);
   constructor(private fireStore: Firestore) {}
 
   GetTotalOrdersByUserId(userId: string): Observable<number> {
@@ -123,7 +129,28 @@ export class OrderService {
     return from(getDoc(doc(this.fireStore, 'orders', id)));
   }
 
+  saveOrderFile(file: any) {
+    console.log(file);
+    const storageRef = ref(this.storage, `orders/${this.getRandomUid()}`);
+    return from(uploadBytes(storageRef, file.file));
+  }
+
   saveOrder(order: any) {
-    return from(setDoc(doc(this.fireStore, 'orders', order.id), order));
+    return from(addDoc(collection(this.fireStore, 'orders'), order));
+  }
+
+  getAvatarUrl(ref: any) {
+    return from(getDownloadURL(ref));
+  }
+
+  getRandomUid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        var r = (Math.random() * 16) | 0,
+          v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
   }
 }

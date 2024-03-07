@@ -14,17 +14,27 @@ import {
   NgxsStoragePluginModule,
   SESSION_STORAGE_ENGINE,
 } from '@ngxs/storage-plugin';
+import { SettingsState } from './features/settings/state/setting.state';
 import { OrdersState } from './features/orders/state/orders.state';
+import { UserState } from './features/user/state/user.state';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(
-      NgxsModule.forRoot([
-        /* your state classes here */
-        AuthState,
-        OrdersState
-      ])
+      NgxsModule.forRoot(
+        [
+          /* your state classes here */
+          AuthState,
+          SettingsState,
+          OrdersState,
+          UserState,
+        ]
+        // {
+        //   developmentMode: true,
+        // }
+      )
     ),
     importProvidersFrom(NgxsReduxDevtoolsPluginModule.forRoot()),
     importProvidersFrom(
@@ -52,6 +62,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     importProvidersFrom(provideStorage(() => getStorage())),
+
+    importProvidersFrom(SweetAlert2Module.forRoot()),
 
     provideAnimations(), // required animations providers
     provideToastr(), // Toastr providers

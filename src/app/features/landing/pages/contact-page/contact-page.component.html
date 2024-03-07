@@ -1,19 +1,18 @@
 <section class="h-full sm:full-screen bg-gray-50 dark:bg-gray-900">
-  <div class="py-8 lg:py-8 px-8 mx-auto max-w-screen-xl">
-    <div class="text-center mb-8 lg:mb-10">
+  <div class="py-8 lg:py-8 px-12 mx-auto max-w-screen-xl">
+    <div class="text-center mb-8 lg:mb-10 ">
       <h2
         class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white mb-4"
       >
         Contacta con nosotros 📞
       </h2>
-      <p class="font-light text-gray-500 dark:text-gray-600 text-xl">
-        ¿Tienes alguna consulta en particular? ¿Necesitas información sobre
-        alguno de nuestros productos? ¿Tuviste problemas con algún pedido?
+      <p class="font-light text-gray-500 dark:text-gray-600 text-lg">
+        ¿Tienes alguna consulta en particular? ¿Tuviste problemas con algún pedido?
         Háganoslo saber.
       </p>
     </div>
-    <div class="bg-white px-8 py-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 lg:gap-10">
-      <app-contact-form
+    <div class=" grid grid-cols-1 md:grid-cols-2 lg:gap-10">
+      <app-contact-form class="bg-white px-8 py-6 rounded-lg shadow-md"
         (contactFormEmitter)="handleContactForm($event)"
       ></app-contact-form>
       <div class="flex flex-col items-center justify-center lg:items-center">

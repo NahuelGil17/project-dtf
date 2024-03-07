@@ -13,3 +13,14 @@ export interface Order {
     status: Status
     userId: string;
 }
+
+export interface OrderForm {
+    files: File[];
+    filesCount: number;
+    mode: string;
+    note: string;
+    type: string;
+    workName: string;
+}
+
+export interface OrderObject {}

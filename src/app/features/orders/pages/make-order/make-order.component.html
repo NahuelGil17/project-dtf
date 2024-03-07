@@ -1,10 +1,10 @@
-<section class="py-8 min-h-full sm:full-screen">
+<section class="py-8">
     <header>
         <h1 class="text-center font-bold text-4xl text-slate-600" >Haz tu pedido 📦</h1>
     </header>
     <main class="pt-8 flex justify-center">
         <div class="w-full max-w-6xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <app-make-order-form></app-make-order-form>
+            <app-make-order-form [isLoading]="loading$ | async"  (formValues)="saveOrder($event)"></app-make-order-form>
         </div>
     </main>
 </section>
