@@ -15,6 +15,9 @@ import {
   getOrdersByPage,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
+import { Dialog } from '@angular/cdk/dialog';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
+
 @Component({
   selector: 'app-user-orders-table',
   standalone: true,
@@ -42,7 +45,7 @@ export class UserOrdersTableComponent {
 
   
 
-  constructor(private orderService: OrderService, private store: Store) {
+  constructor(private orderService: OrderService, private store: Store, private dialog: Dialog) {
     this.totalOrders$.subscribe((totalOrders) => {
       this.totalOrders = totalOrders;
       this.calculateEndIndex();
@@ -129,7 +132,11 @@ export class UserOrdersTableComponent {
     }
   }
 
-  openOrderDetails(orderId: Order): void {
-    console.log('orderId', orderId);
+  openOrderDetails(order: Order): void {
+    this.dialog.open(OrderDetailComponent, {
+      height: '400px',
+      width: '600px',
+      data: { order: order }
+    });
   }
 }
