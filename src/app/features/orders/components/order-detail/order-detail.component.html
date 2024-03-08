@@ -95,7 +95,7 @@
 
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             <div *ngFor="let file of data.order.files">
-           
+              
               @if(file.type.match('image')){
               <img
                 [src]="file.file"
