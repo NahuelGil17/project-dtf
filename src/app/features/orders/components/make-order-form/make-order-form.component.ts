@@ -32,8 +32,8 @@ export class MakeOrderFormComponent {
   ngOnInit(): void {
     this.form = this.fb.group({
       workName: ['', Validators.required],
-      mode: ['', Validators.required],
-      type: ['', Validators.required],
+      mode: [null, Validators.required],
+      type: [null, Validators.required],
       note: [''],
       filesCount: [
         '1',
@@ -76,6 +76,10 @@ export class MakeOrderFormComponent {
   }
 
   sendFormValues() {
-    this.formValues.emit(this.form.value);
+    // Parse mode and type to number
+    this.form.value.mode = Number(this.form.value.mode);
+    this.form.value.type = Number(this.form.value.type);
+    console.log(this.form.value);
+    // this.formValues.emit(this.form.value);
   }
 }

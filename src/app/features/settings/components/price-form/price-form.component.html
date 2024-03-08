@@ -1,6 +1,8 @@
 <form [formGroup]="priceForm">
   <h3 class="text-4xl my-8">Tabla de Precios</h3>
-  <div class="flex max-w-[70rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-gray-200 px-6 pb-12 py-16 rounded-lg mb-8">
+  <div
+    class="flex max-w-[70rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-gray-200 px-6 pb-12 py-16 rounded-lg mb-8"
+  >
     <div>
       <div formArrayName="columns" class="flex gap-3">
         @for (column of columnControls; track $index) {
@@ -12,7 +14,7 @@
         />
 
         <button
-          class="center w-8 h-8 border shadow-sm hover:bg-gray-50 px-1 mt-1 rounded-lg bg-white text-2xl font-medium text-center  text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+          class="center w-8 h-8 border shadow-sm hover:bg-gray-50 px-1 mt-1 rounded-lg bg-white text-2xl font-medium text-center text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
           type="button"
           title="Eliminar Columna"
           (click)="removeColumn($index)"
@@ -40,18 +42,18 @@
         @for (row of rowControls ;track $index) {
         <div [formGroupName]="$index" class="flex gap-3 my-4">
           @for (column of columnControls; let last = $last; track $index) {
-            <div [ngClass]="{'min-w-[204px]': !last, 'w-[9.5rem]': last}">
-              <input
-                class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-                type="text"
-                [formControlName]="$index"
-                placeholder="Fila {{ $index + 1 }}, Columna {{ $index + 1 }}"
-              />
-            </div>
+          <div [ngClass]="{ 'min-w-[204px]': !last, 'w-[9.5rem]': last }">
+            <input
+              class="w-40 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+              type="text"
+              [formControlName]="$index"
+              placeholder="Fila {{ $index + 1 }}, Columna {{ $index + 1 }}"
+            />
+          </div>
           }
           <button
-          title="Eliminar Fila"
-            class="center w-8 h-8 border shadow-sm hover:bg-gray-50  px-1 mr-1 rounded-lg bg-white text-2xl font-medium text-center m-2 text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+            title="Eliminar Fila"
+            class="center w-8 h-8 border shadow-sm hover:bg-gray-50 px-1 mr-1 rounded-lg bg-white text-2xl font-medium text-center m-2 text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
             type="button"
             (click)="removeRow($index)"
           >
