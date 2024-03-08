@@ -7,7 +7,10 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { UpdateUserPreferences } from '../../state/user.actions';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,24 +24,50 @@ export class UserProfileComponent {
   profileForm: FormGroup;
   @Input() preferences: Preferences | null = null;
   nameFirstLetter: string = '';
+  uid: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private actions: Actions,
+    private store: Store
+  ) {
     this.profileForm = this.fb.group({
-      fullName: [''],
-      email: [''],
-      ci: [''],
-      phoneNumber: [''],
+      fullName: ['', Validators.required],
+      email: ['', Validators.required],
+      ci: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
     });
+  }
+
+  ngOnInit() {
+    this.profileForm.get('email')?.disable();
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes['preferences']) {
       this.nameFirstLetter = this.preferences?.fullName[0] || '';
+      this.uid = this.preferences?.uid || '';
+      this.profileForm.patchValue({
+        fullName: this.preferences?.fullName,
+        email: this.preferences?.email,
+        ci: this.preferences?.ci,
+        phoneNumber: this.preferences?.phoneNumber,
+      });
     }
   }
 
   saveChanges() {
     this.isEditing = false;
+    if (this.profileForm.valid) {
+      this.store.dispatch(
+        new UpdateUserPreferences(this.uid, this.profileForm.value)
+      );
+      this.actions
+        .pipe(ofActionSuccessful(UpdateUserPreferences))
+        .subscribe(() => {
+          this.profileForm.disable();
+        });
+    }
   }
 
   toggleEdit() {

@@ -24,7 +24,8 @@ export class HeaderComponent {
   preferences$!: Observable<UserPreferences>;
   showMenu: boolean = false;
   selected: number = -1;
-  userName: string = '';
+  userNameFirstLetter: string = '';
+  fullName: string = '';
   uid: string = '';
   auth: any;
 
@@ -60,7 +61,8 @@ export class HeaderComponent {
         ofActionSuccessful(getUserPreferencesByUid),
         tap(() => {
           const userPreferences = this.store.selectSnapshot(UserState);
-          this.userName = userPreferences.fullName[0];
+          this.userNameFirstLetter = userPreferences.fullName[0];
+          this.fullName = userPreferences.fullName;
         })
       )
       .subscribe(() => {});

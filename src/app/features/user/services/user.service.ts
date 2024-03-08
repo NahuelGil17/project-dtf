@@ -18,7 +18,10 @@ export class UserService {
   updateUserPreferences(uid: string, preferences: Preferences) {
     const userRef = doc(this.firestore, 'users', uid);
     const data = {
-      preferences,
+      email: preferences.email,
+      fullName: preferences.fullName,
+      phoneNumber: preferences.phoneNumber,
+      ci: preferences.ci,
     };
     return from(updateDoc(userRef, data));
   }
