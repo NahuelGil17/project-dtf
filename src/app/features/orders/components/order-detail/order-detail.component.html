@@ -53,6 +53,7 @@
             class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
           >
             Tipo
+            <!-- {{ data.order.type | orderType }} -->
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             {{ data.order.type }}
@@ -89,24 +90,38 @@
           <dt
             class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
           >
-            Cantidad de archivos
+            Archivos
           </dt>
+
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-            {{ data.order.filesCount }}
+            <div *ngFor="let file of data.order.files">
+           
+              @if(file.type.match('image')){
+              <img
+                [src]="file.file"
+                alt="Imagen de la orden"
+                class="w-10 h-10 rounded-lg"
+              />
+              } @if(file.type.match('pdf')){
+              <a [href]="file.file" target="_blank">
+                <span class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  >VER PDF</span
+                ></a
+              >
+              }
+            </div>
           </dd>
         </dl>
       </div>
-      <dt
-      class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-    >
-      Nota
-    </dt>
-    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-      {{ data.order.note }} Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Vel ratione quidem impedit! Quaerat sunt aspernatur
-      impedit inventore rem repudiandae reprehenderit corrupti? Laborum,
-      quia. Voluptatum ut expedita quas suscipit, quis repellendus!
-    </dd>
+      <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+        Nota
+      </dt>
+      <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+        {{ data.order.note }} Lorem ipsum dolor sit amet consectetur adipisicing
+        elit. Vel ratione quidem impedit! Quaerat sunt aspernatur impedit
+        inventore rem repudiandae reprehenderit corrupti? Laborum, quia.
+        Voluptatum ut expedita quas suscipit, quis repellendus!
+      </dd>
       <div class="flex justify-end items-right">
         <div class="flex items-center space-x-3 sm:space-x-4">
           <button

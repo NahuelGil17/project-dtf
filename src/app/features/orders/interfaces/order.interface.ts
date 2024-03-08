@@ -5,7 +5,7 @@ export interface Order {
     type: string;
     note: string;
     date: string;
-    files: File[];
+    files: CustomFile[];
     mode: string;
     filesCount: number;
     id: string;
@@ -21,6 +21,12 @@ export interface OrderForm {
     note: string;
     type: string;
     workName: string;
+}
+
+export interface CustomFile {
+    file: string;
+    type: string;
+    count: string;
 }
 
 export interface OrderObject {}
