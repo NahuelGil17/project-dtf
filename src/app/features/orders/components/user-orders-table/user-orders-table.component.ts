@@ -57,11 +57,7 @@ export class UserOrdersTableComponent {
     });
   }
 
-  calculateEndIndex() {
-    if (this.totalOrders !== undefined && this.pageSize !== undefined) {
-      this.endIndex = Math.ceil(this.totalOrders / this.pageSize);
-    }
-  }
+  
 
   ngOnInit(): void {
     this.preferences$.subscribe((preferences) => {
@@ -70,6 +66,7 @@ export class UserOrdersTableComponent {
         this.getTotalOrdersByUserId(this.userId);
         this.getOrderByPage(false);
         this.calculateRange();
+        this.calculateLastPage();
       }
     });
   }
@@ -116,6 +113,12 @@ export class UserOrdersTableComponent {
     this.calculateFirstPage();
   }
 
+  calculateEndIndex() {
+    if (this.totalOrders !== undefined && this.pageSize !== undefined) {
+      this.endIndex = Math.ceil(this.totalOrders / this.pageSize);
+    }
+  }
+
   calculateLastPage(): void {
     if (this.currentPage >= this.endIndex) {
       this.isLastPage = true;
@@ -134,8 +137,8 @@ export class UserOrdersTableComponent {
 
   openOrderDetails(order: Order): void {
     this.dialog.open(OrderDetailComponent, {
-      height: '400px',
-      width: '600px',
+      height: '600px',
+      width: '800px',
       data: { order: order }
     });
   }
