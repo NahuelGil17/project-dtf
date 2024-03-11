@@ -1,8 +1,13 @@
 <div class="m-5 p-5 rounded-lg w-[90rem]">
   <h1 class="text-6xl font-bold mb-4 text-center">Perfil</h1>
   <div class="flex justify-between rounded-md p-10 m-10 w-full">
+    @if (loading) {
+    <div class="flex justify-center items-center w-full h-full">
+      <p>Cargando ...</p>
+    </div>
+    } @else {
     <div
-      class="flex flex-col justify-center gap-6 bg-white h-[35rem] w-[30rem] rounded-md m-10"
+      class="flex flex-col justify-center gap-6 bg-white h-[35rem] w-[30rem] rounded-md"
     >
       <div>
         <div class="flex w-full justify-center mb-4">
@@ -42,11 +47,11 @@
         </button>
       </section>
     </div>
-    @if (isEditing) {
-    <div class="m-5 p-5 rounded-lg bg-white">
-      <h1 class="text-6xl font-bold mb-4 text-center">Editar Perfil</h1>
-      <div class="flex flex-col bg-white rounded-md p-10 m-10">
-        <form [formGroup]="profileForm" (submit)="saveChanges()">
+    } @if (isEditing) {
+    <div class="px-5 rounded-lg bg-white h-[35rem] w-[30rem]">
+      <h1 class="text-6xl font-bold mb-4 mt-4 text-center">Editar Perfil</h1>
+      <div class="flex flex-col bg-white rounded-md p-5 m-5 items-center">
+        <form [formGroup]="profileForm">
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Nombre</label>
             <input
@@ -59,7 +64,7 @@
             <input
               formControlName="email"
               class="mb-2 bg-gray-300 text-black rounded-lg p-2"
-              [disabled]="false"
+              [disabled]="true"
             />
           </div>
           <div class="flex flex-col">
@@ -76,12 +81,12 @@
               class="mb-6 bg-gray-300 text-black rounded-lg p-2"
             />
           </div>
-          <button
-            class="bg-blue-600 text-white py-2 px-4 rounded-lg"
-            type="submit"
+
+          <app-button
+            (click)="emitFormValues()"
+            [isDisabled]="profileForm.invalid"
+            >Guardar Cambios</app-button
           >
-            Guardar Cambios
-          </button>
         </form>
       </div>
     </div>
