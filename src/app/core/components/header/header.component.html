@@ -27,7 +27,7 @@
       >
         <div class="w-8 h-8 rounded-full text-center">
           <span id="user-menu" class="text-white text-xl">{{
-            userName | titlecase
+            userNameFirstLetter | titlecase
           }}</span>
         </div>
       </button>
@@ -37,9 +37,9 @@
         class="right-7 top-8 absolute z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
       >
         <div class="px-4 py-3">
-          <span class="block text-sm text-gray-900 dark:text-white"
-            >Usuario</span
-          >
+          <span class="block text-sm text-gray-900 dark:text-white truncate">{{
+            fullName
+          }}</span>
         </div>
         <ul class="py-2">
           <li class="cursor-pointer">
