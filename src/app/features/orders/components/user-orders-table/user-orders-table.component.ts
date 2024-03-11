@@ -64,7 +64,7 @@ export class UserOrdersTableComponent {
       if (preferences) {
         this.userId = preferences.uid;
         this.getTotalOrdersByUserId(this.userId);
-        this.getOrderByPage(false);
+        this.getOrderByPage(null);
         this.calculateRange();
         this.calculateLastPage();
       }
@@ -82,7 +82,7 @@ export class UserOrdersTableComponent {
       this.store.dispatch(new getOrdersBySearch(this.userId, inputSearch));
     } else {
       this.currentPage = 1;
-      this.getOrderByPage(false);
+      this.getOrderByPage(null);
     }
   }
 
@@ -92,7 +92,7 @@ export class UserOrdersTableComponent {
     });
   }
 
-  getOrderByPage(isNextPage: boolean): void {
+  getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     this.pageSize$.subscribe((pageSize) => {
       this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
     });
@@ -100,14 +100,14 @@ export class UserOrdersTableComponent {
 
   previousPage(): void {
     this.currentPage--;
-    this.getOrderByPage(false);
+    this.getOrderByPage('prev');
     this.calculateLastPage();
     this.calculateFirstPage();
   }
 
   nextPage(): void {
     this.currentPage++;
-    this.getOrderByPage(true);
+    this.getOrderByPage('next');
     this.calculateRange();
     this.calculateLastPage();
     this.calculateFirstPage();

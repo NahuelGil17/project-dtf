@@ -59,6 +59,7 @@ export class OrderService {
       orderBy('workName')
     );
 
+    this.lastDoc = null;
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
         const orders: Order[] = [];
@@ -75,12 +76,12 @@ export class OrderService {
 
   getOrdersByPage(
     userId: string,
-    isNextPage?: boolean
+    isNextPage?: 'next' | 'prev' | null
   ): Observable<Order[] | void> {
     const pageSize = this.pageSize;
     let ordersQuery: any;
 
-    if (isNextPage && this.lastDoc) {
+    if (isNextPage === 'next' && this.lastDoc) {
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -88,7 +89,12 @@ export class OrderService {
         startAfter(this.lastDoc),
         limit(pageSize)
       );
-    } else if (!isNextPage && this.lastDoc) {
+    }
+    if (isNextPage === 'prev' && this.lastDoc) {
+      console.log('ELSE IF');
+      console.log(isNextPage);
+      console.log(this.lastDoc);
+
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -96,7 +102,12 @@ export class OrderService {
         endBefore(this.lastDoc),
         limit(pageSize)
       );
-    } else {
+    }
+    if (isNextPage === null) {
+      console.log('ELSE');
+      console.log(isNextPage);
+      console.log(this.lastDoc);
+
       ordersQuery = query(
         this.ordersRef,
         where('userId', '==', userId),
@@ -114,7 +125,7 @@ export class OrderService {
             orders.push({ id: doc.id, ...data } as Order);
           }
         });
-        // Actualiza lastDoc con el último documento de esta página.
+        // Actualiza lastDoc con el último documento de la página.
         this.lastDoc = snapshot.docs[snapshot.docs.length - 1];
         return orders;
       })

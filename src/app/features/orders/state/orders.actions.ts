@@ -17,7 +17,7 @@ export class getOrdersBySearch {
 
 export class getOrdersByPage {
     static readonly type = '[Orders] Get Orders By Page';
-    constructor(public readonly userId: string, public readonly isNextPage: boolean) { }
+    constructor(public readonly userId: string, public readonly isNextPage: 'next' | 'prev' | null) { }
 }
 export class GetOrdersByUserId {
   static readonly type = '[Orders] Get Orders By User Id';
