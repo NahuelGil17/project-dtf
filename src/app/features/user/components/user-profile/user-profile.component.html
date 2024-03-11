@@ -1,14 +1,25 @@
 <div class="m-5 p-5 rounded-lg w-[90rem]">
   <h1 class="text-6xl font-bold mb-4 text-center">Perfil</h1>
   <div class="flex justify-between rounded-md p-10 m-10 w-full">
-    <div class="flex flex-col justify-center gap-6 bg-white">
-      <div class="flex">
-        <section class="w-40 h-40 rounded-full text-center bg-gray-700 center">
-          <span class="text-6xl text-white">{{
-            nameFirstLetter | titlecase
-          }}</span>
-        </section>
-        <section class="gap-4">
+    @if (loading) {
+    <div class="flex justify-center items-center w-full h-full">
+      <p>Cargando ...</p>
+    </div>
+    } @else {
+    <div
+      class="flex flex-col justify-center gap-6 bg-white h-[35rem] w-[30rem] rounded-md"
+    >
+      <div>
+        <div class="flex w-full justify-center mb-4">
+          <section
+            class="w-36 h-36 rounded-full text-center bg-gray-700 center items-center"
+          >
+            <span class="text-6xl text-white">{{
+              nameFirstLetter | titlecase
+            }}</span>
+          </section>
+        </div>
+        <section class="flex flex-col ml-10 gap-4">
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Nombre</label>
             <span class="mb-2">{{ preferences?.fullName }}</span>
@@ -27,32 +38,55 @@
           </div>
         </section>
       </div>
-      <section class="mt-10 w-full">
-        <button (click)="toggleEdit()">Editar Perfil</button>
+      <section class="w-full ml-10">
+        <button
+          class="bg-blue-600 text-white py-2 px-4 rounded-lg"
+          (click)="toggleEdit()"
+        >
+          Editar Perfil
+        </button>
       </section>
     </div>
-    @if (isEditing) {
-    <div class="m-5 p-5 rounded-lg bg-white">
-      <h1 class="text-6xl font-bold mb-4 text-center">Editar Perfil</h1>
-      <div class="flex flex-col bg-white rounded-md p-10 m-10">
-        <form [formGroup]="profileForm" (submit)="saveChanges()">
+    } @if (isEditing) {
+    <div class="px-5 rounded-lg bg-white h-[35rem] w-[30rem]">
+      <h1 class="text-6xl font-bold mb-4 mt-4 text-center">Editar Perfil</h1>
+      <div class="flex flex-col bg-white rounded-md p-5 m-5 items-center">
+        <form [formGroup]="profileForm">
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Nombre</label>
-            <input formControlName="fullName" class="mb-2" />
+            <input
+              formControlName="fullName"
+              class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+            />
           </div>
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Email</label>
-            <input formControlName="email" class="mb-2" />
+            <input
+              formControlName="email"
+              class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+              [disabled]="true"
+            />
           </div>
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Cedula de Identidad</label>
-            <input formControlName="ci" class="mb-2" />
+            <input
+              formControlName="ci"
+              class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+            />
           </div>
           <div class="flex flex-col">
             <label class="mb-0 text-2xl font-bold">Celular</label>
-            <input formControlName="phoneNumber" class="mb-2" />
+            <input
+              formControlName="phoneNumber"
+              class="mb-6 bg-gray-300 text-black rounded-lg p-2"
+            />
           </div>
-          <button type="submit">Guardar Cambios</button>
+
+          <app-button
+            (click)="emitFormValues()"
+            [isDisabled]="profileForm.invalid"
+            >Guardar Cambios</app-button
+          >
         </form>
       </div>
     </div>
