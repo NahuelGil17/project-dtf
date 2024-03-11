@@ -23,20 +23,23 @@ import {
   ref,
   uploadBytes,
 } from '@angular/fire/storage';
+import { environment } from '../../../environment/environment.develop';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  pageSize: number = 10;
-  ordersRef = collection(this.fireStore, 'orders');
+  pageSize: number = environment.PAGE_SIZE;
+
   lastDoc: any;
 
   storage = inject(Storage);
   constructor(private fireStore: Firestore) {}
 
   GetTotalOrdersByUserId(userId: string): Observable<number> {
-    const ordersQuery = query(this.ordersRef, where('userId', '==', userId));
+    let ordersRef = collection(this.fireStore, 'orders');
+    const ordersQuery = query(ordersRef, where('userId', '==', userId));
+
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
         return snapshot.size;
@@ -49,9 +52,10 @@ export class OrderService {
 
     const startName = input;
     const endName = input + '\uf8ff';
+    let ordersRef = collection(this.fireStore, 'orders');
 
     const ordersQuery = query(
-      this.ordersRef,
+      ordersRef,
       where('userId', '==', userId),
 
       where('workName', '>=', startName),
@@ -80,10 +84,11 @@ export class OrderService {
   ): Observable<Order[] | void> {
     const pageSize = this.pageSize;
     let ordersQuery: any;
+    let ordersRef = collection(this.fireStore, 'orders');
 
     if (isNextPage === 'next' && this.lastDoc) {
       ordersQuery = query(
-        this.ordersRef,
+        ordersRef,
         where('userId', '==', userId),
         orderBy('workName'),
         startAfter(this.lastDoc),
@@ -91,12 +96,8 @@ export class OrderService {
       );
     }
     if (isNextPage === 'prev' && this.lastDoc) {
-      console.log('ELSE IF');
-      console.log(isNextPage);
-      console.log(this.lastDoc);
-
       ordersQuery = query(
-        this.ordersRef,
+        ordersRef,
         where('userId', '==', userId),
         orderBy('workName'),
         endBefore(this.lastDoc),
@@ -104,12 +105,8 @@ export class OrderService {
       );
     }
     if (isNextPage === null) {
-      console.log('ELSE');
-      console.log(isNextPage);
-      console.log(this.lastDoc);
-
       ordersQuery = query(
-        this.ordersRef,
+        ordersRef,
         where('userId', '==', userId),
         orderBy('workName'),
         limit(pageSize)

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { UserPreferences } from '../../../auth/interfaces/auth.interface';
@@ -17,6 +17,7 @@ import {
 import { OrdersState } from '../../state/orders.state';
 import { Dialog } from '@angular/cdk/dialog';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
+import { environment } from '../../../../environment/environment.develop';
 
 @Component({
   selector: 'app-user-orders-table',
@@ -29,53 +30,56 @@ export class UserOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
   @Select(OrdersState.orders) orders$!: Observable<Order[]>;
   @Select(OrdersState.totalOrders) totalOrders$!: Observable<number>;
-  @Select(OrdersState.pageSize) pageSize$!: Observable<number>;
-  @Select(AuthState.preferences)
-  preferences$!: Observable<UserPreferences>;
 
-  userId: string = '';
+  userId: string | undefined = '';
   currentPage: number = 1;
   startIndex: number = 1;
   endIndex: number = 0;
   totalOrders: number = 0;
-  pageSize: number = 0;
+  pageSize: number = environment.PAGE_SIZE;
   isLastPage: boolean = false;
   isFirstPage: boolean = true;
   onpenModal: boolean = false;
 
-  
+  constructor(
+    private orderService: OrderService,
+    private store: Store,
+    private dialog: Dialog,
+    private actions: Actions
+  ) {
 
-  constructor(private orderService: OrderService, private store: Store, private dialog: Dialog) {
-    this.totalOrders$.subscribe((totalOrders) => {
-      this.totalOrders = totalOrders;
-      this.calculateEndIndex();
-    });
-
-    this.pageSize$.subscribe((pageSize) => {
-      this.pageSize = pageSize;
-      this.calculateEndIndex();
-    });
   }
 
-  
-
   ngOnInit(): void {
-    this.preferences$.subscribe((preferences) => {
-      if (preferences) {
-        this.userId = preferences.uid;
-        this.getTotalOrdersByUserId(this.userId);
-        this.getOrderByPage(null);
-        this.calculateRange();
-        this.calculateLastPage();
-      }
+    this.userId = this.store.selectSnapshot(AuthState.currentUserId);
+
+    if (!this.userId) return;
+    this.getTotalOrdersByUserId(this.userId);
+
+    this.actions
+      .pipe(ofActionSuccessful(GetTotalOrdersByUserId))
+      .subscribe(() => {
+        console.log('VOY A TRAER LAS ORDENES');
+
+        
+      });
+
+    this.store.select(OrdersState.totalOrders).subscribe((totalOrders) => {
+      if (!totalOrders) return;
+      this.totalOrders = totalOrders;
+      this.getOrderByPage(null);
+      this.calculateEndIndex();
+      this.calculateLastPage();
+
     });
   }
 
   getTotalOrdersByUserId(userId: string): void {
-    this.store.dispatch(new GetTotalOrdersByUserId(this.userId));
+    this.store.dispatch(new GetTotalOrdersByUserId(userId));
   }
 
   searchOrders(event: Event): void {
+    if (!this.userId) return;
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
@@ -86,16 +90,9 @@ export class UserOrdersTableComponent {
     }
   }
 
-  calculateRange(): void {
-    this.pageSize$.subscribe((pageSize) => {
-      this.totalOrders$.subscribe((totalOrders) => {});
-    });
-  }
-
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
-    this.pageSize$.subscribe((pageSize) => {
-      this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
-    });
+    if (!this.userId) return;
+    this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
   }
 
   previousPage(): void {
@@ -108,7 +105,6 @@ export class UserOrdersTableComponent {
   nextPage(): void {
     this.currentPage++;
     this.getOrderByPage('next');
-    this.calculateRange();
     this.calculateLastPage();
     this.calculateFirstPage();
   }
@@ -139,7 +135,7 @@ export class UserOrdersTableComponent {
     this.dialog.open(OrderDetailComponent, {
       height: '600px',
       width: '800px',
-      data: { order: order }
+      data: { order: order },
     });
   }
 }

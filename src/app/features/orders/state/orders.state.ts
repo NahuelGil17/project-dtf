@@ -33,7 +33,7 @@ import {
     selectedOrder: null,
     currentFiles: [],
     page: 1,
-    pageSize: 10,
+
     totalOrders: 0,
     filterInput: '',
   },
@@ -64,11 +64,6 @@ export class OrdersState {
     return state.totalOrders;
   }
 
-  @Selector()
-  static pageSize(state: OrdersStateModel): number | undefined {
-    return state.pageSize;
-  }
-
   @Action(GetTotalOrdersByUserId, { cancelUncompleted: true })
   GetTotalOrdersByUserId(ctx: any, action: GetTotalOrdersByUserId) {
     ctx.patchState({ loading: true });
@@ -89,29 +84,6 @@ export class OrdersState {
       )
       .subscribe();
   }
-
-  // @Action(GetOrdersByUserId, { cancelUncompleted: true })
-  // getOrdersByUserId(ctx: any, action: GetOrdersByUserId) {
-  //   ctx.patchState({ loading: true });
-  //   this.orderService
-  //     .getOrdersByUserId(action.userId)
-  //     .pipe(
-  //       tap(
-  //         (orders: Order[]) => {
-  //           ctx.patchState({ orders, loading: false });
-  //         },
-  //         catchError((error: any) => {
-  //           ctx.patchState({ loading: false });
-  //           this.toastService.error(
-  //             error,
-  //             'Error al obtener las ordenes del usuario'
-  //           );
-  //           return throwError(() => new Error(error));
-  //         })
-  //       )
-  //     )
-  //     .subscribe();
-  // }
 
   @Action(getOrdersBySearch, { cancelUncompleted: true })
   getOrdersBySearch(ctx: any, action: getOrdersBySearch) {

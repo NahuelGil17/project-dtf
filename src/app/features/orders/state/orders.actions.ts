@@ -6,7 +6,7 @@ export class SaveOrder {
 }
 
 export class GetTotalOrdersByUserId {
-    static readonly type = '[Orders] Get Orders By User Id';
+    static readonly type = '[Orders] Get Total Orders By User Id';
     constructor(public readonly userId: string) { }
 }
 

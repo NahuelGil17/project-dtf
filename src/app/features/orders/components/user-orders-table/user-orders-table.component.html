@@ -89,7 +89,7 @@
             <td class="px-4 py-3">
               
               @if(order.files[0]){ 
-                
+
                 @if(order.files[0].type.match('image')){
                  
                   <a [href]="order.files[0].file" target="_blank">
@@ -175,7 +175,7 @@
         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
           Ordenes por pagina:
           <span class="font-semibold text-gray-900 dark:text-white">{{
-            pageSize$ | async
+            pageSize 
           }}</span>
         </span>
       </span>
