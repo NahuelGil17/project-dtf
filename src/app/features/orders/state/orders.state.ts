@@ -68,7 +68,7 @@ export class OrdersState {
   GetTotalOrdersByUserId(ctx: any, action: GetTotalOrdersByUserId) {
     ctx.patchState({ loading: true });
     this.orderService
-      .GetTotalOrdersByUserId(action.userId)
+      .GetTotalOrdersByUserId(action.userId, action.isAdmin)
       .pipe(
         tap((totalOrders: number) => {
           ctx.patchState({ totalOrders, loading: false });

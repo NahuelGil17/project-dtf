@@ -48,6 +48,14 @@ export const routes: Routes = [
               ).then((m) => m.SettingsPagesComponent),
             canActivate: [signInGuard, isAdmin],
           },
+          {
+            path: 'ordenes',
+            loadComponent: () =>
+              import(
+                './features/orders/pages/admin-orders/admin-orders.component'
+              ).then((m) => m.AdminOrdersComponent),
+            canActivate: [signInGuard, isAdmin],
+          },
         ],
       },
       {

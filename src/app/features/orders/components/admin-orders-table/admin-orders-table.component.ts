@@ -20,13 +20,13 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { environment } from '../../../../environment/environment.develop';
 
 @Component({
-  selector: 'app-user-orders-table',
+  selector: 'app-admin-orders-table',
   standalone: true,
   imports: [CommonModule, FormatDatePipe, OrderStatusPipe, RouterModule],
-  templateUrl: './user-orders-table.component.html',
-  styleUrl: './user-orders-table.component.css',
+  templateUrl: './admin-orders-table.component.html',
+  styleUrl: './admin-orders-table.component.css',
 })
-export class UserOrdersTableComponent {
+export class AdminOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
   @Select(OrdersState.orders) orders$!: Observable<Order[]>;
   @Select(OrdersState.totalOrders) totalOrders$!: Observable<number>;
@@ -47,24 +47,15 @@ export class UserOrdersTableComponent {
     private store: Store,
     private dialog: Dialog,
     private actions: Actions
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.userId = this.store.selectSnapshot(AuthState.currentUserId);
     this.isAdmin = this.store.selectSnapshot(AuthState.isAdmin);
 
     if (!this.userId) return;
+
     this.getTotalOrdersByUserId(this.userId);
-
-    this.actions
-      .pipe(ofActionSuccessful(GetTotalOrdersByUserId))
-      .subscribe(() => {
-        console.log('VOY A TRAER LAS ORDENES');
-
-        
-      });
 
     this.store.select(OrdersState.totalOrders).subscribe((totalOrders) => {
       if (!totalOrders) return;
@@ -72,12 +63,11 @@ export class UserOrdersTableComponent {
       this.getOrderByPage(null);
       this.calculateEndIndex();
       this.calculateLastPage();
-
     });
   }
 
   getTotalOrdersByUserId(userId: string): void {
-    this.store.dispatch(new GetTotalOrdersByUserId(userId,this.isAdmin));
+    this.store.dispatch(new GetTotalOrdersByUserId(userId, this.isAdmin));
   }
 
   searchOrders(event: Event): void {
@@ -139,5 +129,9 @@ export class UserOrdersTableComponent {
       width: '800px',
       data: { order: order },
     });
+  }
+
+  changeStatus(id: String): void {
+    console.log('changeStatus', id);
   }
 }

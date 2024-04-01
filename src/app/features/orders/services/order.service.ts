@@ -36,7 +36,7 @@ export class OrderService {
   storage = inject(Storage);
   constructor(private fireStore: Firestore) {}
 
-  GetTotalOrdersByUserId(userId: string): Observable<number> {
+  GetTotalOrdersByUserId(userId: string, isAdmin: boolean): Observable<number> {
     let ordersRef = collection(this.fireStore, 'orders');
     const ordersQuery = query(ordersRef, where('userId', '==', userId));
 

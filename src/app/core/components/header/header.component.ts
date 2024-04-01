@@ -33,9 +33,7 @@ export class HeaderComponent {
 
   logOut() {
     this.store.dispatch(new Logout());
-    this.actions.pipe(ofActionSuccessful(Logout), take(1)).subscribe(() => {
-      this.router.navigate(['/home']);
-    });
+    this.router.navigate(['/home']);
   }
 
   ngOnInit() {

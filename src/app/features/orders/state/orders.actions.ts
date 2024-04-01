@@ -6,18 +6,21 @@ export class SaveOrder {
 }
 
 export class GetTotalOrdersByUserId {
-    static readonly type = '[Orders] Get Total Orders By User Id';
-    constructor(public readonly userId: string) { }
+  static readonly type = '[Orders] Get Total Orders By User Id';
+  constructor(public readonly userId: string, public readonly isAdmin: boolean) {}
 }
 
 export class getOrdersBySearch {
-    static readonly type = '[Orders] Get Orders By Search';
-    constructor(public readonly userId: string, public readonly search: string) { }
+  static readonly type = '[Orders] Get Orders By Search';
+  constructor(public readonly userId: string, public readonly search: string) {}
 }
 
 export class getOrdersByPage {
-    static readonly type = '[Orders] Get Orders By Page';
-    constructor(public readonly userId: string, public readonly isNextPage: 'next' | 'prev' | null) { }
+  static readonly type = '[Orders] Get Orders By Page';
+  constructor(
+    public readonly userId: string,
+    public readonly isNextPage: 'next' | 'prev' | null
+  ) {}
 }
 export class GetOrdersByUserId {
   static readonly type = '[Orders] Get Orders By User Id';

@@ -50,12 +50,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       provideFirebaseApp(() =>
         initializeApp({
-          projectId: 'uruguaydft',
-          appId: '1:359376882905:web:29ebc17e85e3164cda42c8',
-          storageBucket: 'uruguaydft.appspot.com',
-          apiKey: 'AIzaSyDarISkyywJepY8NxKySauvfO-5J4-JyKg',
-          authDomain: 'uruguaydft.firebaseapp.com',
-          messagingSenderId: '359376882905',
+          apiKey: "AIzaSyDGORIzdj3Qs3N_3_K_Yl_PKKCXirX50mI",
+          authDomain: "dtf-central.firebaseapp.com",
+          projectId: "dtf-central",
+          storageBucket: "dtf-central.appspot.com",
+          messagingSenderId: "510031789892",
+          appId: "1:510031789892:web:e94133dadaaaee83372111"
         })
       )
     ),
