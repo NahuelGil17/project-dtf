@@ -7,6 +7,7 @@ import { RegisterForm, UserPreferences } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { GetUserPreferences, Login, Logout, Register } from './auth.actions';
 import { AuthStateModel } from './auth.model';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 
 @State<AuthStateModel>({
   name: 'auth',
@@ -19,6 +20,7 @@ import { AuthStateModel } from './auth.model';
 @Injectable({ providedIn: 'root' })
 export class AuthState {
   authService = inject(AuthService);
+  snackBar = inject(SnackBarService);
 
   @Selector()
   static currentUserId(state: AuthStateModel): string | undefined {
@@ -61,7 +63,8 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ auth: auth._tokenResponse, preferences: auth.user });
         ctx.patchState({ loading: false });
-        this.toastService.success('Sesión iniciada con éxito');
+        this.snackBar.showSuccess('', 'Sesión iniciada con éxito');
+        // this.toastService.success('Sesión iniciada con éxito');
       }),
       exhaustMap((auth: any) => {
         return ctx.dispatch(new GetUserPreferences(auth.user.uid));

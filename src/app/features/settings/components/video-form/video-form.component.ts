@@ -8,7 +8,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { SettingsService } from '../../services/settings.service';
 import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
-import { CreateVideo } from '../../state/setting.action';
+import { CreateVideo, UpdateVideo } from '../../state/setting.action';
 
 @Component({
   selector: 'app-video-form',
@@ -45,10 +45,22 @@ export class VideoFormComponent {
 
   saveVideo() {
     if (this.videoForm.valid) {
-      this.store.dispatch(new CreateVideo(this.videoForm.value));
-      this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
-        this.toastService.success('Video saved');
-      });
+      if (!this.video.id) {
+        this.store.dispatch(new CreateVideo(this.videoForm.value));
+        this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
+          this.toastService.success('Video saved');
+        });
+      } else {
+        const videoData = {
+          videoId: this.video.id,
+          url: this.videoForm.value.url,
+        };
+
+        this.store.dispatch(new UpdateVideo(videoData));
+        this.actions.pipe(ofActionSuccessful(UpdateVideo)).subscribe(() => {
+          this.toastService.success('Video updated');
+        });
+      }
     }
   }
 }
