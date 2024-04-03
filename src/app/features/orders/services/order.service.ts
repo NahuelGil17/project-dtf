@@ -15,7 +15,7 @@ import {
   startAfter,
   where,
 } from '@angular/fire/firestore';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, combineLatest } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
 import {
   Storage,
@@ -53,31 +53,72 @@ export class OrderService {
     input: string
   ): Observable<Order[] | void> {
     input = input.toLowerCase();
-
+  
     const startName = input;
     const endName = input + '\uf8ff';
     let ordersRef = collection(this.fireStore, 'orders');
-
-    const ordersQuery = query(
+  
+    // Consulta para buscar por workName
+    const workNameQuery = query(
       ordersRef,
       where('userId', '==', userId),
-
       where('workName', '>=', startName),
       where('workName', '<=', endName),
-     orderBy('workName')
+      orderBy('workName')
     );
-
+  
+    //Consulta para buscar por id
+    const idQuery = query(
+      ordersRef,
+      where('userId', '==', userId),
+      where('custId', '>=', startName),
+      where('custId', '<=', endName),
+      orderBy('custId')
+    );
     this.lastDoc = null;
-    return from(getDocs(ordersQuery)).pipe(
-      map((snapshot) => {
-        const orders: Order[] = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data) {
-            orders.push({ id: doc.id, ...data } as Order);
-          }
-        });
-        return orders;
+    // return from(getDocs(idQuery)).pipe(
+    //   map((snapshot) => {
+    //     const orders: Order[] = [];
+    //     snapshot.forEach((doc) => {
+    //       const data = doc.data();
+    //       if (data) {
+    //         orders.push({ id: doc.id, ...data } as Order);
+    //       }
+    //     });
+    //     return orders;
+    //   })
+    // );
+
+    // Combino ambos resultados de ambas consultas en un solo observable
+    return combineLatest([
+      from(getDocs(workNameQuery)).pipe(
+        map((snapshot) => {
+          const orders: Order[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data) {
+              orders.push({ id: doc.id, ...data } as Order);
+            }
+          });
+          return orders;
+        })
+      ),
+      from(getDocs(idQuery)).pipe(
+        map((snapshot) => {
+          const orders: Order[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data) {
+              orders.push({ id: doc.id, ...data } as Order);
+            }
+          });
+          return orders;
+        })
+      ),
+    ]).pipe(
+      map(([ordersByWorkName, ordersById]) => {
+        // Combinar y devolver los resultados de ambas consultas
+        return [...ordersByWorkName, ...ordersById];
       })
     );
   }
