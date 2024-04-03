@@ -1,6 +1,6 @@
 export const environment = {
   ISPRODUCTION: false,
-  PAGE_SIZE: 3
+  PAGE_SIZE: 10
 }
 
 

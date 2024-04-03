@@ -79,7 +79,6 @@ export class MakeOrderFormComponent {
     this.form.value.mode = Number(this.form.value.mode);
     this.form.value.type = Number(this.form.value.type);
     this.form.value.workName = this.form.value.workName.toLowerCase();
-    console.log(this.form.value);
     this.formValues.emit(this.form.value);
   }
 }

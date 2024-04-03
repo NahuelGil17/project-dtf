@@ -47,7 +47,11 @@ export class OrderService {
     );
   }
 
-  searchOrders(userId: string, input: string): Observable<Order[] | void> {
+  searchOrders(
+    userId: string,
+    isAdmin: boolean,
+    input: string
+  ): Observable<Order[] | void> {
     input = input.toLowerCase();
 
     const startName = input;
@@ -60,7 +64,7 @@ export class OrderService {
 
       where('workName', '>=', startName),
       where('workName', '<=', endName),
-      orderBy('workName')
+     orderBy('workName')
     );
 
     this.lastDoc = null;
@@ -80,6 +84,7 @@ export class OrderService {
 
   getOrdersByPage(
     userId: string,
+    isAdmin: boolean,
     isNextPage?: 'next' | 'prev' | null
   ): Observable<Order[] | void> {
     const pageSize = this.pageSize;
@@ -112,7 +117,6 @@ export class OrderService {
         limit(pageSize)
       );
     }
-
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
         const orders: Order[] = [];
@@ -138,7 +142,6 @@ export class OrderService {
   }
 
   saveOrderFile(file: any) {
-    console.log(file);
     const storageRef = ref(this.storage, `orders/${this.getRandomUid()}`);
     return from(uploadBytes(storageRef, file.file));
   }
