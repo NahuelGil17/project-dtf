@@ -1,4 +1,5 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, Input, SimpleChanges, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
-import { ToastrService } from 'ngx-toastr';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TableSend } from '../../interfaces/settings.interface';
 import {
@@ -14,7 +15,6 @@ import {
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-price-form',
@@ -24,6 +24,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './price-form.component.css',
 })
 export class PriceFormComponent {
+  snackBar = inject(SnackBarService);
   @Input() table: { columns: string[]; rows: string[][]; id: string } = {} as {
     id: string;
     columns: string[];
@@ -35,7 +36,6 @@ export class PriceFormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private toastService: ToastrService,
     private actions: Actions,
     private store: Store
   ) {}
@@ -175,7 +175,7 @@ export class PriceFormComponent {
         this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
-        this.toastService.error('Error al guardar la tabla');
+        this.snackBar.showError('', 'Error al guardar la tabla');
       }
     }
     // Si llega un id de la tabla la actualiza
@@ -193,7 +193,7 @@ export class PriceFormComponent {
         this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
-        this.toastService.error('Error al guardar los cambios');
+        this.snackBar.showError('', 'Error al guardar la tabla');
       }
     }
   }
@@ -202,7 +202,7 @@ export class PriceFormComponent {
     try {
       this.store.dispatch(new RemoveTable(this.table.id));
       this.actions.pipe(ofActionSuccessful(RemoveTable)).subscribe(() => {
-        this.toastService.success('Tabla eliminada correctamente!');
+        this.snackBar.showSuccess('', 'Tabla eliminada correctamente!');
       });
       this.priceForm.reset();
 
@@ -222,7 +222,7 @@ export class PriceFormComponent {
       this.changeTitleButton();
     } catch (error) {
       console.error(error);
-      this.toastService.error('Error al eliminar la tabla');
+      this.snackBar.showError('', 'Error al eliminar la tabla');
     }
   }
 }

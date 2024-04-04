@@ -5,10 +5,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { SettingsService } from '../../services/settings.service';
 import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { ToastrService } from 'ngx-toastr';
 import { CreateVideo, UpdateVideo } from '../../state/setting.action';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-video-form',
@@ -23,7 +23,7 @@ export class VideoFormComponent {
   videoForm!: FormGroup;
   url: string = '';
   constructor(
-    private toastService: ToastrService,
+    private snackbarService: SnackBarService,
     private actions: Actions,
     private store: Store
   ) {
@@ -48,7 +48,7 @@ export class VideoFormComponent {
       if (!this.video.id) {
         this.store.dispatch(new CreateVideo(this.videoForm.value));
         this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
-          this.toastService.success('Video saved');
+          this.snackbarService.showSuccess('', 'Video saved');
         });
       } else {
         const videoData = {
@@ -58,7 +58,7 @@ export class VideoFormComponent {
 
         this.store.dispatch(new UpdateVideo(videoData));
         this.actions.pipe(ofActionSuccessful(UpdateVideo)).subscribe(() => {
-          this.toastService.success('Video updated');
+          this.snackbarService.showSuccess('', 'Video updated');
         });
       }
     }
