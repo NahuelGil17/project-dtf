@@ -53,8 +53,6 @@ export class AuthState {
     return state.preferences;
   }
 
-  constructor(private toastService: ToastrService) {}
-
   @Action(Login, { cancelUncompleted: true })
   login(ctx: StateContext<AuthStateModel>, action: Login): Observable<void> {
     ctx.patchState({ loading: true });
