@@ -29,7 +29,6 @@ export class UserState {
   ) {
     ctx.patchState({ loading: true });
     const { uid, preferences } = action;
-    console.log('updateUserPreferences', preferences);
     return this.userService.updateUserPreferences(uid, preferences);
   }
 

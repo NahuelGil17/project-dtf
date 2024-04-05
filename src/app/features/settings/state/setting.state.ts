@@ -57,8 +57,8 @@ export class SettingsState {
             };
           }
         });
-
-        ctx.patchState({ loading: false, ...stateToUpdate });
+        ctx.patchState({ ...stateToUpdate });
+        ctx.patchState({ loading: false });
       }),
       catchError((error) => {
         this.snackbarService.showError('', 'Error al cargar configuración');

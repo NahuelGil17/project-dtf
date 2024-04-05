@@ -12,7 +12,6 @@ import { ContactFormComponent } from "../../components/contact-form/contact-form
 
 export class ContactPageComponent {
   handleContactForm($event: any) {
-   console.log($event); 
   }
 
 

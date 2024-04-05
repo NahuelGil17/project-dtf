@@ -53,18 +53,9 @@ export class UserOrdersTableComponent {
 
   ngOnInit(): void {
     this.userId = this.store.selectSnapshot(AuthState.currentUserId);
-    this.isAdmin = this.store.selectSnapshot(AuthState.isAdmin);
-
+  
     if (!this.userId) return;
     this.getTotalOrdersByUserId(this.userId);
-
-    this.actions
-      .pipe(ofActionSuccessful(GetTotalOrdersByUserId))
-      .subscribe(() => {
-        console.log('VOY A TRAER LAS ORDENES');
-
-        
-      });
 
     this.store.select(OrdersState.totalOrders).subscribe((totalOrders) => {
       if (!totalOrders) return;
@@ -85,7 +76,7 @@ export class UserOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
-      this.store.dispatch(new getOrdersBySearch(this.userId, inputSearch));
+      this.store.dispatch(new getOrdersBySearch(this.userId, this.isAdmin, inputSearch));
     } else {
       this.currentPage = 1;
       this.getOrderByPage(null);
@@ -94,7 +85,7 @@ export class UserOrdersTableComponent {
 
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
-    this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
+    this.store.dispatch(new getOrdersByPage(this.userId, this.isAdmin, isNextPage));
   }
 
   previousPage(): void {

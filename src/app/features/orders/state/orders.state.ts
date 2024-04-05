@@ -85,7 +85,7 @@ export class OrdersState {
   getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService
-      .searchOrders(action.userId, action.search)
+      .searchOrders(action.userId, action.isAdmin, action.search)
       .pipe(
         tap(
           (orders: Order[] | void) => {
@@ -108,7 +108,7 @@ export class OrdersState {
   getOrdersByPage(ctx: any, action: getOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
-      .getOrdersByPage(action.userId, action.isNextPage)
+      .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
       .pipe(
         tap(
           (orders: Order[] | void) => {

@@ -30,7 +30,7 @@ export class SettingsPagesComponent {
   };
   videoData: Video = {} as Video;
   @Select(SettingsState) settings$!: Observable<Settings>;
-  @Select(SettingsState.settingsLoading) loading$!: Observable<void>;
+
   constructor(private actions: Actions, private store: Store) {}
 
   ngOnInit() {

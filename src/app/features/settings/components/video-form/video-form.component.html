@@ -1,4 +1,4 @@
-<form [formGroup]="videoForm" class="center flex-col min-w-[70rem] pl-6 items-start ">
+<form [formGroup]="videoForm" class="center flex-col min-w-[70rem] pl-32 items-start ">
   <h3 class="text-4xl text-left mb-6">Video</h3>
   <div class="w-[30rem] flex-col">
     <input
@@ -7,11 +7,13 @@
       formControlName="url"
       ngModel="{{ url }}"
     />
-    <button
-      class="w-44 center p-3 mt-6 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+    <app-button
       (click)="saveVideo()"
+      [isLoading]="loading$ | async"
+      [isDisabled]="videoForm.invalid"
+      classes="w-44 center p-3 mt-6 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
     >
       Cambiar Video
-    </button>
+    </app-button>
   </div>
 </form>

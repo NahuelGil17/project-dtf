@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, Input, SimpleChanges, inject } from '@angular/core';
 import {
   FormArray,
@@ -6,7 +5,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { SnackBarService } from '../../../../core/services/snackbar.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TableSend } from '../../interfaces/settings.interface';
@@ -15,6 +14,9 @@ import {
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { Observable } from 'rxjs';
+import { SettingsState } from '../../state/setting.state';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
@@ -22,7 +24,13 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
   standalone: true,
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
-  imports: [ReactiveFormsModule, ButtonComponent, NgClass, LoadingComponent],
+  imports: [
+    ReactiveFormsModule,
+    ButtonComponent,
+    NgClass,
+    LoadingComponent,
+    AsyncPipe,
+  ],
 })
 export class PriceFormComponent {
   snackBar = inject(SnackBarService);
@@ -31,7 +39,7 @@ export class PriceFormComponent {
     columns: string[];
     rows: string[][];
   };
-  @Input() isLoading: boolean | null = false;
+  @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
   nameButton: string = '';
   priceForm!: FormGroup;
 
