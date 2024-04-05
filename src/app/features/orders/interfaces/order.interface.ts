@@ -1,18 +1,19 @@
 import { Status } from "../../../shared/enums/status.enum";
 
 export interface Order {
-    workName: string;
-    type: string;
-    note: string;
-    date: string;
-    files: CustomFile[];
-    mode: string;
-    filesCount: number;
-    id: string;
-    creationDate: Date;
-    status: Status
-    userId: string;
-    custId: string;
+  workName: string;
+  type: string;
+  note: string;
+  date: string;
+  files: CustomFile[];
+  mode: string;
+  filesCount: number;
+  id: string;
+  creationDate: Date;
+  status: Status;
+  userId: string;
+  custId: string;
+  showDropdownChangeStatus: boolean;
 }
 
 export interface OrderForm {

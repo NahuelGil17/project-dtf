@@ -56,7 +56,12 @@ export class OrdersState {
 
   @Selector()
   static orders(state: OrdersStateModel): Order[] | undefined {
-    return state.orders ?? [];
+    return state.orders?.map((order: Order) => {
+      return {
+        ...order,
+        showDropdownChangeStatus: false,
+      };
+    });
   }
 
   @Selector()
