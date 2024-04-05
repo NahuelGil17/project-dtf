@@ -1,26 +1,25 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { environment } from '../../../../environment/environment.develop';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
-import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 import { AuthState } from '../../../auth/state/auth.state';
 import { Order } from '../../interfaces/order.interface';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
-import { Status } from './../../../../shared/enums/status.enum';
 import { OrderService } from '../../services/order.service';
 import {
   GetTotalOrdersByUserId,
-  getOrdersBySearch,
   getOrdersByPage,
+  getOrdersBySearch,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
-import Swal from 'sweetalert2';
-import { Dialog } from '@angular/cdk/dialog';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
-import { environment } from '../../../../environment/environment.develop';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { Status } from './../../../../shared/enums/status.enum';
 
 @Component({
   selector: 'app-admin-orders-table',
@@ -188,7 +187,15 @@ export class AdminOrdersTableComponent {
 
   changeStatus(order: Order): void {}
 
-  openChangeStatusDropdown(): void {
-    this.showDropdownChangeStatus = !this.showDropdownChangeStatus;
+  openChangeStatusDropdown(orderId: string): void {
+    this.store.select(OrdersState.orders).subscribe((orders) => {
+      orders?.map((order) => {
+        if (order && order.id === orderId) {
+          order.showDropdownChangeStatus = !order.showDropdownChangeStatus;
+        } else {
+          order.showDropdownChangeStatus = false;
+        }
+      });
+    });
   }
 }
