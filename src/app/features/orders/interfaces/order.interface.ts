@@ -12,6 +12,7 @@ export interface Order {
     creationDate: Date;
     status: Status
     userId: string;
+    custId: string;
 }
 
 export interface OrderForm {
