@@ -56,8 +56,8 @@ export class SettingsState {
             };
           }
         });
-
-        ctx.patchState({ loading: false, ...stateToUpdate });
+        ctx.patchState({ ...stateToUpdate });
+        ctx.patchState({ loading: false });
       }),
       catchError((error) => {
         this.toastService.error('Error al cargar configuración');
