@@ -12,13 +12,14 @@ export class GetTotalOrdersByUserId {
 
 export class getOrdersBySearch {
   static readonly type = '[Orders] Get Orders By Search';
-  constructor(public readonly userId: string, public readonly search: string) {}
+  constructor(public readonly userId: string, public readonly isAdmin:boolean, public readonly search: string) {}
 }
 
 export class getOrdersByPage {
   static readonly type = '[Orders] Get Orders By Page';
   constructor(
     public readonly userId: string,
+    public readonly isAdmin: boolean,
     public readonly isNextPage: 'next' | 'prev' | null
   ) {}
 }

@@ -32,7 +32,7 @@ export class AdminOrdersTableComponent {
   @Select(OrdersState.totalOrders) totalOrders$!: Observable<number>;
 
   userId: string | undefined = '';
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
   currentPage: number = 1;
   startIndex: number = 1;
   endIndex: number = 0;
@@ -51,8 +51,7 @@ export class AdminOrdersTableComponent {
 
   ngOnInit(): void {
     this.userId = this.store.selectSnapshot(AuthState.currentUserId);
-    this.isAdmin = this.store.selectSnapshot(AuthState.isAdmin);
-
+    
     if (!this.userId) return;
 
     this.getTotalOrdersByUserId(this.userId);
@@ -75,7 +74,7 @@ export class AdminOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
-      this.store.dispatch(new getOrdersBySearch(this.userId, inputSearch));
+      this.store.dispatch(new getOrdersBySearch(this.userId, this.isAdmin, inputSearch));
     } else {
       this.currentPage = 1;
       this.getOrderByPage(null);
@@ -84,7 +83,7 @@ export class AdminOrdersTableComponent {
 
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
-    this.store.dispatch(new getOrdersByPage(this.userId, isNextPage));
+    this.store.dispatch(new getOrdersByPage(this.userId, this.isAdmin, isNextPage));
   }
 
   previousPage(): void {
