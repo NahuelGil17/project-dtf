@@ -1,3 +1,6 @@
+@if (isLoading) {
+<app-loading></app-loading>
+} @else {
 <form [formGroup]="priceForm">
   <h3 class="text-4xl my-8">Tabla de Precios</h3>
   <div
@@ -109,3 +112,4 @@
     </button>
   </div>
 </form>
+}

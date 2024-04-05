@@ -71,7 +71,7 @@ export class SnackBarService {
         message,
         severity,
       },
-      //   duration: 5000,
+      duration: 5000,
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
     });

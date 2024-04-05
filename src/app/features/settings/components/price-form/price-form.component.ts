@@ -15,13 +15,14 @@ import {
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-price-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, NgClass],
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
+  imports: [ReactiveFormsModule, ButtonComponent, NgClass, LoadingComponent],
 })
 export class PriceFormComponent {
   snackBar = inject(SnackBarService);
