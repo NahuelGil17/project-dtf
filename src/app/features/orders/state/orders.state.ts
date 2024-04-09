@@ -18,6 +18,8 @@ import {
   GetOrdersByPage,
   GetOrdersBySearch,
   saveOrderFiles,
+  ChangeStatus,
+  DeleteOrder,
 } from './orders.actions';
 import { OrdersStateModel } from './orders.model';
 
@@ -147,7 +149,7 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(error, 'Error al obtener las ordenes');
+          this.snackBar.showError('Error al cambiar el estado de la orden', error);
           return throwError(() => new Error(error));
         })
       )
@@ -168,7 +170,7 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(error, `Error al eliminar la orden ${action.orderId}`);
+          this.snackBar.showError('', `Error al eliminar la orden ${action.orderId}`);
           return throwError(() => new Error(error));
         })
       )
