@@ -3,8 +3,9 @@ import { OrdersStateModel } from './orders.model';
 import { DebugElement, Injectable, inject } from '@angular/core';
 import {
   GetTotalOrdersByUserId,
-  getOrdersBySearch,
-  getOrdersByPage,
+  GetOrdersBySearch,
+  GetOrdersByPage,
+  ChangeStatus,
 } from './orders.actions';
 import { OrderService } from '../services/order.service';
 import {
@@ -90,8 +91,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersBySearch, { cancelUncompleted: true })
-  getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
+  @Action(GetOrdersBySearch, { cancelUncompleted: true })
+  getOrdersBySearch(ctx: any, action: GetOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService
       .searchOrders(action.userId, action.isAdmin, action.search)
@@ -113,8 +114,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersByPage, { cancelUncompleted: true })
-  getOrdersByPage(ctx: any, action: getOrdersByPage) {
+  @Action(GetOrdersByPage, { cancelUncompleted: true })
+  getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
       .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
@@ -132,6 +133,27 @@ export class OrdersState {
       )
       .subscribe();
   }
+
+  @Action(ChangeStatus, { cancelUncompleted: true })
+  changeStatus(ctx: any, action: ChangeStatus) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .changeStatus(action.orderId,action.statusValue)
+      .pipe(
+        tap(
+          (orders: Order[] | void) => {
+            ctx.patchState({ orders, loading: false });
+          },
+          catchError((error: any) => {
+            ctx.patchState({ loading: false });
+            this.toastService.error(error, 'Error al obtener las ordenes');
+            return throwError(() => new Error(error));
+          })
+        )
+      )
+      .subscribe();
+  }
+
 
   @Action(SaveOrder, { cancelUncompleted: true })
   saveOrder(ctx: any, action: SaveOrder) {
@@ -195,6 +217,7 @@ export class OrdersState {
       })
     );
   }
+
 
   getErrorMessage(error: any): string {
     let errorMessage = 'An unknown error occurred!';

@@ -160,7 +160,8 @@
                   @for (status of statusArray; track $index) {
                   <li
                     [value]="status.value"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                    (click)="confirmChangeStatus(order.id, status.value, status.text)"
                   >
                     {{ status.text }}
                   </li>
@@ -172,7 +173,7 @@
             <td>
               <button
                 matTooltip="Cancelar pedido"
-                (click)="confirmChangeStatus(order)"
+                (click)="confirmChangeStatus(order.id, 4, 'Cancelado')"
                 class="flex items-center rounded-lg px-2 py-1 bg-red-500 hover:bg-red-700 text-white"
               >
                 <picture class="w-6 h-6 mx-4">
@@ -198,7 +199,7 @@
             <td>
               <button
                 matTooltip="Eliminar pedido"
-                (click)="confirmChangeStatus(order)"
+                (click)="confirmChangeStatus(order.id, 5, 'Eli')"
                 class="flex items-center rounded-lg px-2 py-1 bg-red-500 hover:bg-red-700 text-white"
               >
                 <picture class="w-6 h-6 mx-4">

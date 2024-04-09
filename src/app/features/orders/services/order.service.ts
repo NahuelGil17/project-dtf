@@ -14,6 +14,8 @@ import {
   limitToLast,
   startAfter,
   where,
+  updateDoc,
+  DocumentReference,
 } from '@angular/fire/firestore';
 import { Observable, from, map, combineLatest } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
@@ -38,7 +40,14 @@ export class OrderService {
 
   GetTotalOrdersByUserId(userId: string, isAdmin: boolean): Observable<number> {
     let ordersRef = collection(this.fireStore, 'orders');
-    const ordersQuery = query(ordersRef, where('userId', '==', userId));
+
+    let ordersQuery: any;
+
+    if (isAdmin) {
+      ordersQuery = query(ordersRef);
+    } else {
+      ordersQuery = query(ordersRef, where('userId', '==', userId));
+    }
 
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
@@ -53,41 +62,48 @@ export class OrderService {
     input: string
   ): Observable<Order[] | void> {
     input = input.toLowerCase();
-  
     const startName = input;
     const endName = input + '\uf8ff';
     let ordersRef = collection(this.fireStore, 'orders');
-  
-    // Consulta para buscar por workName
-    const workNameQuery = query(
-      ordersRef,
-      where('userId', '==', userId),
-      where('workName', '>=', startName),
-      where('workName', '<=', endName),
-      orderBy('workName')
-    );
-  
-    //Consulta para buscar por id
-    const idQuery = query(
-      ordersRef,
-      where('userId', '==', userId),
-      where('custId', '>=', startName),
-      where('custId', '<=', endName),
-      orderBy('custId')
-    );
+
+    let workNameQuery: any;
+    let idQuery: any;
+
+    if (isAdmin) {
+      // Consulta para buscar por workName
+      workNameQuery = query(
+        ordersRef,
+        where('workName', '>=', startName),
+        where('workName', '<=', endName),
+        orderBy('workName')
+      );
+      //Consulta para buscar por id
+      idQuery = query(
+        ordersRef,
+        where('custId', '>=', startName),
+        where('custId', '<=', endName),
+        orderBy('custId')
+      );
+    } else {
+      // Consulta para buscar por workName
+      workNameQuery = query(
+        ordersRef,
+        where('userId', '==', userId),
+        where('workName', '>=', startName),
+        where('workName', '<=', endName),
+        orderBy('workName')
+      );
+      //Consulta para buscar por id
+      idQuery = query(
+        ordersRef,
+        where('userId', '==', userId),
+        where('custId', '>=', startName),
+        where('custId', '<=', endName),
+        orderBy('custId')
+      );
+    }
+
     this.lastDoc = null;
-    // return from(getDocs(idQuery)).pipe(
-    //   map((snapshot) => {
-    //     const orders: Order[] = [];
-    //     snapshot.forEach((doc) => {
-    //       const data = doc.data();
-    //       if (data) {
-    //         orders.push({ id: doc.id, ...data } as Order);
-    //       }
-    //     });
-    //     return orders;
-    //   })
-    // );
 
     // Combino ambos resultados de ambas consultas en un solo observable
     return combineLatest([
@@ -132,32 +148,55 @@ export class OrderService {
     let ordersQuery: any;
     let ordersRef = collection(this.fireStore, 'orders');
 
-    if (isNextPage === 'next' && this.lastDoc) {
-      ordersQuery = query(
-        ordersRef,
-        where('userId', '==', userId),
-        orderBy('workName'),
-        startAfter(this.lastDoc),
-        limit(pageSize)
-      );
+    if (isAdmin) {
+      if (isNextPage === 'next' && this.lastDoc) {
+        ordersQuery = query(
+          ordersRef,
+          orderBy('workName'),
+          startAfter(this.lastDoc),
+          limit(pageSize)
+        );
+      }
+      if (isNextPage === 'prev' && this.lastDoc) {
+        ordersQuery = query(
+          ordersRef,
+          orderBy('workName'),
+          endBefore(this.lastDoc),
+          limit(pageSize)
+        );
+      }
+      if (isNextPage === null) {
+        ordersQuery = query(ordersRef, orderBy('workName'), limit(pageSize));
+      }
+    } else {
+      if (isNextPage === 'next' && this.lastDoc) {
+        ordersQuery = query(
+          ordersRef,
+          where('userId', '==', userId),
+          orderBy('workName'),
+          startAfter(this.lastDoc),
+          limit(pageSize)
+        );
+      }
+      if (isNextPage === 'prev' && this.lastDoc) {
+        ordersQuery = query(
+          ordersRef,
+          where('userId', '==', userId),
+          orderBy('workName'),
+          endBefore(this.lastDoc),
+          limit(pageSize)
+        );
+      }
+      if (isNextPage === null) {
+        ordersQuery = query(
+          ordersRef,
+          where('userId', '==', userId),
+          orderBy('workName'),
+          limit(pageSize)
+        );
+      }
     }
-    if (isNextPage === 'prev' && this.lastDoc) {
-      ordersQuery = query(
-        ordersRef,
-        where('userId', '==', userId),
-        orderBy('workName'),
-        endBefore(this.lastDoc),
-        limit(pageSize)
-      );
-    }
-    if (isNextPage === null) {
-      ordersQuery = query(
-        ordersRef,
-        where('userId', '==', userId),
-        orderBy('workName'),
-        limit(pageSize)
-      );
-    }
+
     return from(getDocs(ordersQuery)).pipe(
       map((snapshot) => {
         const orders: Order[] = [];
@@ -172,6 +211,11 @@ export class OrderService {
         return orders;
       })
     );
+  }
+
+  changeStatus(orderId: string, statusValue: number): Observable<void> {
+    const orderRef: DocumentReference = doc(this.fireStore, 'orders', orderId);
+    return from(updateDoc(orderRef, { status: statusValue }));
   }
 
   getOrders() {
