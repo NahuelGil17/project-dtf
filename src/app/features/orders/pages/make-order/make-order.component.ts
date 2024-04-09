@@ -11,6 +11,7 @@ import { Observable, take } from 'rxjs';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { IdGeneratorService } from '../../services/idGeneretor.service';
 
 @Component({
   selector: 'app-make-order',
@@ -26,6 +27,7 @@ export class MakeOrderComponent {
   actions = inject(Actions);
   toastrService = inject(ToastrService);
   router = inject(Router);
+  idGenerator = inject(IdGeneratorService);
 
   saveOrder(formData: OrderForm) {
     if (!formData) {
@@ -52,6 +54,7 @@ export class MakeOrderComponent {
           status: 0,
           creationDate: new Date().valueOf(),
           userId: this.store.selectSnapshot(AuthState).preferences.uid,
+          custId: `pe#${this.idGenerator.generateUniqueId()}`,
         };
         this.store.dispatch(new SaveOrder(newOrder));
         this.actions
