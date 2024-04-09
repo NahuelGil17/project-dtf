@@ -8,18 +8,19 @@ import {
   tap,
   throwError,
 } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Order } from '../interfaces/order.interface';
 import { OrderService } from '../services/order.service';
 import {
+  ChangeStatus,
   GetAvatarUrl,
+  GetOrdersByPage,
+  GetOrdersBySearch,
   GetTotalOrdersByUserId,
   SaveOrder,
-  getOrdersByPage,
-  getOrdersBySearch,
   saveOrderFiles,
 } from './orders.actions';
 import { OrdersStateModel } from './orders.model';
-import Swal from 'sweetalert2';
 
 @State<OrdersStateModel>({
   name: 'orders',
@@ -89,8 +90,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersBySearch, { cancelUncompleted: true })
-  getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
+  @Action(GetOrdersBySearch, { cancelUncompleted: true })
+  getOrdersBySearch(ctx: any, action: GetOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService
       .searchOrders(action.userId, action.isAdmin, action.search)
@@ -116,11 +117,38 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersByPage, { cancelUncompleted: true })
-  getOrdersByPage(ctx: any, action: getOrdersByPage) {
+  @Action(GetOrdersByPage, { cancelUncompleted: true })
+  getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
       .getOrdersByPage(action.userId, action.isAdmin, action.isNextPage)
+      .pipe(
+        tap(
+          (orders: Order[] | void) => {
+            ctx.patchState({ orders, loading: false });
+          },
+          catchError((error: any) => {
+            ctx.patchState({ loading: false });
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error al obtener las ordenes',
+              validationMessage: error,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            return throwError(() => new Error(error));
+          })
+        )
+      )
+      .subscribe();
+  }
+
+  @Action(ChangeStatus, { cancelUncompleted: true })
+  changeStatus(ctx: any, action: ChangeStatus) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .changeStatus(action.orderId, action.statusValue)
       .pipe(
         tap(
           (orders: Order[] | void) => {

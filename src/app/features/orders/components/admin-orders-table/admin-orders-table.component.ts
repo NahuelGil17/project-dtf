@@ -13,9 +13,10 @@ import { Order } from '../../interfaces/order.interface';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 import { OrderService } from '../../services/order.service';
 import {
+  ChangeStatus,
   GetTotalOrdersByUserId,
-  getOrdersByPage,
-  getOrdersBySearch,
+  GetOrdersByPage,
+  GetOrdersBySearch,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -90,7 +91,7 @@ export class AdminOrdersTableComponent {
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
       this.store.dispatch(
-        new getOrdersBySearch(this.userId, this.isAdmin, inputSearch)
+        new GetOrdersBySearch(this.userId, this.isAdmin, inputSearch)
       );
     } else {
       this.currentPage = 1;
@@ -101,7 +102,7 @@ export class AdminOrdersTableComponent {
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
     this.store.dispatch(
-      new getOrdersByPage(this.userId, this.isAdmin, isNextPage)
+      new GetOrdersByPage(this.userId, this.isAdmin, isNextPage)
     );
   }
 
@@ -149,10 +150,14 @@ export class AdminOrdersTableComponent {
     });
   }
 
-  confirmChangeStatus(order: Order): void {
+  confirmChangeStatus(
+    orderID: string,
+    statusValue: number,
+    statusText: string
+  ): void {
     Swal.fire({
       title: 'Quieres cambiar el estado?',
-      text: `Quieres cambiar el estado a ${this.checkStatus(order.status + 1)}`,
+      text: `Quieres cambiar el estado a ${statusText}?`,
       icon: 'warning',
       //showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -160,32 +165,22 @@ export class AdminOrdersTableComponent {
       confirmButtonText: 'Si, cambiar!',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.changeStatus(orderID, statusValue).subscribe(() => {
+          
+           this.getOrderByPage(null);
+        });
         Swal.fire({
           title: 'Cambiado!',
-          text: `El estado ha sido cambiado a ${this.checkStatus(
-            order.status + 1
-          )}.`,
+          text: `El estado ha sido cambiado a ${statusText}.`,
           icon: 'success',
         });
       }
     });
-    console.log('changeStatus', order.custId);
-  }
-  checkStatus(status: number): string {
-    let _status = Status[status];
-    switch (_status) {
-      case 'INPROGRESS':
-        return 'EN PROCESO';
-      case 'FINISHED':
-        return 'TERMINADO';
-      case 'DELIVERED':
-        return 'ENTREGADO';
-      default:
-        return 'ENTREGADO';
-    }
   }
 
-  changeStatus(order: Order): void {}
+   changeStatus(orderID: string, statusValue: number): Observable<void> {
+    return this.store.dispatch(new ChangeStatus(orderID, statusValue));
+  }
 
   openChangeStatusDropdown(orderId: string): void {
     this.store.select(OrdersState.orders).subscribe((orders) => {
