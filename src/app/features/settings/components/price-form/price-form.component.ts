@@ -5,7 +5,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TableSend } from '../../interfaces/settings.interface';
@@ -14,12 +14,14 @@ import {
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { Observable } from 'rxjs';
+import { SettingsState } from '../../state/setting.state';
 
 @Component({
   selector: 'app-price-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, NgClass],
+  imports: [ReactiveFormsModule, ButtonComponent, NgClass, AsyncPipe],
   templateUrl: './price-form.component.html',
   styleUrl: './price-form.component.css',
 })
@@ -29,7 +31,7 @@ export class PriceFormComponent {
     columns: string[];
     rows: string[][];
   };
-  @Input() isLoading: boolean | null = false;
+  @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
   nameButton: string = '';
   priceForm!: FormGroup;
 

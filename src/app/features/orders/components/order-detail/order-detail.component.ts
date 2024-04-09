@@ -5,18 +5,28 @@ import { OrderStatusPipe } from "../../pipes/order-status.pipe";
 import { FormatDatePipe } from "../../../../shared/pipes/format-date.pipe";
 import { OrderTypePipe } from "../../pipes/order-type.pipe";
 import { CommonModule } from '@angular/common';
+import { OrderModePipe } from '../../../../shared/pipes/order-mode.pipe';
 
 @Component({
-    selector: 'app-order-detail',
-    standalone: true,
-    templateUrl: './order-detail.component.html',
-    styleUrl: './order-detail.component.css',
-    imports: [CommonModule,OrderStatusPipe, FormatDatePipe, OrderTypePipe]
+  selector: 'app-order-detail',
+  standalone: true,
+  templateUrl: './order-detail.component.html',
+  styleUrl: './order-detail.component.css',
+  imports: [
+    CommonModule,
+    OrderStatusPipe,
+    FormatDatePipe,
+    OrderTypePipe,
+    OrderModePipe,
+  ],
 })
 export class OrderDetailComponent {
   isOpen = false;
 
-  constructor(@Inject(DIALOG_DATA) public data: { order: Order },private dialogRef: DialogRef) {}
+  constructor(
+    @Inject(DIALOG_DATA) public data: { order: Order },
+    private dialogRef: DialogRef
+  ) {}
 
   close() {
     this.dialogRef.close();
