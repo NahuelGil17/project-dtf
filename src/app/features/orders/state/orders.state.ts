@@ -13,6 +13,7 @@ import { Order } from '../interfaces/order.interface';
 import { OrderService } from '../services/order.service';
 import {
   ChangeStatus,
+  DeleteOrder,
   GetAvatarUrl,
   GetOrdersByPage,
   GetOrdersBySearch,
@@ -160,6 +161,33 @@ export class OrdersState {
               position: 'top-end',
               icon: 'error',
               title: 'Error al obtener las ordenes',
+              validationMessage: error,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            return throwError(() => new Error(error));
+          })
+        )
+      )
+      .subscribe();
+  }
+
+  @Action(DeleteOrder, { cancelUncompleted: true })
+  deleteOrder(ctx: any, action: DeleteOrder) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .deleteOrder(action.orderId)
+      .pipe(
+        tap(
+          (orders: Order[] | void) => {
+            ctx.patchState({ orders, loading: false });
+          },
+          catchError((error: any) => {
+            ctx.patchState({ loading: false });
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: `Error al eliminar la orden ${action.orderId}`,
               validationMessage: error,
               showConfirmButton: false,
               timer: 1500,

@@ -16,6 +16,7 @@ import {
   where,
   updateDoc,
   DocumentReference,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { Observable, from, map, combineLatest } from 'rxjs';
 import { Order } from '../interfaces/order.interface';
@@ -216,6 +217,11 @@ export class OrderService {
   changeStatus(orderId: string, statusValue: number): Observable<void> {
     const orderRef: DocumentReference = doc(this.fireStore, 'orders', orderId);
     return from(updateDoc(orderRef, { status: statusValue }));
+  }
+
+  deleteOrder(orderId: string): Observable<void> {
+    const orderRef: DocumentReference = doc(this.fireStore, 'orders', orderId);
+    return from(deleteDoc(orderRef));
   }
 
   getOrders() {
