@@ -12,6 +12,7 @@ import {
 } from './setting.action';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 
 @State<SettingsStateModel>({
   name: 'settings',
@@ -25,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({ providedIn: 'root' })
 export class SettingsState {
   settingsService = inject(SettingsService);
-  toastService = inject(ToastrService);
+  snackbarService: any = inject(SnackBarService);
 
   @Selector()
   static settingsLoading(state: SettingsStateModel): boolean | undefined {
@@ -60,7 +61,7 @@ export class SettingsState {
         ctx.patchState({ loading: false });
       }),
       catchError((error) => {
-        this.toastService.error('Error al cargar configuración');
+        this.snackbarService.showError('', 'Error al cargar configuración');
         return throwError(() => error);
       })
     );
@@ -75,10 +76,10 @@ export class SettingsState {
     return this.settingsService.createTable(table).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.toastService.success('Tabla creada con éxito');
+        this.snackbarService.showSuccess('', 'Tabla creada con éxito');
       }),
       catchError((error) => {
-        this.toastService.error('Error creando tabla');
+        this.snackbarService.showError('', 'Error creando tabla');
         return throwError(() => error);
       })
     );
@@ -94,10 +95,10 @@ export class SettingsState {
     return this.settingsService.updateTable(id, table).pipe(
       tap((settings: any) => {
         ctx.patchState({ loading: false });
-        this.toastService.success('Tabla actualizada con éxito');
+        this.snackbarService.showSuccess('', 'Tabla actualizada con éxito');
       }),
       catchError((error) => {
-        this.toastService.error('Error actualizando tabla');
+        this.snackbarService.showError('', 'Error actualizando tabla');
         return throwError(() => error);
       })
     );
@@ -111,11 +112,11 @@ export class SettingsState {
     return this.settingsService.removeTable(action.payload).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.toastService.success('Tabla eliminada con éxito');
+        this.snackbarService.showSuccess('', 'Tabla eliminada con éxito');
       }),
       catchError((error) => {
-        this.toastService.error('Error eliminando tabla');
-        return throwError(error);
+        this.snackbarService.showError('', 'Error eliminando tabla');
+        return throwError(() => error);
       })
     );
   }
@@ -128,11 +129,11 @@ export class SettingsState {
     return this.settingsService.createVideo(action.payload.url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.toastService.success('Video creado con éxito');
+        this.snackbarService.showSuccess('', 'Video creado con éxito');
       }),
       catchError((error) => {
-        this.toastService.error('Error creando video');
-        return throwError(error);
+        this.snackbarService.showError('', 'Error creando video');
+        return throwError(() => error);
       })
     );
   }
@@ -146,11 +147,11 @@ export class SettingsState {
     return this.settingsService.updateVideo(videoId, url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.toastService.success('Video actualizado con éxito');
+        this.snackbarService.showSuccess('', 'Video actualizado con éxito');
       }),
       catchError((error) => {
-        this.toastService.error('Error actualizando video');
-        return throwError(error);
+        this.snackbarService.showError('', 'Error actualizando video');
+        return throwError(() => error);
       })
     );
   }

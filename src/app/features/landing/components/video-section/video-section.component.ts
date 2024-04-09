@@ -25,8 +25,7 @@ export class VideoSectionComponent {
         tap(() => {
           const settings = this.store.selectSnapshot(SettingsState);
           if (settings.videos.url) {
-            this.videoId = Object.values(settings.videos.url).toString();
-            this.videoId = this.videoId.split('v=')[1];
+            this.videoId = settings.videos.url.split('v=')[1];
             if (this.videoId.includes('&')) {
               this.videoId = this.videoId.split('&')[0];
             }

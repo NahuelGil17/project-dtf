@@ -1,29 +1,25 @@
+import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { OrdersStateModel } from './orders.model';
-import { DebugElement, Injectable, inject } from '@angular/core';
 import {
-  GetTotalOrdersByUserId,
-  getOrdersBySearch,
-  getOrdersByPage,
-} from './orders.actions';
-import { OrderService } from '../services/order.service';
-import {
-  catchError,
-  tap,
-  throwError,
   Observable,
+  catchError,
   exhaustMap,
   forkJoin,
+  tap,
+  throwError,
 } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import {} from 'rxjs';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 import { Order } from '../interfaces/order.interface';
+import { OrderService } from '../services/order.service';
 import {
   GetAvatarUrl,
-  GetOrdersByUserId,
+  GetTotalOrdersByUserId,
   SaveOrder,
+  getOrdersByPage,
+  getOrdersBySearch,
   saveOrderFiles,
 } from './orders.actions';
+import { OrdersStateModel } from './orders.model';
 
 @State<OrdersStateModel>({
   name: 'orders',
@@ -41,7 +37,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class OrdersState {
   orderService = inject(OrderService);
-  toastService = inject(ToastrService);
+  snackBar = inject(SnackBarService);
 
   @Selector() currentFiles(
     state: OrdersStateModel
@@ -75,9 +71,9 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(
-            error,
-            'Error al obtener el total de las ordenes del usuario'
+          this.snackBar.showError(
+            'Error al obtener el total de las ordenes del usuario',
+            error
           );
           return throwError(() => new Error(error));
         })
@@ -97,9 +93,9 @@ export class OrdersState {
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.toastService.error(
-              error,
-              'Error al obtener las ordenes buscadas'
+            this.snackBar.showError(
+              'Error al obtener las ordenes buscadas',
+              error
             );
             return throwError(() => new Error(error));
           })
@@ -120,7 +116,7 @@ export class OrdersState {
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.toastService.error(error, 'Error al obtener las ordenes');
+            this.snackBar.showError('Error al obtener las ordenes', error);
             return throwError(() => new Error(error));
           })
         )
@@ -139,7 +135,7 @@ export class OrdersState {
         },
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(error, 'Error al guardar la orden');
+          this.snackBar.showError('Error al guardar la orden', error);
           return throwError(() => error);
         })
       )
@@ -163,7 +159,7 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.toastService.error(error, 'Error al guardar los archivos');
+        this.snackBar.showError('Error al guardar los archivos', error);
         return throwError(() => error);
       })
     );
@@ -185,7 +181,7 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.toastService.error(error, 'Error al obtener la url del avatar');
+        this.snackBar.showError('Error al obtener la url del avatar', error);
         return throwError(() => error);
       })
     );
