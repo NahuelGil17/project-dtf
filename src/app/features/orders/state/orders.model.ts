@@ -1,4 +1,4 @@
-import { Order } from "../interfaces/order.interface";
+import { Order } from '../interfaces/order.interface';
 
 export class OrdersStateModel {
   loading?: boolean;
@@ -9,4 +9,5 @@ export class OrdersStateModel {
   totalOrders?: number;
   pageSize?: number;
   filterInput?: string;
+  adminTotalOrders?: number;
 }

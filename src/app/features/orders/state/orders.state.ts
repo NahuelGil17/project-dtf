@@ -31,13 +31,22 @@ import { OrdersStateModel } from './orders.model';
     selectedOrder: null,
     currentFiles: [],
     page: 1,
-
+    adminTotalOrders: 0,
     totalOrders: 0,
     filterInput: '',
   },
 })
 @Injectable({ providedIn: 'root' })
 export class OrdersState {
+  dispatch(arg0: GetTotalOrdersByUserId) {
+    throw new Error('Method not implemented.');
+  }
+  selectSnapshot(currentUserId: any): string {
+    throw new Error('Method not implemented.');
+  }
+  select(totalOrders: (state: OrdersStateModel) => number | undefined) {
+    throw new Error('Method not implemented.');
+  }
   orderService = inject(OrderService);
   snackBar = inject(SnackBarService);
 
@@ -67,6 +76,11 @@ export class OrdersState {
     return state.totalOrders;
   }
 
+  @Selector()
+  static adminTotalOrders(state: OrdersStateModel): number | undefined {
+    return state.adminTotalOrders;
+  }
+
   @Action(GetTotalOrdersByUserId, { cancelUncompleted: true })
   GetTotalOrdersByUserId(ctx: any, action: GetTotalOrdersByUserId) {
     ctx.patchState({ loading: true });
@@ -74,6 +88,7 @@ export class OrdersState {
       .GetTotalOrdersByUserId(action.userId, action.isAdmin)
       .pipe(
         tap((totalOrders: number) => {
+          if (action.isAdmin) ctx.patchState({ adminTotalOrders: totalOrders });
           ctx.patchState({ totalOrders, loading: false });
         }),
         catchError((error: any) => {
@@ -115,7 +130,7 @@ export class OrdersState {
   getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
-      .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
+      .getOrdersByPage(action.userId, action.isAdmin, action.isNextPage)
       .pipe(
         tap(
           (orders: Order[] | void) => {
@@ -135,13 +150,13 @@ export class OrdersState {
   changeStatus(ctx: any, action: ChangeStatus) {
     ctx.patchState({ loading: true });
     this.orderService
-      .changeStatus(action.orderId,action.statusValue)
+      .changeStatus(action.orderId, action.statusValue)
       .pipe(
         tap(() => {
           const state = ctx.getState();
-          const updatedOrders = state.orders.map((order: { id: string; }) => {
+          const updatedOrders = state.orders.map((order: { id: string }) => {
             if (order.id === action.orderId) {
-              return { ...order, status: action.statusValue }; 
+              return { ...order, status: action.statusValue };
             }
             return order;
           });
@@ -149,7 +164,10 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError('Error al cambiar el estado de la orden', error);
+          this.snackBar.showError(
+            'Error al cambiar el estado de la orden',
+            error
+          );
           return throwError(() => new Error(error));
         })
       )
@@ -165,12 +183,17 @@ export class OrdersState {
         tap(() => {
           // Eliminar la orden del estado local después de que se haya eliminado con éxito
           const state = ctx.getState();
-          const updatedOrders = state.orders.filter((order: { id: string; }) => order.id !== action.orderId);
+          const updatedOrders = state.orders.filter(
+            (order: { id: string }) => order.id !== action.orderId
+          );
           ctx.patchState({ orders: updatedOrders, loading: false });
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError('', `Error al eliminar la orden ${action.orderId}`);
+          this.snackBar.showError(
+            '',
+            `Error al eliminar la orden ${action.orderId}`
+          );
           return throwError(() => new Error(error));
         })
       )
@@ -239,7 +262,6 @@ export class OrdersState {
       })
     );
   }
-
 
   getErrorMessage(error: any): string {
     let errorMessage = 'An unknown error occurred!';
