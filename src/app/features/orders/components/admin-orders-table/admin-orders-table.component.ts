@@ -1,28 +1,38 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { environment } from '../../../../environment/environment.develop';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
-import { UserPreferences } from '../../../auth/interfaces/auth.interface';
 import { AuthState } from '../../../auth/state/auth.state';
 import { Order } from '../../interfaces/order.interface';
 import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 import { OrderService } from '../../services/order.service';
 import {
+  ChangeStatus,
   GetTotalOrdersByUserId,
-  getOrdersBySearch,
-  getOrdersByPage,
+  GetOrdersByPage,
+  GetOrdersBySearch,
+  DeleteOrder,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
-import { Dialog } from '@angular/cdk/dialog';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
-import { environment } from '../../../../environment/environment.develop';
+import { Status } from './../../../../shared/enums/status.enum';
 
 @Component({
   selector: 'app-admin-orders-table',
   standalone: true,
-  imports: [CommonModule, FormatDatePipe, OrderStatusPipe, RouterModule],
+  imports: [
+    CommonModule,
+    FormatDatePipe,
+    OrderStatusPipe,
+    RouterModule,
+    MatTooltipModule,
+  ],
   templateUrl: './admin-orders-table.component.html',
   styleUrl: './admin-orders-table.component.css',
 })
@@ -41,6 +51,13 @@ export class AdminOrdersTableComponent {
   isLastPage: boolean = false;
   isFirstPage: boolean = true;
   onpenModal: boolean = false;
+  statusArray: any[] = [
+    { value: Status.PENDING, text: 'Pendiente' },
+    { value: Status.INPROGRESS, text: 'En Proceso' },
+    { value: Status.FINISHED, text: 'Terminado' },
+    { value: Status.DELIVERED, text: 'Entregado' },
+  ];
+  showDropdownChangeStatus: boolean = false;
 
   constructor(
     private orderService: OrderService,
@@ -51,7 +68,7 @@ export class AdminOrdersTableComponent {
 
   ngOnInit(): void {
     this.userId = this.store.selectSnapshot(AuthState.currentUserId);
-    
+
     if (!this.userId) return;
 
     this.getTotalOrdersByUserId(this.userId);
@@ -74,7 +91,9 @@ export class AdminOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
-      this.store.dispatch(new getOrdersBySearch(this.userId, this.isAdmin, inputSearch));
+      this.store.dispatch(
+        new GetOrdersBySearch(this.userId, this.isAdmin, inputSearch)
+      );
     } else {
       this.currentPage = 1;
       this.getOrderByPage(null);
@@ -83,7 +102,9 @@ export class AdminOrdersTableComponent {
 
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
-    this.store.dispatch(new getOrdersByPage(this.userId, this.isAdmin, isNextPage));
+    this.store.dispatch(
+      new GetOrdersByPage(this.userId, this.isAdmin, isNextPage)
+    );
   }
 
   previousPage(): void {
@@ -130,7 +151,67 @@ export class AdminOrdersTableComponent {
     });
   }
 
-  changeStatus(id: String): void {
-    console.log('changeStatus', id);
+  confirmChangeStatus(
+    orderID: string,
+    statusValue: number,
+    statusText: string
+  ): void {
+    Swal.fire({
+      title: 'Quieres cambiar el estado?',
+      text: `Quieres cambiar el estado a ${statusText}?`,
+      icon: 'warning',
+      //showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cambiar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.changeStatus(orderID, statusValue).subscribe(() => {
+          this.getOrderByPage(null);
+        });
+        Swal.fire({
+          title: 'Cambiado!',
+          text: `El estado ha sido cambiado a ${statusText}.`,
+          icon: 'success',
+        });
+      }
+    });
+  }
+
+  changeStatus(orderID: string, statusValue: number): Observable<void> {
+    return this.store.dispatch(new ChangeStatus(orderID, statusValue));
+  }
+
+  deleteOrder(orderId: string, custId:string): void {
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: `Estas seguro que quieres eliminar la orden id: ${custId}?`,
+      icon: 'warning',
+      //showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.store.dispatch(new DeleteOrder(orderId));
+        Swal.fire({
+          title: 'Eliminado!',
+          text: 'La orden ha sido eliminada.',
+          icon: 'success',
+        });
+      }
+    });
+  }
+
+  openChangeStatusDropdown(orderId: string): void {
+    this.store.select(OrdersState.orders).subscribe((orders) => {
+      orders?.map((order) => {
+        if (order && order.id === orderId) {
+          order.showDropdownChangeStatus = !order.showDropdownChangeStatus;
+        } else {
+          order.showDropdownChangeStatus = false;
+        }
+      });
+    });
   }
 }
