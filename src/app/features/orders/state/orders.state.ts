@@ -15,8 +15,8 @@ import {
   GetAvatarUrl,
   GetTotalOrdersByUserId,
   SaveOrder,
-  getOrdersByPage,
-  getOrdersBySearch,
+  GetOrdersByPage,
+  GetOrdersBySearch,
   saveOrderFiles,
 } from './orders.actions';
 import { OrdersStateModel } from './orders.model';
@@ -52,7 +52,12 @@ export class OrdersState {
 
   @Selector()
   static orders(state: OrdersStateModel): Order[] | undefined {
-    return state.orders ?? [];
+    return state.orders?.map((order: Order) => {
+      return {
+        ...order,
+        showDropdownChangeStatus: false,
+      };
+    });
   }
 
   @Selector()
@@ -81,8 +86,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersBySearch, { cancelUncompleted: true })
-  getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
+  @Action(GetOrdersBySearch, { cancelUncompleted: true })
+  getOrdersBySearch(ctx: any, action: GetOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService
       .searchOrders(action.userId, action.isAdmin, action.search)
@@ -104,8 +109,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersByPage, { cancelUncompleted: true })
-  getOrdersByPage(ctx: any, action: getOrdersByPage) {
+  @Action(GetOrdersByPage, { cancelUncompleted: true })
+  getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
       .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
@@ -120,6 +125,52 @@ export class OrdersState {
             return throwError(() => new Error(error));
           })
         )
+      )
+      .subscribe();
+  }
+
+  @Action(ChangeStatus, { cancelUncompleted: true })
+  changeStatus(ctx: any, action: ChangeStatus) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .changeStatus(action.orderId,action.statusValue)
+      .pipe(
+        tap(() => {
+          const state = ctx.getState();
+          const updatedOrders = state.orders.map((order: { id: string; }) => {
+            if (order.id === action.orderId) {
+              return { ...order, status: action.statusValue }; 
+            }
+            return order;
+          });
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.toastService.error(error, 'Error al obtener las ordenes');
+          return throwError(() => new Error(error));
+        })
+      )
+      .subscribe();
+  }
+
+  @Action(DeleteOrder, { cancelUncompleted: true })
+  deleteOrder(ctx: any, action: DeleteOrder) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .deleteOrder(action.orderId)
+      .pipe(
+        tap(() => {
+          // Eliminar la orden del estado local después de que se haya eliminado con éxito
+          const state = ctx.getState();
+          const updatedOrders = state.orders.filter((order: { id: string; }) => order.id !== action.orderId);
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.toastService.error(error, `Error al eliminar la orden ${action.orderId}`);
+          return throwError(() => new Error(error));
+        })
       )
       .subscribe();
   }
@@ -186,6 +237,7 @@ export class OrdersState {
       })
     );
   }
+
 
   getErrorMessage(error: any): string {
     let errorMessage = 'An unknown error occurred!';

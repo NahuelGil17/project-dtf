@@ -11,8 +11,8 @@ import { OrderStatusPipe } from '../../pipes/order-status.pipe';
 import { OrderService } from '../../services/order.service';
 import {
   GetTotalOrdersByUserId,
-  getOrdersBySearch,
-  getOrdersByPage,
+  GetOrdersBySearch,
+  GetOrdersByPage,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 import { Dialog } from '@angular/cdk/dialog';
@@ -76,7 +76,7 @@ export class UserOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
-      this.store.dispatch(new getOrdersBySearch(this.userId, this.isAdmin, inputSearch));
+      this.store.dispatch(new GetOrdersBySearch(this.userId, this.isAdmin, inputSearch));
     } else {
       this.currentPage = 1;
       this.getOrderByPage(null);
@@ -85,7 +85,7 @@ export class UserOrdersTableComponent {
 
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
-    this.store.dispatch(new getOrdersByPage(this.userId, this.isAdmin, isNextPage));
+    this.store.dispatch(new GetOrdersByPage(this.userId, this.isAdmin, isNextPage));
   }
 
   previousPage(): void {

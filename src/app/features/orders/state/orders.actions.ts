@@ -7,15 +7,22 @@ export class SaveOrder {
 
 export class GetTotalOrdersByUserId {
   static readonly type = '[Orders] Get Total Orders By User Id';
-  constructor(public readonly userId: string, public readonly isAdmin: boolean) {}
+  constructor(
+    public readonly userId: string,
+    public readonly isAdmin: boolean
+  ) {}
 }
 
-export class getOrdersBySearch {
+export class GetOrdersBySearch {
   static readonly type = '[Orders] Get Orders By Search';
-  constructor(public readonly userId: string, public readonly isAdmin:boolean, public readonly search: string) {}
+  constructor(
+    public readonly userId: string,
+    public readonly isAdmin: boolean,
+    public readonly search: string
+  ) {}
 }
 
-export class getOrdersByPage {
+export class GetOrdersByPage {
   static readonly type = '[Orders] Get Orders By Page';
   constructor(
     public readonly userId: string,
@@ -41,4 +48,14 @@ export class saveOrder {
 export class GetAvatarUrl {
   static readonly type = '[Orders] Get Avatar Url';
   constructor(public readonly refs: any) {}
+}
+
+export class ChangeStatus {
+  static readonly type = '[Orders] Change Status';
+  constructor(public readonly orderId: string, public readonly statusValue: number) {}
+}
+
+export class DeleteOrder {
+  static readonly type = '[Orders] Delete Order';
+  constructor(public readonly orderId: string) {}
 }
