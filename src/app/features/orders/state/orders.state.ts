@@ -141,16 +141,21 @@ export class OrdersState {
     this.orderService
       .changeStatus(action.orderId,action.statusValue)
       .pipe(
-        tap(
-          (orders: Order[] | void) => {
-            ctx.patchState({ orders, loading: false });
-          },
-          catchError((error: any) => {
-            ctx.patchState({ loading: false });
-            this.toastService.error(error, 'Error al obtener las ordenes');
-            return throwError(() => new Error(error));
-          })
-        )
+        tap(() => {
+          const state = ctx.getState();
+          const updatedOrders = state.orders.map((order: { id: string; }) => {
+            if (order.id === action.orderId) {
+              return { ...order, status: action.statusValue }; 
+            }
+            return order;
+          });
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.toastService.error(error, 'Error al obtener las ordenes');
+          return throwError(() => new Error(error));
+        })
       )
       .subscribe();
   }
@@ -161,16 +166,17 @@ export class OrdersState {
     this.orderService
       .deleteOrder(action.orderId)
       .pipe(
-        tap(
-          (orders: Order[] | void) => {
-            ctx.patchState({ orders, loading: false });
-          },
-          catchError((error: any) => {
-            ctx.patchState({ loading: false });
-            this.toastService.error(error, `Error al eliminar la orden ${action.orderId}`);
-            return throwError(() => new Error(error));
-          })
-        )
+        tap(() => {
+          // Eliminar la orden del estado local después de que se haya eliminado con éxito
+          const state = ctx.getState();
+          const updatedOrders = state.orders.filter((order: { id: string; }) => order.id !== action.orderId);
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.toastService.error(error, `Error al eliminar la orden ${action.orderId}`);
+          return throwError(() => new Error(error));
+        })
       )
       .subscribe();
   }
