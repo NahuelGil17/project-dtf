@@ -1,4 +1,4 @@
-@if (isLoading) {
+@if (loading$ | async) {
 <app-loading></app-loading>
 } @else {
 <form [formGroup]="priceForm">
@@ -6,11 +6,7 @@
   <div
     class="flex max-w-[70rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-gray-200 px-6 pb-12 py-16 rounded-lg mb-8"
   >
-  @if(loading$ | async) {
-    
-  } @else {
-    
-  }
+    @if(loading$ | async) { } @else { }
     <div>
       <div formArrayName="columns" class="flex gap-3">
         @for (column of columnControls; track $index) {
