@@ -1,29 +1,27 @@
+import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { OrdersStateModel } from './orders.model';
-import { DebugElement, Injectable, inject } from '@angular/core';
 import {
-  GetTotalOrdersByUserId,
-  getOrdersBySearch,
-  getOrdersByPage,
-} from './orders.actions';
-import { OrderService } from '../services/order.service';
-import {
-  catchError,
-  tap,
-  throwError,
   Observable,
+  catchError,
   exhaustMap,
   forkJoin,
+  tap,
+  throwError,
 } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import {} from 'rxjs';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 import { Order } from '../interfaces/order.interface';
+import { OrderService } from '../services/order.service';
 import {
   GetAvatarUrl,
-  GetOrdersByUserId,
+  GetTotalOrdersByUserId,
   SaveOrder,
+  GetOrdersByPage,
+  GetOrdersBySearch,
   saveOrderFiles,
+  ChangeStatus,
+  DeleteOrder,
 } from './orders.actions';
+import { OrdersStateModel } from './orders.model';
 
 @State<OrdersStateModel>({
   name: 'orders',
@@ -41,7 +39,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class OrdersState {
   orderService = inject(OrderService);
-  toastService = inject(ToastrService);
+  snackBar = inject(SnackBarService);
 
   @Selector() currentFiles(
     state: OrdersStateModel
@@ -56,7 +54,12 @@ export class OrdersState {
 
   @Selector()
   static orders(state: OrdersStateModel): Order[] | undefined {
-    return state.orders ?? [];
+    return state.orders?.map((order: Order) => {
+      return {
+        ...order,
+        showDropdownChangeStatus: false,
+      };
+    });
   }
 
   @Selector()
@@ -75,9 +78,9 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(
-            error,
-            'Error al obtener el total de las ordenes del usuario'
+          this.snackBar.showError(
+            'Error al obtener el total de las ordenes del usuario',
+            error
           );
           return throwError(() => new Error(error));
         })
@@ -85,8 +88,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersBySearch, { cancelUncompleted: true })
-  getOrdersBySearch(ctx: any, action: getOrdersBySearch) {
+  @Action(GetOrdersBySearch, { cancelUncompleted: true })
+  getOrdersBySearch(ctx: any, action: GetOrdersBySearch) {
     ctx.patchState({ loading: true });
     this.orderService
       .searchOrders(action.userId, action.isAdmin, action.search)
@@ -97,9 +100,9 @@ export class OrdersState {
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.toastService.error(
-              error,
-              'Error al obtener las ordenes buscadas'
+            this.snackBar.showError(
+              'Error al obtener las ordenes buscadas',
+              error
             );
             return throwError(() => new Error(error));
           })
@@ -108,8 +111,8 @@ export class OrdersState {
       .subscribe();
   }
 
-  @Action(getOrdersByPage, { cancelUncompleted: true })
-  getOrdersByPage(ctx: any, action: getOrdersByPage) {
+  @Action(GetOrdersByPage, { cancelUncompleted: true })
+  getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
       .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
@@ -120,10 +123,56 @@ export class OrdersState {
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.toastService.error(error, 'Error al obtener las ordenes');
+            this.snackBar.showError('Error al obtener las ordenes', error);
             return throwError(() => new Error(error));
           })
         )
+      )
+      .subscribe();
+  }
+
+  @Action(ChangeStatus, { cancelUncompleted: true })
+  changeStatus(ctx: any, action: ChangeStatus) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .changeStatus(action.orderId,action.statusValue)
+      .pipe(
+        tap(() => {
+          const state = ctx.getState();
+          const updatedOrders = state.orders.map((order: { id: string; }) => {
+            if (order.id === action.orderId) {
+              return { ...order, status: action.statusValue }; 
+            }
+            return order;
+          });
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.snackBar.showError('Error al cambiar el estado de la orden', error);
+          return throwError(() => new Error(error));
+        })
+      )
+      .subscribe();
+  }
+
+  @Action(DeleteOrder, { cancelUncompleted: true })
+  deleteOrder(ctx: any, action: DeleteOrder) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .deleteOrder(action.orderId)
+      .pipe(
+        tap(() => {
+          // Eliminar la orden del estado local después de que se haya eliminado con éxito
+          const state = ctx.getState();
+          const updatedOrders = state.orders.filter((order: { id: string; }) => order.id !== action.orderId);
+          ctx.patchState({ orders: updatedOrders, loading: false });
+        }),
+        catchError((error: any) => {
+          ctx.patchState({ loading: false });
+          this.snackBar.showError('', `Error al eliminar la orden ${action.orderId}`);
+          return throwError(() => new Error(error));
+        })
       )
       .subscribe();
   }
@@ -139,7 +188,7 @@ export class OrdersState {
         },
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.toastService.error(error, 'Error al guardar la orden');
+          this.snackBar.showError('Error al guardar la orden', error);
           return throwError(() => error);
         })
       )
@@ -163,7 +212,7 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.toastService.error(error, 'Error al guardar los archivos');
+        this.snackBar.showError('Error al guardar los archivos', error);
         return throwError(() => error);
       })
     );
@@ -185,11 +234,12 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.toastService.error(error, 'Error al obtener la url del avatar');
+        this.snackBar.showError('Error al obtener la url del avatar', error);
         return throwError(() => error);
       })
     );
   }
+
 
   getErrorMessage(error: any): string {
     let errorMessage = 'An unknown error occurred!';

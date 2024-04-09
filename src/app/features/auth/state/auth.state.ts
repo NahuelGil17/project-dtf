@@ -3,7 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, exhaustMap, tap, throwError } from 'rxjs';
-import { RegisterForm, UserPreferences } from '../interfaces/auth.interface';
+import { SnackBarService } from '../../../core/services/snackbar.service';
+import { UserPreferences } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { GetUserPreferences, Login, Logout, Register } from './auth.actions';
 import { AuthStateModel } from './auth.model';
@@ -19,6 +20,7 @@ import { AuthStateModel } from './auth.model';
 @Injectable({ providedIn: 'root' })
 export class AuthState {
   authService = inject(AuthService);
+  snackBar = inject(SnackBarService);
 
   @Selector()
   static currentUserId(state: AuthStateModel): string | undefined {
@@ -51,8 +53,6 @@ export class AuthState {
     return state.preferences;
   }
 
-  constructor(private toastService: ToastrService) {}
-
   @Action(Login, { cancelUncompleted: true })
   login(ctx: StateContext<AuthStateModel>, action: Login): Observable<void> {
     ctx.patchState({ loading: true });
@@ -61,14 +61,14 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ auth: auth._tokenResponse, preferences: auth.user });
         ctx.patchState({ loading: false });
-        this.toastService.success('Sesión iniciada con éxito');
+        this.snackBar.showSuccess('', 'Sesión iniciada con éxito');
       }),
       exhaustMap((auth: any) => {
         return ctx.dispatch(new GetUserPreferences(auth.user.uid));
       }),
       catchError((err: HttpErrorResponse) => {
         const errMessage = this.getErrorMessage(err);
-        this.toastService.error(errMessage, 'Error al iniciar sesión');
+        this.snackBar.showError('Error al iniciar sesión', errMessage);
         ctx.patchState({ loading: false });
         return throwError(() => err);
       })
@@ -105,12 +105,12 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ loading: false });
         this.authService.createUserDoc(auth.user, action.payload);
-        this.toastService.success('Usuario registrado con éxito');
+        this.snackBar.showSuccess('', 'Usuario registrado con éxito');
       }),
       catchError((err: HttpErrorResponse) => {
         ctx.patchState({ loading: false });
         const errMessage = this.getErrorMessage(err);
-        this.toastService.error(errMessage, 'Error al registrar usuario');
+        this.snackBar.showError('Error al registrar usuario', errMessage);
         return throwError(() => err);
       })
     );
@@ -130,7 +130,7 @@ export class AuthState {
       catchError((err: HttpErrorResponse) => {
         ctx.patchState({ loading: false });
         const errMessage = this.getErrorMessage(err);
-        this.toastService.error(errMessage, 'Error al obtener preferencias');
+        this.snackBar.showError('Error al obtener preferencias', errMessage);
         return throwError(() => err);
       })
     );

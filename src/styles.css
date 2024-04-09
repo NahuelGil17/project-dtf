@@ -21,6 +21,21 @@
     }
 }
 
+.alert-info {
+    @apply ring-1 ring-info-100 bg-info-50 text-info-100 ;
+}
+
+.alert-success {
+    @apply ring-1 ring-success-100 bg-success-50 text-success-100;
+}
+
+.alert-warning {
+    @apply ring-1 ring-warning-100 bg-warning-50 text-warning-100;
+}
+
+.alert-error {
+    @apply ring-1 ring-error-100 bg-error-50 text-error-100;
+}
 
 
 html, body { height: 100%; }

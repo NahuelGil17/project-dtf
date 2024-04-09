@@ -87,37 +87,34 @@
             class="border-b dark:border-gray-700"
           >
             <td class="px-4 py-3">
-              
-              @if(order.files[0]){ 
+              @if(order.files[0]){ @if(order.files[0].type.match('image')){
 
-                @if(order.files[0].type.match('image')){
-                 
-                  <a [href]="order.files[0].file" target="_blank">
-                    <img
-                    [src]="order.files[0].file"
-                    alt="Imagen de la orden"
-                    class="w-10 h-10 rounded-lg"                    
-                    />
-                  </a>
-                  
-                }               
-                @if(order.files[0].type.match('pdf')){
-                  <a [href]="order.files[0].file" target="_blank">
-                    <span class="text-blue-500 hover:text-blue-800 cursor-pointer"
-                      >VER PDF</span
-                    ></a
-                  >
-                } 
-              }
+              <a [href]="order.files[0].file" target="_blank">
+                <img
+                  [src]="order.files[0].file"
+                  alt="Imagen de la orden"
+                  class="w-10 h-10 rounded-lg"
+                />
+              </a>
+
+              } @if(order.files[0].type.match('pdf')){
+              <a [href]="order.files[0].file" target="_blank">
+                <span class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  >VER PDF</span
+                ></a
+              >
+              } }
             </td>
             <td
               scope="row"
               class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              {{ order.id }}
+              {{ order.custId }}
             </td>
             <td class="px-4 py-3">{{ order.workName | titlecase }}</td>
-            <td class="px-4 py-3">{{ order.creationDate | date:'dd-MM-yyyy hh:mm a' }}</td>
+            <td class="px-4 py-3">
+              {{ order.creationDate | date : "dd-MM-yyyy hh:mm a" }}
+            </td>
             <td class="px-4 py-3" [innerHTML]="order.status | orderStatus"></td>
             <td class="px-4 py-3">
               <span
@@ -129,7 +126,7 @@
             <td class="px-4 py-3">
               <a
                 href="https://wa.me/+59895292764/?text=Hola, quisiera consultar sobre mi pedido ID: {{
-                  order.id
+                  order.custId
                 }}"
                 target="_blank"
                 class="flex items-center rounded-lg px-1 py-1 bg-blue-500 hover:bg-blue-700 text-white"
@@ -175,7 +172,7 @@
         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
           Ordenes por pagina:
           <span class="font-semibold text-gray-900 dark:text-white">{{
-            pageSize 
+            pageSize
           }}</span>
         </span>
       </span>

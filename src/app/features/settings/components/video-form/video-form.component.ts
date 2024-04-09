@@ -6,12 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
-import { ToastrService } from 'ngx-toastr';
-import { CreateVideo } from '../../state/setting.action';
+import { CreateVideo, UpdateVideo } from '../../state/setting.action';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Observable } from 'rxjs';
 import { SettingsState } from '../../state/setting.state';
 import { AsyncPipe } from '@angular/common';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-video-form',
@@ -26,7 +26,7 @@ export class VideoFormComponent {
   videoForm!: FormGroup;
   url: string = '';
   constructor(
-    private toastService: ToastrService,
+    private snackbarService: SnackBarService,
     private actions: Actions,
     private store: Store
   ) {
@@ -48,10 +48,22 @@ export class VideoFormComponent {
 
   saveVideo() {
     if (this.videoForm.valid) {
-      this.store.dispatch(new CreateVideo(this.videoForm.value));
-      this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
-        this.toastService.success('Video saved');
-      });
+      if (!this.video.id) {
+        this.store.dispatch(new CreateVideo(this.videoForm.value));
+        this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
+          this.snackbarService.showSuccess('', 'Video saved');
+        });
+      } else {
+        const videoData = {
+          videoId: this.video.id,
+          url: this.videoForm.value.url,
+        };
+
+        this.store.dispatch(new UpdateVideo(videoData));
+        this.actions.pipe(ofActionSuccessful(UpdateVideo)).subscribe(() => {
+          this.snackbarService.showSuccess('', 'Video updated');
+        });
+      }
     }
   }
 }

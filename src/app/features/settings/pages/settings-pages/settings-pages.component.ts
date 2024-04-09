@@ -61,7 +61,7 @@ export class SettingsPagesComponent {
           if (settings.videos) {
             this.videoData = {
               id: settings.videos.id,
-              url: Object.values(settings.videos.url).toString(),
+              url: settings.videos.url,
             };
           }
         })
