@@ -52,7 +52,7 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Tipo
+            Tipo 📑
             <!-- {{ data.order.type | orderType }} -->
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
@@ -62,7 +62,7 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Modo
+            Modo ⌚
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             {{ data.order.mode | orderMode }}
@@ -72,7 +72,7 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Fecha de creación
+            Fecha de creación 🗓️
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             {{ data.order.creationDate | date:'dd-MM-yyyy hh:mm a' }}
@@ -81,7 +81,7 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Estado
+            Estado 🗃️
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             <span [innerHTML]="data.order.status | orderStatus"></span>
@@ -90,7 +90,7 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Archivos
+            Archivos 📁
           </dt>
 
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
@@ -118,7 +118,7 @@
         </dl>
       </div>
       <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-        Nota
+        Nota 📝
       </dt>
       <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
         {{ data.order.note }} 
