@@ -54,3 +54,8 @@ export class ChangeStatus {
   static readonly type = '[Orders] Change Status';
   constructor(public readonly orderId: string, public readonly statusValue: number) {}
 }
+
+export class DeleteOrder {
+  static readonly type = '[Orders] Delete Order';
+  constructor(public readonly orderId: string) {}
+}

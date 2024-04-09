@@ -17,6 +17,7 @@ import {
   GetTotalOrdersByUserId,
   GetOrdersByPage,
   GetOrdersBySearch,
+  DeleteOrder,
 } from '../../state/orders.actions';
 import { OrdersState } from '../../state/orders.state';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -166,8 +167,7 @@ export class AdminOrdersTableComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.changeStatus(orderID, statusValue).subscribe(() => {
-          
-           this.getOrderByPage(null);
+          this.getOrderByPage(null);
         });
         Swal.fire({
           title: 'Cambiado!',
@@ -178,8 +178,29 @@ export class AdminOrdersTableComponent {
     });
   }
 
-   changeStatus(orderID: string, statusValue: number): Observable<void> {
+  changeStatus(orderID: string, statusValue: number): Observable<void> {
     return this.store.dispatch(new ChangeStatus(orderID, statusValue));
+  }
+
+  deleteOrder(orderId: string, custId:string): void {
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: `Estas seguro que quieres eliminar la orden id: ${custId}?`,
+      icon: 'warning',
+      //showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.store.dispatch(new DeleteOrder(orderId));
+        Swal.fire({
+          title: 'Eliminado!',
+          text: 'La orden ha sido eliminada.',
+          icon: 'success',
+        });
+      }
+    });
   }
 
   openChangeStatusDropdown(orderId: string): void {

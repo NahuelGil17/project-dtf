@@ -199,7 +199,7 @@
             <td>
               <button
                 matTooltip="Eliminar pedido"
-                (click)="confirmChangeStatus(order.id, 5, 'Eli')"
+                (click)="deleteOrder(order.id, order.custId)"
                 class="flex items-center rounded-lg px-2 py-1 bg-red-500 hover:bg-red-700 text-white"
               >
                 <picture class="w-6 h-6 mx-4">

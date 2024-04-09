@@ -6,6 +6,7 @@ import {
   GetOrdersBySearch,
   GetOrdersByPage,
   ChangeStatus,
+  DeleteOrder,
 } from './orders.actions';
 import { OrderService } from '../services/order.service';
 import {
@@ -154,6 +155,25 @@ export class OrdersState {
       .subscribe();
   }
 
+  @Action(DeleteOrder, { cancelUncompleted: true })
+  deleteOrder(ctx: any, action: DeleteOrder) {
+    ctx.patchState({ loading: true });
+    this.orderService
+      .deleteOrder(action.orderId)
+      .pipe(
+        tap(
+          (orders: Order[] | void) => {
+            ctx.patchState({ orders, loading: false });
+          },
+          catchError((error: any) => {
+            ctx.patchState({ loading: false });
+            this.toastService.error(error, `Error al eliminar la orden ${action.orderId}`);
+            return throwError(() => new Error(error));
+          })
+        )
+      )
+      .subscribe();
+  }
 
   @Action(SaveOrder, { cancelUncompleted: true })
   saveOrder(ctx: any, action: SaveOrder) {
