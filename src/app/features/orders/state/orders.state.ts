@@ -139,13 +139,15 @@ export class OrdersState {
       .pipe(
         tap(() => {
           const state = ctx.getState();
-          const updatedOrders = state.orders.map((order: { id: string; }) => {
+          const updatedOrders = state.orders.map((order: { id: string; custId:string; }) => {
             if (order.id === action.orderId) {
-              return { ...order, status: action.statusValue }; 
+              return { ...order, status: action.statusValue };
             }
             return order;
           });
-          ctx.patchState({ orders: updatedOrders, loading: false });
+          setTimeout(() => {
+            ctx.patchState({ orders: updatedOrders, loading: false });
+          }, 300);
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
