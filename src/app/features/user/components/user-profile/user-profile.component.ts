@@ -40,26 +40,24 @@ export class UserProfileComponent {
     });
   }
 
-  ngOnInit() {
-    this.profileForm.get('email')?.disable();
-  }
-
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes['preferences']) {
       this.nameFirstLetter = this.preferences?.fullName[0] || '';
       this.uid = this.preferences?.uid || '';
-      this.profileForm.patchValue({
-        fullName: this.preferences?.fullName,
-        email: this.preferences?.email,
-        ci: this.preferences?.ci,
-        phoneNumber: this.preferences?.phoneNumber,
-      });
-      this.profileForm.get('email')?.disable();
+      if (this.preferences) {
+        this.profileForm.setValue({
+          fullName: this.preferences?.fullName,
+          email: this.preferences?.email,
+          ci: this.preferences?.ci,
+          phoneNumber: this.preferences?.phoneNumber,
+        });
+      }
     }
   }
 
   emitFormValues() {
     this.profileFormValue.emit(this.profileForm.value);
+    this.isEditing = false;
   }
 
   toggleEdit() {

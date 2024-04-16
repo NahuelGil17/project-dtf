@@ -1,13 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, exhaustMap, tap, throwError } from 'rxjs';
-import { SnackBarService } from '../../../core/services/snackbar.service';
 import { UserPreferences } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { GetUserPreferences, Login, Logout, Register } from './auth.actions';
 import { AuthStateModel } from './auth.model';
+import Swal from 'sweetalert2';
 
 @State<AuthStateModel>({
   name: 'auth',
@@ -20,7 +19,6 @@ import { AuthStateModel } from './auth.model';
 @Injectable({ providedIn: 'root' })
 export class AuthState {
   authService = inject(AuthService);
-  snackBar = inject(SnackBarService);
 
   @Selector()
   static currentUserId(state: AuthStateModel): string | undefined {
@@ -61,14 +59,29 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ auth: auth._tokenResponse, preferences: auth.user });
         ctx.patchState({ loading: false });
-        this.snackBar.showSuccess('', 'Sesión iniciada con éxito');
+        Swal.fire({
+          position: 'top-end',
+          heightAuto: true,
+          icon: 'success',
+          title: 'Sesión iniciada con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       exhaustMap((auth: any) => {
         return ctx.dispatch(new GetUserPreferences(auth.user.uid));
       }),
       catchError((err: HttpErrorResponse) => {
         const errMessage = this.getErrorMessage(err);
-        this.snackBar.showError('Error al iniciar sesión', errMessage);
+        Swal.fire({
+          position: 'top-end',
+          heightAuto: true,
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          validationMessage: errMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         ctx.patchState({ loading: false });
         return throwError(() => err);
       })
@@ -105,12 +118,25 @@ export class AuthState {
       tap((auth: any) => {
         ctx.patchState({ loading: false });
         this.authService.createUserDoc(auth.user, action.payload);
-        this.snackBar.showSuccess('', 'Usuario registrado con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Usuario registrado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((err: HttpErrorResponse) => {
         ctx.patchState({ loading: false });
         const errMessage = this.getErrorMessage(err);
-        this.snackBar.showError('Error al registrar usuario', errMessage);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al actualizar tabla',
+          validationMessage: errMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => err);
       })
     );
@@ -130,7 +156,14 @@ export class AuthState {
       catchError((err: HttpErrorResponse) => {
         ctx.patchState({ loading: false });
         const errMessage = this.getErrorMessage(err);
-        this.snackBar.showError('Error al obtener preferencias', errMessage);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al actualizar tabla',
+          validationMessage: errMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => err);
       })
     );
