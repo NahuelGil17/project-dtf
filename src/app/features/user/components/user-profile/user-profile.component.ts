@@ -14,13 +14,15 @@ import {
 } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Preferences } from '../../intefaces/preferences.interface';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [ButtonComponent, CommonModule, ReactiveFormsModule],
+  imports: [ButtonComponent, CommonModule, ReactiveFormsModule,LoadingComponent],
 })
 export class UserProfileComponent {
   isEditing: boolean = false;
