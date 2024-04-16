@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, Input, SimpleChanges, inject } from '@angular/core';
 import {
   FormArray,
@@ -6,18 +7,17 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
-import { SnackBarService } from '../../../../core/services/snackbar.service';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 import { TableSend } from '../../interfaces/settings.interface';
 import {
   CreateTable,
   RemoveTable,
   UpdateTable,
 } from '../../state/setting.action';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { Observable } from 'rxjs';
 import { SettingsState } from '../../state/setting.state';
-import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-price-form',
@@ -33,7 +33,6 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
   ],
 })
 export class PriceFormComponent {
-  snackBar = inject(SnackBarService);
   @Input() table: { columns: string[]; rows: string[][]; id: string } = {} as {
     id: string;
     columns: string[];
@@ -184,7 +183,13 @@ export class PriceFormComponent {
         this.actions.pipe(ofActionSuccessful(CreateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
-        this.snackBar.showError('', 'Error al guardar la tabla');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al guardar la tabla',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     }
     // Si llega un id de la tabla la actualiza
@@ -202,7 +207,13 @@ export class PriceFormComponent {
         this.actions.pipe(ofActionSuccessful(UpdateTable)).subscribe(() => {});
       } catch (error) {
         console.error(error);
-        this.snackBar.showError('', 'Error al guardar la tabla');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al guardar la tabla',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     }
   }
@@ -211,7 +222,13 @@ export class PriceFormComponent {
     try {
       this.store.dispatch(new RemoveTable(this.table.id));
       this.actions.pipe(ofActionSuccessful(RemoveTable)).subscribe(() => {
-        this.snackBar.showSuccess('', 'Tabla eliminada correctamente!');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Tabla eliminada con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
       this.priceForm.reset();
 
@@ -231,7 +248,13 @@ export class PriceFormComponent {
       this.changeTitleButton();
     } catch (error) {
       console.error(error);
-      this.snackBar.showError('', 'Error al eliminar la tabla');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Error al eliminar la tabla',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   }
 }
