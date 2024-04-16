@@ -31,40 +31,42 @@
               } @else {
               <span class="mb-2">{{ preferences?.fullName }}</span>
               }
+              <div class="flex flex-col">
+                <label class="mb-0 text-2xl font-bold">Email</label>
+                @if (isEditing) {
+                <input
+                  formControlName="email"
+                  class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+                />
+                } @else {
+                <span class="mb-2">{{ preferences?.email }}</span>
+                }
+              </div>
+              <div class="flex flex-col">
+                <label class="mb-0 text-2xl font-bold"
+                  >Cedula de Identidad</label
+                >
+                @if (isEditing) {
+                <input
+                  formControlName="ci"
+                  class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+                />
+                } @else {
+                <span class="mb-2">{{ preferences?.ci }}</span>
+                }
+              </div>
+              <div class="flex flex-col">
+                <label class="mb-0 text-2xl font-bold">Celular</label>
+                @if (isEditing) {
+                <input
+                  formControlName="phoneNumber"
+                  class="mb-6 bg-gray-300 text-black rounded-lg p-2"
+                />
+                } @else {
+                <span class="mb-2">{{ preferences?.phoneNumber }}</span>
+                }
+              </div>
             </form>
-            <div class="flex flex-col">
-              <label class="mb-0 text-2xl font-bold">Email</label>
-              @if (isEditing) {
-              <input
-                formControlName="email"
-                class="mb-2 bg-gray-300 text-black rounded-lg p-2"
-              />
-              } @else {
-              <span class="mb-2">{{ preferences?.email }}</span>
-              }
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <label class="mb-0 text-2xl font-bold">Cedula de Identidad</label>
-            @if (isEditing) {
-            <input
-              formControlName="ci"
-              class="mb-2 bg-gray-300 text-black rounded-lg p-2"
-            />
-            } @else {
-            <span class="mb-2">{{ preferences?.ci }}</span>
-            }
-          </div>
-          <div class="flex flex-col">
-            <label class="mb-0 text-2xl font-bold">Celular</label>
-            @if (isEditing) {
-            <input
-              formControlName="phoneNumber"
-              class="mb-6 bg-gray-300 text-black rounded-lg p-2"
-            />
-            } @else {
-            <span class="mb-2">{{ preferences?.phoneNumber }}</span>
-            }
           </div>
         </section>
       </div>
