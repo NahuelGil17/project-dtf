@@ -54,7 +54,6 @@ export class MakeOrderComponent {
           status: 0,
           creationDate: new Date().valueOf(),
           userId: this.store.selectSnapshot(AuthState).preferences.uid,
-          custId: `pe#${this.idGenerator.generateUniqueId()}`,
         };
         this.store.dispatch(new SaveOrder(newOrder));
         this.actions

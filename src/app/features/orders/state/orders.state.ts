@@ -100,6 +100,8 @@ export class OrdersState {
       .pipe(
         tap(
           (orders: Order[] | void) => {
+            
+            
             ctx.patchState({ orders, loading: false });
           },
           catchError((error: any) => {
@@ -154,7 +156,7 @@ export class OrdersState {
       .pipe(
         tap(() => {
           const state = ctx.getState();
-          const updatedOrders = state.orders.map((order: { id: string; custId:string; }) => {
+          const updatedOrders = state.orders.map((order: { id: string; }) => {
             if (order.id === action.orderId) {
               return { ...order, status: action.statusValue };
             }
