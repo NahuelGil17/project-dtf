@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
 import { getUserPreferencesByUid } from '../../../features/user/state/user.actions';
 import { UserState } from '../../../features/user/state/user.state';
 import { UserPreferences } from '../../../features/auth/interfaces/auth.interface';
-import { ButtonComponent } from '../button/button.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+
 
 
 @Component({
