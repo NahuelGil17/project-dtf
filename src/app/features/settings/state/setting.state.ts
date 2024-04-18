@@ -4,10 +4,12 @@ import { Injectable, inject } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 import {
   CreateTable,
+  CreateValueDolar,
   CreateVideo,
   GetSettings,
   RemoveTable,
   UpdateTable,
+  UpdateValueDolar,
   UpdateVideo,
 } from './setting.action';
 import { Observable, catchError, tap, throwError } from 'rxjs';
@@ -19,7 +21,7 @@ import Swal from 'sweetalert2';
     loading: false,
     tables: [],
     videos: [],
-    test: [],
+    valueDolar: [],
   },
 })
 @Injectable({ providedIn: 'root' })
@@ -213,6 +215,66 @@ export class SettingsState {
           heightAuto: true,
           icon: 'error',
           title: 'Error actualizando video',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return throwError(() => error);
+      })
+    );
+  }
+
+  @Action(CreateValueDolar)
+  createValueDolar(
+    ctx: StateContext<SettingsStateModel>,
+    action: CreateValueDolar
+  ): Observable<void> {
+    const { value } = action.payload;
+    return this.settingsService.createValueDolar(Number(value)).pipe(
+      tap((settings: any) => {
+        ctx.patchState(settings);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Valor del dólar actualizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }),
+      catchError((error) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error actualizando valor del dólar',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return throwError(() => error);
+      })
+    );
+  }
+
+  @Action(UpdateValueDolar)
+  updateValueDolar(
+    ctx: StateContext<SettingsStateModel>,
+    action: CreateValueDolar
+  ): Observable<void> {
+    const { value } = action.payload;
+    return this.settingsService.createValueDolar(Number(value)).pipe(
+      tap((settings: any) => {
+        ctx.patchState(settings);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Valor del dólar actualizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }),
+      catchError((error) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error actualizando valor del dólar',
           showConfirmButton: false,
           timer: 1500,
         });

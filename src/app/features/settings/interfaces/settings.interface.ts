@@ -18,8 +18,14 @@ export interface Video {
   id: string;
 }
 
+export interface ValueDolar {
+  value: number;
+  id: string;
+}
+
 export interface Settings {
   map(arg0: (setting: any) => void): unknown;
   tables: Table[];
   videos: Video[];
+  valueDolar: ValueDolar[];
 }

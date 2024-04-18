@@ -85,4 +85,20 @@ export class SettingsService {
 
     return from(updateDoc(videoRef, data));
   }
+
+  createValueDolar(value: number) {
+    const newDoc = collection(this.firestore, 'settings');
+    const valueDolar = value;
+
+    return from(addDoc(newDoc, { valueDolar }));
+  }
+
+  updateValueDolar(valueId: string, value: number) {
+    const valueRef = doc(this.firestore, 'settings', valueId);
+    const data = {
+      valueDolar: value,
+    };
+
+    return from(updateDoc(valueRef, data));
+  }
 }

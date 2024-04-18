@@ -21,10 +21,20 @@ export class RemoveTable {
 
 export class CreateVideo {
   static readonly type = '[Setting] Create Video';
-  constructor(public readonly payload: {url:string}) {}
+  constructor(public readonly payload: { url: string }) {}
 }
 
 export class UpdateVideo {
   static readonly type = '[Setting] Update Video';
   constructor(public readonly payload: { videoId: string; url: string }) {}
+}
+
+export class CreateValueDolar {
+  static readonly type = '[Setting] Create Value Dolar';
+  constructor(public readonly payload: { value: string }) {}
+}
+
+export class UpdateValueDolar {
+  static readonly type = '[Setting] Update Value Dolar';
+  constructor(public readonly payload: { valueDolar: number }) {}
 }
