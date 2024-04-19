@@ -13,12 +13,7 @@
         <!-- Iterar sobre las columnas -->
         @for (column of table.columns; track $index) {
         <th scope="col" class="px-4 py-3">
-          valueDolar {{ valueDolar }}
-          @if(valueDolar ) {
-          {{ column | valueDolar : valueDolar }}
-          } @else {
           {{ column }}
-          }
         </th>
         }
       </tr>
@@ -37,9 +32,9 @@
           }"
         >
           @if(valueDolar ) {
-          {{ row | valueDolar : valueDolar }}
-          } @else {
-          {{ row }}
+          {{ (value | valueDolar : valueDolar)}}
+          }@else {
+          {{ value }}
           }
         </td>
         }

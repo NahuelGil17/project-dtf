@@ -15,7 +15,7 @@ export class ValueDolarPipe implements PipeTransform {
     }
 
     if (typeof value === 'number') {
-      value = (value * valueDolar).toString();
+      value = `$ ${value * valueDolar}`;
     }
     return value;
   }

@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
     loading: false,
     tables: [],
     videos: [],
-    valueDolar: [],
+    valueDolar: undefined,
   },
 })
 @Injectable({ providedIn: 'root' })
@@ -34,8 +34,8 @@ export class SettingsState {
   }
 
   @Selector()
-  static valueDolar(state: SettingsStateModel): any {
-    return state.valueDolar;
+  static valueDolar(state: SettingsStateModel): number | undefined {
+    return state.valueDolar?.value;
   }
 
   @Action(GetSettings, { cancelUncompleted: true })

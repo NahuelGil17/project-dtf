@@ -4,5 +4,5 @@ export class SettingsStateModel {
   loading?: boolean;
   tables?: Table[];
   videos?: Video[];
-  valueDolar?: ValueDolar[];
+  valueDolar?: ValueDolar;
 }
