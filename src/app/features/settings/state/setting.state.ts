@@ -33,6 +33,11 @@ export class SettingsState {
     return state.loading;
   }
 
+  @Selector()
+  static valueDolar(state: SettingsStateModel): any {
+    return state.valueDolar;
+  }
+
   @Action(GetSettings, { cancelUncompleted: true })
   getSettings(
     ctx: StateContext<SettingsStateModel>,
@@ -41,6 +46,7 @@ export class SettingsState {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
+        console.log(settings);
         const stateToUpdate: any = {};
         settings.forEach((setting: any) => {
           if (setting.rows && setting.columns) {
@@ -54,6 +60,12 @@ export class SettingsState {
             stateToUpdate.videos = {
               id: setting.id,
               url: setting.url,
+            };
+          }
+          if (setting.valueDolar) {
+            stateToUpdate.valueDolar = {
+              id: setting.id,
+              value: setting.valueDolar,
             };
           }
         });

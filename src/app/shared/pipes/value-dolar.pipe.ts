@@ -1,8 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { GetSettings } from '../../features/settings/state/setting.action';
-import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
-import { tap } from 'rxjs';
-import { SettingsState } from '../../features/settings/state/setting.state';
+import { Actions, Store } from '@ngxs/store';
 
 @Pipe({
   name: 'valueDolar',

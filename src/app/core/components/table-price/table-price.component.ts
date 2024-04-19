@@ -13,4 +13,5 @@ export class TablePriceComponent {
     columns: [],
     rows: [],
   };
+  @Input() valueDolar!: number | null;
 }
