@@ -90,17 +90,17 @@
           <dt
             class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
           >
-            Archivos 📁
+            Archivos 📁 <app-button (click)="downloadFiles()">Descargar ⬇️</app-button>
           </dt>
 
-          <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-            <div class="grid grid-cols-2 gap-4">
+          <dd class="mb-2 max-h-30 overflow-auto font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            <div class="grid grid-cols-2 gap-2">
               <div *ngFor="let file of data.order.files">
                 @if(file.type.match('image')){
                 <a [href]="file.file" target="_blank">
                   <img
                     [src]="file.file"
-                    alt="Imagen de la orden"
+                  alt="Imagen de la orden"
                     class="w-10 h-10 rounded-lg"
                   />
                 </a>

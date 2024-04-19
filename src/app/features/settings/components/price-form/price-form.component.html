@@ -1,8 +1,8 @@
 @if (loading$ | async) {
 <app-loading></app-loading>
 } @else {
+  <h3 class="w-full text-4xl font-semibold my-8">Tabla de Precios💲</h3>
 <form [formGroup]="priceForm">
-  <h3 class="text-4xl font-semibold my-8">Tabla de Precios💲</h3>
   <div
     class="flex max-w-[70rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-gray-200 px-6 pb-12 py-16 rounded-lg mb-8"
   >
@@ -83,14 +83,14 @@
     </div>
     <div class="flex flex-col w-44 justify-evenly mb-2">
       <button
-        class="center px-3 py-1 ml-4 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+        class="center px-3 bg-blue-600 py-1 ml-4 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
         type="button"
         (click)="newColumn()"
       >
         + Columna
       </button>
       <button
-        class="center px-3 py-1 ml-4 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+        class="center bg-blue-600 px-3 py-1 ml-4 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
         type="button"
         (click)="newRow()"
       >
