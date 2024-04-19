@@ -256,10 +256,10 @@ export class SettingsState {
   @Action(UpdateValueDolar)
   updateValueDolar(
     ctx: StateContext<SettingsStateModel>,
-    action: CreateValueDolar
+    action: UpdateValueDolar
   ): Observable<void> {
-    const { value } = action.payload;
-    return this.settingsService.createValueDolar(Number(value)).pipe(
+    const { id, valueDolar } = action.payload;
+    return this.settingsService.updateValueDolar(id, valueDolar).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
         Swal.fire({

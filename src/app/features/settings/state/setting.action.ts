@@ -36,5 +36,5 @@ export class CreateValueDolar {
 
 export class UpdateValueDolar {
   static readonly type = '[Setting] Update Value Dolar';
-  constructor(public readonly payload: { valueDolar: number }) {}
+  constructor(public readonly payload: { id: string; valueDolar: number }) {}
 }
