@@ -2,10 +2,10 @@
   <h1 class="text-6xl font-bold mb-4 text-center">Perfil</h1>
   <div class="flex justify-center rounded-md p-10 m-10 w-full">
     @if (loading) {
-      <app-loading></app-loading>
+    <app-loading></app-loading>
     } @else {
     <div
-      class="flex flex-col justify-center gap-6 bg-white h-[35rem] w-[30rem] rounded-md"
+      class="flex flex-col justify-center gap-6 bg-white h-[40rem] w-[30rem] rounded-md p-4 shadow-lg"
     >
       <div>
         <div class="flex w-full justify-center mb-4">
@@ -17,24 +17,26 @@
             }}</span>
           </section>
         </div>
-        <section class="flex flex-col ml-10 gap-4">
+        <section class="flex flex-col gap-4">
           <div class="flex flex-col">
-            <form [formGroup]="profileForm">
-              <label class="mb-0 text-2xl font-bold">Nombre</label>
-              @if (isEditing) {
-              <input
-                formControlName="fullName"
-                class="mb-2 bg-gray-300 text-black rounded-lg p-2"
-              />
-              } @else {
-              <span class="mb-2">{{ preferences?.fullName }}</span>
-              }
+            <form [formGroup]="profileForm" class="flex flex-col align-middle gap-4">
+              <div class="flex flex-col">    
+                <label class="mb-0 text-2xl font-bold">Nombre:</label>
+                @if (isEditing) {
+                <input
+                  formControlName="fullName"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
+                />
+                } @else {
+                <span class="mb-2">{{ preferences?.fullName }}</span>
+                }
+              </div>
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold">Email</label>
+                <label class="mb-0 text-2xl font-bold">Email:</label>
                 @if (isEditing) {
                 <input
                   formControlName="email"
-                  class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
                 <span class="mb-2">{{ preferences?.email }}</span>
@@ -42,23 +44,23 @@
               </div>
               <div class="flex flex-col">
                 <label class="mb-0 text-2xl font-bold"
-                  >Cedula de Identidad</label
+                  >Cedula de Identidad:</label
                 >
                 @if (isEditing) {
                 <input
                   formControlName="ci"
-                  class="mb-2 bg-gray-300 text-black rounded-lg p-2"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
                 <span class="mb-2">{{ preferences?.ci }}</span>
                 }
               </div>
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold">Celular</label>
+                <label class="mb-0 text-2xl font-bold">Celular:</label>
                 @if (isEditing) {
                 <input
                   formControlName="phoneNumber"
-                  class="mb-6 bg-gray-300 text-black rounded-lg p-2"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
                 <span class="mb-2">{{ preferences?.phoneNumber }}</span>
@@ -68,10 +70,11 @@
           </div>
         </section>
       </div>
-      <section class="w-full ml-10">
+      <section class="w-full flex justify-center">
         @if (isEditing) {
         <app-button
           (click)="emitFormValues()"
+          classes="bg-blue-600 text-white py-2 px-4 rounded-lg"
           [isDisabled]="profileForm.invalid"
           >Guardar Cambios</app-button
         >

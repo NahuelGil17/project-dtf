@@ -1,5 +1,11 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, Input, SimpleChanges, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -14,10 +20,8 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
 import { TableSend } from '../../interfaces/settings.interface';
 import {
   CreateTable,
-  CreateValueDolar,
   RemoveTable,
   UpdateTable,
-  UpdateValueDolar,
 } from '../../state/setting.action';
 import { SettingsState } from '../../state/setting.state';
 
@@ -34,20 +38,16 @@ import { SettingsState } from '../../state/setting.state';
     AsyncPipe,
   ],
 })
-export class PriceFormComponent {
+export class PriceFormComponent implements OnInit, OnChanges {
   @Input() table: { columns: string[]; rows: string[][]; id: string } = {} as {
     id: string;
     columns: string[];
     rows: string[][];
   };
-  @Input() valueDolarInput: { value: number; id: string } = {} as {
-    value: number;
-    id: string;
-  };
+
   @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
   nameButton: string = '';
   priceForm!: FormGroup;
-  valueDolar!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,9 +59,6 @@ export class PriceFormComponent {
     this.priceForm = this.formBuilder.group({
       columns: this.formBuilder.array([]),
       rows: this.formBuilder.array([]),
-    });
-    this.valueDolar = this.formBuilder.group({
-      value: this.formBuilder.control(''),
     });
   }
 
@@ -78,11 +75,7 @@ export class PriceFormComponent {
       });
       this.initializeFormWithTableData();
     }
-    if (this.valueDolarInput.value > 0) {
-      this.valueDolar.patchValue({
-        value: this.valueDolarInput.value,
-      });
-    }
+
     this.changeTitleButton();
   }
 
@@ -114,45 +107,6 @@ export class PriceFormComponent {
   get rowControls() {
     let rows = this.priceForm?.get('rows') as FormArray;
     return rows.controls;
-  }
-
-  changeValueDolar() {
-    if (this.valueDolar.valid) {
-      if (this.valueDolarInput.id) {
-        const valueData = {
-          valueDolar: this.valueDolar.value.value,
-          id: this.valueDolarInput.id,
-        };
-        this.store.dispatch(new UpdateValueDolar(valueData));
-        this.actions
-          .pipe(ofActionSuccessful(UpdateValueDolar))
-          .subscribe(() => {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Valor del dolar actualizado con éxito',
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          });
-      } else {
-        const valueData = {
-          value: this.valueDolar.value.value,
-        };
-        this.store.dispatch(new CreateValueDolar(valueData));
-        this.actions
-          .pipe(ofActionSuccessful(UpdateValueDolar))
-          .subscribe(() => {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Valor del dolar actualizado con éxito',
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          });
-      }
-    }
   }
 
   newColumn() {
