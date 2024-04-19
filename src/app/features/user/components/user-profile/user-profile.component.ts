@@ -14,13 +14,15 @@ import {
 } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Preferences } from '../../intefaces/preferences.interface';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [ButtonComponent, CommonModule, ReactiveFormsModule],
+  imports: [ButtonComponent, CommonModule, ReactiveFormsModule,LoadingComponent],
 })
 export class UserProfileComponent {
   isEditing: boolean = false;
@@ -40,26 +42,24 @@ export class UserProfileComponent {
     });
   }
 
-  ngOnInit() {
-    this.profileForm.get('email')?.disable();
-  }
-
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes['preferences']) {
       this.nameFirstLetter = this.preferences?.fullName[0] || '';
       this.uid = this.preferences?.uid || '';
-      this.profileForm.patchValue({
-        fullName: this.preferences?.fullName,
-        email: this.preferences?.email,
-        ci: this.preferences?.ci,
-        phoneNumber: this.preferences?.phoneNumber,
-      });
-      this.profileForm.get('email')?.disable();
+      if (this.preferences) {
+        this.profileForm.setValue({
+          fullName: this.preferences?.fullName,
+          email: this.preferences?.email,
+          ci: this.preferences?.ci,
+          phoneNumber: this.preferences?.phoneNumber,
+        });
+      }
     }
   }
 
   emitFormValues() {
     this.profileFormValue.emit(this.profileForm.value);
+    this.isEditing = false;
   }
 
   toggleEdit() {

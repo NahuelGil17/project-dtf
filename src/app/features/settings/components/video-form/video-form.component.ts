@@ -11,7 +11,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { Observable } from 'rxjs';
 import { SettingsState } from '../../state/setting.state';
 import { AsyncPipe } from '@angular/common';
-import { SnackBarService } from '../../../../core/services/snackbar.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-video-form',
@@ -25,11 +25,7 @@ export class VideoFormComponent {
   @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
   videoForm!: FormGroup;
   url: string = '';
-  constructor(
-    private snackbarService: SnackBarService,
-    private actions: Actions,
-    private store: Store
-  ) {
+  constructor(private actions: Actions, private store: Store) {
     this.videoForm = new FormGroup({
       url: new FormControl('', [Validators.required]),
     });
@@ -51,7 +47,13 @@ export class VideoFormComponent {
       if (!this.video.id) {
         this.store.dispatch(new CreateVideo(this.videoForm.value));
         this.actions.pipe(ofActionSuccessful(CreateVideo)).subscribe(() => {
-          this.snackbarService.showSuccess('', 'Video saved');
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Video gurdado con exito',
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
       } else {
         const videoData = {
@@ -61,7 +63,13 @@ export class VideoFormComponent {
 
         this.store.dispatch(new UpdateVideo(videoData));
         this.actions.pipe(ofActionSuccessful(UpdateVideo)).subscribe(() => {
-          this.snackbarService.showSuccess('', 'Video updated');
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Video actulizado con exito',
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
       }
     }

@@ -11,8 +11,7 @@ import {
   UpdateVideo,
 } from './setting.action';
 import { Observable, catchError, tap, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { SnackBarService } from '../../../core/services/snackbar.service';
+import Swal from 'sweetalert2';
 
 @State<SettingsStateModel>({
   name: 'settings',
@@ -26,7 +25,6 @@ import { SnackBarService } from '../../../core/services/snackbar.service';
 @Injectable({ providedIn: 'root' })
 export class SettingsState {
   settingsService = inject(SettingsService);
-  snackbarService: any = inject(SnackBarService);
 
   @Selector()
   static settingsLoading(state: SettingsStateModel): boolean | undefined {
@@ -61,7 +59,13 @@ export class SettingsState {
         ctx.patchState({ loading: false });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error al cargar configuración');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al cargar configuración',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -76,10 +80,22 @@ export class SettingsState {
     return this.settingsService.createTable(table).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.snackbarService.showSuccess('', 'Tabla creada con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Tabla creada con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error creando tabla');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al crear tabla',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -95,10 +111,22 @@ export class SettingsState {
     return this.settingsService.updateTable(id, table).pipe(
       tap((settings: any) => {
         ctx.patchState({ loading: false });
-        this.snackbarService.showSuccess('', 'Tabla actualizada con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Tabla actualizada con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error actualizando tabla');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al actualizar tabla',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -112,10 +140,22 @@ export class SettingsState {
     return this.settingsService.removeTable(action.payload).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.snackbarService.showSuccess('', 'Tabla eliminada con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Tabla eliminada con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error eliminando tabla');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error eliminando tabla',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -129,10 +169,22 @@ export class SettingsState {
     return this.settingsService.createVideo(action.payload.url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.snackbarService.showSuccess('', 'Video creado con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Video creado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error creando video');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error creando video',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -147,10 +199,23 @@ export class SettingsState {
     return this.settingsService.updateVideo(videoId, url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
-        this.snackbarService.showSuccess('', 'Video actualizado con éxito');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Video actualizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }),
       catchError((error) => {
-        this.snackbarService.showError('', 'Error actualizando video');
+        Swal.fire({
+          position: 'top-end',
+          heightAuto: true,
+          icon: 'error',
+          title: 'Error actualizando video',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );

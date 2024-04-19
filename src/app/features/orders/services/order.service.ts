@@ -62,7 +62,8 @@ export class OrderService {
     isAdmin: boolean,
     input: string
   ): Observable<Order[] | void> {
-    input = input.toLowerCase();
+    //input = input.toLowerCase();
+   
     const startName = input;
     const endName = input + '\uf8ff';
     let ordersRef = collection(this.fireStore, 'orders');
@@ -81,9 +82,9 @@ export class OrderService {
       //Consulta para buscar por id
       idQuery = query(
         ordersRef,
-        where('custId', '>=', startName),
-        where('custId', '<=', endName),
-        orderBy('custId')
+        where('__name__', '>=', startName),
+        where('__name__', '<=', endName),
+        orderBy('__name__')
       );
     } else {
       // Consulta para buscar por workName
@@ -98,9 +99,9 @@ export class OrderService {
       idQuery = query(
         ordersRef,
         where('userId', '==', userId),
-        where('custId', '>=', startName),
-        where('custId', '<=', endName),
-        orderBy('custId')
+        where('__name__', '>=', startName),
+        where('__name__', '<=', endName),
+        orderBy('__name__')
       );
     }
 

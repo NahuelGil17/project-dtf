@@ -8,18 +8,19 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { SnackBarService } from '../../../core/services/snackbar.service';
+import Swal from 'sweetalert2';
 import { Order } from '../interfaces/order.interface';
 import { OrderService } from '../services/order.service';
 import {
-  GetAvatarUrl,
-  GetTotalOrdersByUserId,
-  SaveOrder,
-  GetOrdersByPage,
-  GetOrdersBySearch,
-  saveOrderFiles,
   ChangeStatus,
   DeleteOrder,
+  GetAvatarUrl,
+  GetOrdersByPage,
+  GetOrdersBySearch,
+  GetTotalOrdersByUserId,
+  SaveOrder,
+  saveOrderFiles,
+ 
 } from './orders.actions';
 import { OrdersStateModel } from './orders.model';
 
@@ -39,7 +40,6 @@ import { OrdersStateModel } from './orders.model';
 @Injectable({ providedIn: 'root' })
 export class OrdersState {
   orderService = inject(OrderService);
-  snackBar = inject(SnackBarService);
 
   @Selector() currentFiles(
     state: OrdersStateModel
@@ -78,10 +78,14 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError(
-            'Error al obtener el total de las ordenes del usuario',
-            error
-          );
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error al obtener el total de las ordenes del usuario',
+            validationMessage: error,
+            showConfirmButton: false,
+            timer: 1500,
+          });
           return throwError(() => new Error(error));
         })
       )
@@ -96,14 +100,20 @@ export class OrdersState {
       .pipe(
         tap(
           (orders: Order[] | void) => {
+            
+            
             ctx.patchState({ orders, loading: false });
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.snackBar.showError(
-              'Error al obtener las ordenes buscadas',
-              error
-            );
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error al obtener las ordenes buscadas',
+              validationMessage: error,
+              showConfirmButton: false,
+              timer: 1500,
+            });
             return throwError(() => new Error(error));
           })
         )
@@ -115,7 +125,7 @@ export class OrdersState {
   getOrdersByPage(ctx: any, action: GetOrdersByPage) {
     ctx.patchState({ loading: true });
     this.orderService
-      .getOrdersByPage(action.userId,action.isAdmin, action.isNextPage)
+      .getOrdersByPage(action.userId, action.isAdmin, action.isNextPage)
       .pipe(
         tap(
           (orders: Order[] | void) => {
@@ -123,7 +133,14 @@ export class OrdersState {
           },
           catchError((error: any) => {
             ctx.patchState({ loading: false });
-            this.snackBar.showError('Error al obtener las ordenes', error);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error al obtener las ordenes',
+              validationMessage: error,
+              showConfirmButton: false,
+              timer: 1500,
+            });
             return throwError(() => new Error(error));
           })
         )
@@ -141,15 +158,24 @@ export class OrdersState {
           const state = ctx.getState();
           const updatedOrders = state.orders.map((order: { id: string; }) => {
             if (order.id === action.orderId) {
-              return { ...order, status: action.statusValue }; 
+              return { ...order, status: action.statusValue };
             }
             return order;
           });
-          ctx.patchState({ orders: updatedOrders, loading: false });
+          setTimeout(() => {
+            ctx.patchState({ orders: updatedOrders, loading: false });
+          }, 300);
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError('Error al cambiar el estado de la orden', error);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: `Error al cambiar el estado de la orden`,
+            validationMessage: error,
+            showConfirmButton: false,
+            timer: 1500,
+          });
           return throwError(() => new Error(error));
         })
       )
@@ -170,7 +196,14 @@ export class OrdersState {
         }),
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError('', `Error al eliminar la orden ${action.orderId}`);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: `Error al eliminar la orden ${action.orderId}`,
+            validationMessage: error,
+            showConfirmButton: false,
+            timer: 1500,
+          });
           return throwError(() => new Error(error));
         })
       )
@@ -188,7 +221,14 @@ export class OrdersState {
         },
         catchError((error: any) => {
           ctx.patchState({ loading: false });
-          this.snackBar.showError('Error al guardar la orden', error);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error al actualizar tabla',
+            validationMessage: error,
+            showConfirmButton: false,
+            timer: 1500,
+          });
           return throwError(() => error);
         })
       )
@@ -212,7 +252,14 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.snackBar.showError('Error al guardar los archivos', error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al guardar los archivos',
+          validationMessage: error,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );
@@ -234,7 +281,13 @@ export class OrdersState {
       }),
       catchError((error: any) => {
         ctx.patchState({ loading: false });
-        this.snackBar.showError('Error al obtener la url del avatar', error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al obtener la url del avatar',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return throwError(() => error);
       })
     );

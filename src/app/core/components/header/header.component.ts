@@ -8,11 +8,14 @@ import { CommonModule } from '@angular/common';
 import { getUserPreferencesByUid } from '../../../features/user/state/user.actions';
 import { UserState } from '../../../features/user/state/user.state';
 import { UserPreferences } from '../../../features/auth/interfaces/auth.interface';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule,ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
