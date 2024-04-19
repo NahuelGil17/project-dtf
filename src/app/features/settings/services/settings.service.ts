@@ -94,7 +94,10 @@ export class SettingsService {
   }
 
   updateValueDolar(valueId: string, value: number) {
-    const valueRef = doc(this.firestore, 'settings', valueId);
+
+
+  const valueRef = doc(this.firestore, 'settings', valueId);
+    
     const data = {
       valueDolar: value,
     };

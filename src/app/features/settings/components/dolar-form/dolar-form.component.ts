@@ -5,7 +5,12 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
 import Swal from 'sweetalert2';
 import { UpdateValueDolar, CreateValueDolar } from '../../state/setting.action';
@@ -41,7 +46,10 @@ export class DolarFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.valueDolar = this.formBuilder.group({
-      value: this.formBuilder.control(''),
+      value: this.formBuilder.control('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -59,6 +67,11 @@ export class DolarFormComponent implements OnInit, OnChanges {
           valueDolar: this.valueDolar.value.value,
           id: this.valueDolarInput.id,
         };
+        console.log(
+          '🚀 ~ DolarFormComponent ~ changeValueDolar ~ valueData:',
+          valueData
+        );
+
         this.store.dispatch(new UpdateValueDolar(valueData));
         this.actions
           .pipe(ofActionSuccessful(UpdateValueDolar))
