@@ -26,7 +26,7 @@
       }
     </div>
   </div>
-  <div class="flex justify-between">
+  <div class="lg:flex lg:justify-between">
     <div>
       <label for="ci" class="block text-sm font-medium leading-6 text-gray-900"
         >Cedula de Identidad</label
@@ -40,7 +40,7 @@
           autocomplete="ci"
           formControlName="ci"
           required
-          class="block min-w-[15rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          class="block w-full lg:min-w-[15rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
       </div>
       @if(registerForm.get('ci')?.invalid &&
@@ -48,7 +48,7 @@
       <div class="text-sm text-[#eb445a] pt-1">Por favor, introduce una cedula valido.</div>
       }
     </div>
-    <div>
+    <div class="mt-5 lg:mt-0">
       <label
         for="phoneNumber"
         class="block text-sm font-medium leading-6 text-gray-900"
@@ -63,7 +63,7 @@
           autocomplete="phoneNumber"
           formControlName="phoneNumber"
           required
-          class="block min-w-[16rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          class="block w-full lg:min-w-[16rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
         @if(  registerForm.get('phoneNumber')?.invalid &&
         registerForm.get('phoneNumber')?.touched) {
