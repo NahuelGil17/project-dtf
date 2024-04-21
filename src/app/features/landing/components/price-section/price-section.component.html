@@ -1,5 +1,8 @@
 <section class="border-t bg-gray-50 border-gray-200 py-20 sm:py-32">
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-    <app-table-price [table]="tableData"></app-table-price>
+    <app-table-price
+      [table]="tableData"
+      [valueDolar]="valueDolar$ | async"
+    ></app-table-price>
   </div>
 </section>

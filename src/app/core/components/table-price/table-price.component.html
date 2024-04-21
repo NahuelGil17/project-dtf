@@ -2,18 +2,13 @@
 <div class="overflow-x-auto shadow-md">
   @if (table.columns.length && table.rows.length) {
   <table
-    class="w-full text-sm text-left rtl:text-right  text-gray-700 dark:text-gray-400 shadow-lg  bg-white"
+    class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400 shadow-lg bg-white"
   >
-    <thead
-      class="text-xs text-white  uppercase rounded-md bg-black"
-    >
+    <thead class="text-xs text-white uppercase rounded-md bg-black">
       <tr>
         <!-- Iterar sobre las columnas -->
         @for (column of table.columns; track $index) {
-        <th
-          scope="col"
-          class="px-4 py-3"
-        >
+        <th scope="col" class="px-4 py-3">
           {{ column }}
         </th>
         }
@@ -22,7 +17,7 @@
     <tbody>
       <!-- Iterar sobre las filas -->
       @for (row of table.rows; track $index) {
-      <tr class=" border-b">
+      <tr class="border-b">
         <!-- Iterar sobre los valores de cada fila -->
         @for (value of row; track $index) {
         <td
@@ -32,7 +27,11 @@
               $index === 0
           }"
         >
+          @if(valueDolar ) {
+          {{ (value | valueDolar : valueDolar)}}
+          }@else {
           {{ value }}
+          }
         </td>
         }
       </tr>

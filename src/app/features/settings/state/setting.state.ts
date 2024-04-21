@@ -4,10 +4,12 @@ import { Injectable, inject } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 import {
   CreateTable,
+  CreateValueDolar,
   CreateVideo,
   GetSettings,
   RemoveTable,
   UpdateTable,
+  UpdateValueDolar,
   UpdateVideo,
 } from './setting.action';
 import { Observable, catchError, tap, throwError } from 'rxjs';
@@ -17,9 +19,13 @@ import Swal from 'sweetalert2';
   name: 'settings',
   defaults: {
     loading: false,
+    tableLoading: false,
+    videoLoading: false,
+    valueDolarLoading: false,
+    removeTableLoading: false,
     tables: [],
     videos: [],
-    test: [],
+    valueDolar: undefined,
   },
 })
 @Injectable({ providedIn: 'root' })
@@ -31,6 +37,33 @@ export class SettingsState {
     return state.loading;
   }
 
+  @Selector()
+  static updateTableLoading(state: SettingsStateModel): boolean | undefined {
+    return state.tableLoading;
+  }
+
+  @Selector()
+  static updateVideoLoading(state: SettingsStateModel): boolean | undefined {
+    return state.videoLoading;
+  }
+
+  @Selector()
+  static updateValueDolarLoading(
+    state: SettingsStateModel
+  ): boolean | undefined {
+    return state.valueDolarLoading;
+  }
+
+  @Selector()
+  static removeTableLoading(state: SettingsStateModel): boolean | undefined {
+    return state.removeTableLoading;
+  }
+
+  @Selector()
+  static valueDolar(state: SettingsStateModel): number | undefined {
+    return state.valueDolar?.value;
+  }
+
   @Action(GetSettings, { cancelUncompleted: true })
   getSettings(
     ctx: StateContext<SettingsStateModel>,
@@ -39,6 +72,7 @@ export class SettingsState {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
+        console.log(settings);
         const stateToUpdate: any = {};
         settings.forEach((setting: any) => {
           if (setting.rows && setting.columns) {
@@ -52,6 +86,12 @@ export class SettingsState {
             stateToUpdate.videos = {
               id: setting.id,
               url: setting.url,
+            };
+          }
+          if (setting.valueDolar) {
+            stateToUpdate.valueDolar = {
+              id: setting.id,
+              value: setting.valueDolar,
             };
           }
         });
@@ -107,10 +147,10 @@ export class SettingsState {
     action: UpdateTable
   ): Observable<void> {
     const { id, table } = action.payload;
-    ctx.patchState({ loading: true });
+    ctx.patchState({ tableLoading: true });
     return this.settingsService.updateTable(id, table).pipe(
       tap((settings: any) => {
-        ctx.patchState({ loading: false });
+        ctx.patchState({ tableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -120,6 +160,7 @@ export class SettingsState {
         });
       }),
       catchError((error) => {
+        ctx.patchState({ tableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -137,9 +178,11 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: RemoveTable
   ): Observable<void> {
+    ctx.patchState({ removeTableLoading: true });
     return this.settingsService.removeTable(action.payload).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
+        ctx.patchState({ removeTableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -196,9 +239,11 @@ export class SettingsState {
     action: UpdateVideo
   ): Observable<void> {
     const { videoId, url } = action.payload;
+    ctx.patchState({ videoLoading: true });
     return this.settingsService.updateVideo(videoId, url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
+        ctx.patchState({ videoLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -208,11 +253,75 @@ export class SettingsState {
         });
       }),
       catchError((error) => {
+        ctx.patchState({ videoLoading: false });
         Swal.fire({
           position: 'top-end',
           heightAuto: true,
           icon: 'error',
           title: 'Error actualizando video',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return throwError(() => error);
+      })
+    );
+  }
+
+  @Action(CreateValueDolar)
+  createValueDolar(
+    ctx: StateContext<SettingsStateModel>,
+    action: CreateValueDolar
+  ): Observable<void> {
+    const { value } = action.payload;
+    return this.settingsService.createValueDolar(Number(value)).pipe(
+      tap((settings: any) => {
+        ctx.patchState(settings);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Valor del dólar actualizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }),
+      catchError((error) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error actualizando valor del dólar',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return throwError(() => error);
+      })
+    );
+  }
+
+  @Action(UpdateValueDolar)
+  updateValueDolar(
+    ctx: StateContext<SettingsStateModel>,
+    action: UpdateValueDolar
+  ): Observable<void> {
+    const { id, valueDolar } = action.payload;
+    ctx.patchState({ valueDolarLoading: true });
+    return this.settingsService.updateValueDolar(id, valueDolar).pipe(
+      tap((settings: any) => {
+        ctx.patchState(settings);
+        ctx.patchState({ valueDolarLoading: false });
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Valor del dólar actualizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }),
+      catchError((error) => {
+        ctx.patchState({ valueDolarLoading: false });
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error actualizando valor del dólar',
           showConfirmButton: false,
           timer: 1500,
         });

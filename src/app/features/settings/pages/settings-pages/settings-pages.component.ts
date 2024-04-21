@@ -1,26 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
+import { Observable, tap } from 'rxjs';
 import { PriceFormComponent } from '../../components/price-form/price-form.component';
 import { VideoFormComponent } from '../../components/video-form/video-form.component';
-import {
-  Actions,
-  Select,
-  Store,
-  ofActionCompleted,
-  ofActionSuccessful,
-} from '@ngxs/store';
+
+import { Settings, Video } from '../../interfaces/settings.interface';
 import { GetSettings } from '../../state/setting.action';
-import { Video, Settings } from '../../interfaces/settings.interface';
 import { SettingsState } from '../../state/setting.state';
-import { Observable, take, tap } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { SettingsService } from '../../services/settings.service';
+import { DolarFormComponent } from "../../components/dolar-form/dolar-form.component";
 
 @Component({
-  selector: 'app-settings-pages',
-  standalone: true,
-  templateUrl: './settings-pages.component.html',
-  styleUrl: './settings-pages.component.css',
-  imports: [PriceFormComponent, VideoFormComponent, CommonModule],
+    selector: 'app-settings-pages',
+    standalone: true,
+    templateUrl: './settings-pages.component.html',
+    styleUrl: './settings-pages.component.css',
+    imports: [PriceFormComponent, VideoFormComponent, CommonModule, DolarFormComponent]
 })
 export class SettingsPagesComponent {
   tableData: { columns: string[]; rows: string[][]; id: string } = {
@@ -29,6 +24,13 @@ export class SettingsPagesComponent {
     rows: [],
   };
   videoData: Video = {} as Video;
+  valueDolar: {
+    value: number;
+    id: string;
+  } = {
+    value: 0,
+    id: '',
+  };
   @Select(SettingsState) settings$!: Observable<Settings>;
 
   constructor(private actions: Actions, private store: Store) {}
@@ -62,6 +64,12 @@ export class SettingsPagesComponent {
             this.videoData = {
               id: settings.videos.id,
               url: settings.videos.url,
+            };
+          }
+          if (settings.valueDolar) {
+            this.valueDolar = {
+              value: settings.valueDolar.value,
+              id: settings.valueDolar.id,
             };
           }
         })

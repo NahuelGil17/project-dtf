@@ -1,5 +1,11 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, Input, SimpleChanges, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -32,13 +38,17 @@ import { SettingsState } from '../../state/setting.state';
     AsyncPipe,
   ],
 })
-export class PriceFormComponent {
+export class PriceFormComponent implements OnInit, OnChanges {
   @Input() table: { columns: string[]; rows: string[][]; id: string } = {} as {
     id: string;
     columns: string[];
     rows: string[][];
   };
+
   @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
+  @Select(SettingsState.updateTableLoading) tableLoading$!: Observable<boolean>;
+  @Select(SettingsState.removeTableLoading)
+  removeTableLoading$!: Observable<boolean>;
   nameButton: string = '';
   priceForm!: FormGroup;
 
@@ -68,6 +78,7 @@ export class PriceFormComponent {
       });
       this.initializeFormWithTableData();
     }
+
     this.changeTitleButton();
   }
 
@@ -110,6 +121,16 @@ export class PriceFormComponent {
       const columns = this.priceForm.get('columns') as FormArray;
       const rows = this.priceForm.get('rows') as FormArray;
 
+      if (columns.length > 6) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No se pueden agregar más de 7 columnas',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
       // Agrega una nueva columna
       columns.push(this.formBuilder.control(''));
 
@@ -153,6 +174,16 @@ export class PriceFormComponent {
       const rowControls = this.priceForm
         .get('columns')
         ?.value.map(() => this.formBuilder.control(''));
+      if (rows.length > 7) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No se pueden agregar más de 7 filas',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
       rows.push(this.formBuilder.array(rowControls));
     } else {
       console.error('priceForm is not initialized or rows is not a FormArray');

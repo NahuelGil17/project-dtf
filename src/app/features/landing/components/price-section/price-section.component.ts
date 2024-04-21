@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { TablePriceComponent } from '../../../../core/components/table-price/table-price.component';
-import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { GetSettings } from '../../../settings/state/setting.action';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { SettingsState } from '../../../settings/state/setting.state';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-price-section',
   standalone: true,
-  imports: [TablePriceComponent],
+  imports: [TablePriceComponent, AsyncPipe],
   templateUrl: './price-section.component.html',
   styleUrl: './price-section.component.css',
 })
@@ -17,6 +18,7 @@ export class PriceSectionComponent {
     columns: [],
     rows: [],
   };
+  @Select(SettingsState.valueDolar) valueDolar$!: Observable<number>;
 
   constructor(private store: Store, private actions: Actions) {}
 
