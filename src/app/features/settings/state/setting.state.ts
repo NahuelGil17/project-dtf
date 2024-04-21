@@ -19,6 +19,10 @@ import Swal from 'sweetalert2';
   name: 'settings',
   defaults: {
     loading: false,
+    tableLoading: false,
+    videoLoading: false,
+    valueDolarLoading: false,
+    removeTableLoading: false,
     tables: [],
     videos: [],
     valueDolar: undefined,
@@ -31,6 +35,28 @@ export class SettingsState {
   @Selector()
   static settingsLoading(state: SettingsStateModel): boolean | undefined {
     return state.loading;
+  }
+
+  @Selector()
+  static updateTableLoading(state: SettingsStateModel): boolean | undefined {
+    return state.tableLoading;
+  }
+
+  @Selector()
+  static updateVideoLoading(state: SettingsStateModel): boolean | undefined {
+    return state.videoLoading;
+  }
+
+  @Selector()
+  static updateValueDolarLoading(
+    state: SettingsStateModel
+  ): boolean | undefined {
+    return state.valueDolarLoading;
+  }
+
+  @Selector()
+  static removeTableLoading(state: SettingsStateModel): boolean | undefined {
+    return state.removeTableLoading;
   }
 
   @Selector()
@@ -121,10 +147,10 @@ export class SettingsState {
     action: UpdateTable
   ): Observable<void> {
     const { id, table } = action.payload;
-    ctx.patchState({ loading: true });
+    ctx.patchState({ tableLoading: true });
     return this.settingsService.updateTable(id, table).pipe(
       tap((settings: any) => {
-        ctx.patchState({ loading: false });
+        ctx.patchState({ tableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -134,6 +160,7 @@ export class SettingsState {
         });
       }),
       catchError((error) => {
+        ctx.patchState({ tableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -151,9 +178,11 @@ export class SettingsState {
     ctx: StateContext<SettingsStateModel>,
     action: RemoveTable
   ): Observable<void> {
+    ctx.patchState({ removeTableLoading: true });
     return this.settingsService.removeTable(action.payload).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
+        ctx.patchState({ removeTableLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -210,9 +239,11 @@ export class SettingsState {
     action: UpdateVideo
   ): Observable<void> {
     const { videoId, url } = action.payload;
+    ctx.patchState({ videoLoading: true });
     return this.settingsService.updateVideo(videoId, url).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
+        ctx.patchState({ videoLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -222,6 +253,7 @@ export class SettingsState {
         });
       }),
       catchError((error) => {
+        ctx.patchState({ videoLoading: false });
         Swal.fire({
           position: 'top-end',
           heightAuto: true,
@@ -271,9 +303,11 @@ export class SettingsState {
     action: UpdateValueDolar
   ): Observable<void> {
     const { id, valueDolar } = action.payload;
+    ctx.patchState({ valueDolarLoading: true });
     return this.settingsService.updateValueDolar(id, valueDolar).pipe(
       tap((settings: any) => {
         ctx.patchState(settings);
+        ctx.patchState({ valueDolarLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -283,6 +317,7 @@ export class SettingsState {
         });
       }),
       catchError((error) => {
+        ctx.patchState({ valueDolarLoading: false });
         Swal.fire({
           position: 'top-end',
           icon: 'error',

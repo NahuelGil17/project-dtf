@@ -1,26 +1,24 @@
 @if (loading$ | async) {
 <app-loading></app-loading>
 } @else {
-  <h3 class="w-full text-4xl font-semibold my-8">Tabla de Precios💲</h3>
+<h3 class="w-full text-4xl font-semibold my-8">Tabla de Precios💲</h3>
 <form [formGroup]="priceForm">
   <div
-    class="flex w-[60rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-white shadow-lg px-6  py-8 rounded-lg mb-8"
+    class="flex w-[60rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-white shadow-lg px-6 py-8 rounded-lg mb-8"
   >
     @if(loading$ | async) { } @else { }
     <div>
       <div formArrayName="columns" class="flex gap-3">
         @for (column of columnControls; track $index) {
-          <div class="flex flex-col gap-1">
-            <span class=" font-semibold">
-              Columna {{ $index + 1 }}
-            </span>
+        <div class="flex flex-col gap-1">
+          <span class="font-semibold"> Columna {{ $index + 1 }} </span>
           <input
             class="w-40 shadow-sm bg-slate-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
             type="text"
             [formControlName]="$index"
             placeholder="Titulo {{ $index + 1 }}"
           />
-          </div>
+        </div>
         <button
           class="center w-8 h-8 mt-8 border shadow-sm hover:bg-gray-50 px-1 rounded-lg bg-white text-2xl font-medium text-center text-red-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
           type="button"
@@ -105,7 +103,7 @@
   <div class="flex">
     <app-button
       (click)="sendTable()"
-      [isLoading]="loading$ | async"
+      [isLoading]="removeTableLoading$ | async"
       [isDisabled]="priceForm.invalid"
       classes="center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-900 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
     >
@@ -113,7 +111,7 @@
     </app-button>
     <app-button
       (click)="deleteTable()"
-      [isLoading]="loading$ | async"
+      [isLoading]="tableLoading$ | async"
       [isDisabled]="priceForm.invalid"
       classes="center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-900 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
     >

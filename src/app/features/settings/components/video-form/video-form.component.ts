@@ -22,7 +22,8 @@ import Swal from 'sweetalert2';
 })
 export class VideoFormComponent {
   @Input() video: { url: string; id: string } = { url: '', id: '' };
-  @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
+  @Select(SettingsState.updateVideoLoading)
+  updateVideoLoading$!: Observable<boolean>;
   videoForm!: FormGroup;
   url: string = '';
   constructor(private actions: Actions, private store: Store) {

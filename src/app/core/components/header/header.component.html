@@ -17,7 +17,7 @@
       >
     </a>
     <div
-      class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+      class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse gap-2"
     >
       <button
         data-collapse-toggle="navbar-user"
@@ -167,7 +167,7 @@
             >Pedidos</a
           >
         </li>
-        <li [ngClass]="{ select: selected === 5 }">
+        <li [ngClass]="{ select: selected === 5 }" class="flex md:hidden">
           <a
             (click)="selectItem(4)"
             routerLink="/admin/configuraciones"
@@ -176,7 +176,7 @@
           >
         </li>
         }
-        <li [ngClass]="{ select: selected === 6 }">
+        <li [ngClass]="{ select: selected === 6 }" class="flex md:hidden">
           <a
             (click)="selectItem(6)"
             routerLink="/pedido"
@@ -185,7 +185,7 @@
           >
         </li>
         @if (isAuthenticated$ | async) {
-        <li [ngClass]="{ select: selected === 7 }">
+        <li [ngClass]="{ select: selected === 7 }" class="flex md:hidden">
           <a
             (click)="selectItem(7)"
             routerLink="/usuario/perfil"
@@ -194,7 +194,7 @@
           >
         </li>
         <li
-          class="cursor-pointer"
+          class="cursor-pointer flex md:hidden"
           (click)="logOut()"
           [ngClass]="{ select: selected === 8 }"
         >

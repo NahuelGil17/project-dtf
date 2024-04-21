@@ -11,12 +11,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import Swal from 'sweetalert2';
 import { UpdateValueDolar, CreateValueDolar } from '../../state/setting.action';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { Observable } from 'rxjs';
+import { SettingsState } from '../../state/setting.state';
 
 @Component({
   selector: 'app-dolar-form',
@@ -37,6 +39,8 @@ export class DolarFormComponent implements OnInit, OnChanges {
     value: number;
     id: string;
   };
+  @Select(SettingsState.updateValueDolarLoading)
+  valueDolarLoading$!: Observable<boolean>;
 
   constructor(
     private formBuilder: FormBuilder,

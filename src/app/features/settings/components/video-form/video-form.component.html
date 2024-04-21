@@ -1,4 +1,7 @@
-<form [formGroup]="videoForm" class="center flex-col min-w-[70rem] pl-20 items-start ">
+<form
+  [formGroup]="videoForm"
+  class="center flex-col min-w-[70rem] pl-20 items-start"
+>
   <h3 class="text-4xl font-semibold text-left mb-6">Video 🔗</h3>
   <div class="w-[30rem] flex-col">
     <input
@@ -9,7 +12,7 @@
     />
     <app-button
       (click)="saveVideo()"
-      [isLoading]="loading$ | async"
+      [isLoading]="updateVideoLoading$ | async"
       [isDisabled]="videoForm.invalid"
       classes="w-44 center bg-blue-600 p-3 mt-6 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
     >

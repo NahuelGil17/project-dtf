@@ -46,6 +46,9 @@ export class PriceFormComponent implements OnInit, OnChanges {
   };
 
   @Select(SettingsState.settingsLoading) loading$!: Observable<boolean>;
+  @Select(SettingsState.updateTableLoading) tableLoading$!: Observable<boolean>;
+  @Select(SettingsState.removeTableLoading)
+  removeTableLoading$!: Observable<boolean>;
   nameButton: string = '';
   priceForm!: FormGroup;
 
