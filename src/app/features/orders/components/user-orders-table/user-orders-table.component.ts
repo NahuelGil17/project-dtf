@@ -18,13 +18,20 @@ import { OrdersState } from '../../state/orders.state';
 import { Dialog } from '@angular/cdk/dialog';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { environment } from '../../../../environment/environment.develop';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-user-orders-table',
   standalone: true,
-  imports: [CommonModule, FormatDatePipe, OrderStatusPipe, RouterModule],
   templateUrl: './user-orders-table.component.html',
   styleUrl: './user-orders-table.component.css',
+  imports: [
+    CommonModule,
+    FormatDatePipe,
+    OrderStatusPipe,
+    RouterModule,
+    LoadingComponent,
+  ],
 })
 export class UserOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
@@ -47,13 +54,11 @@ export class UserOrdersTableComponent {
     private store: Store,
     private dialog: Dialog,
     private actions: Actions
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.userId = this.store.selectSnapshot(AuthState.currentUserId);
-  
+
     if (!this.userId) return;
     this.getTotalOrdersByUserId(this.userId);
 
@@ -63,12 +68,11 @@ export class UserOrdersTableComponent {
       this.getOrderByPage(null);
       this.calculateEndIndex();
       this.calculateLastPage();
-
     });
   }
 
   getTotalOrdersByUserId(userId: string): void {
-    this.store.dispatch(new GetTotalOrdersByUserId(userId,this.isAdmin));
+    this.store.dispatch(new GetTotalOrdersByUserId(userId, this.isAdmin));
   }
 
   searchOrders(event: Event): void {
@@ -76,7 +80,9 @@ export class UserOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     const inputSearch = inputElement.value.trim();
     if (inputSearch.length > 0) {
-      this.store.dispatch(new GetOrdersBySearch(this.userId, this.isAdmin, inputSearch));
+      this.store.dispatch(
+        new GetOrdersBySearch(this.userId, this.isAdmin, inputSearch)
+      );
     } else {
       this.currentPage = 1;
       this.getOrderByPage(null);
@@ -85,7 +91,9 @@ export class UserOrdersTableComponent {
 
   getOrderByPage(isNextPage: 'next' | 'prev' | null): void {
     if (!this.userId) return;
-    this.store.dispatch(new GetOrdersByPage(this.userId, this.isAdmin, isNextPage));
+    this.store.dispatch(
+      new GetOrdersByPage(this.userId, this.isAdmin, isNextPage)
+    );
   }
 
   previousPage(): void {

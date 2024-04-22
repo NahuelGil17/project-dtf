@@ -1,5 +1,7 @@
 @if (loading$ | async) {
-<app-loading></app-loading>
+<app-loading
+  classes="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+></app-loading>
 } @else {
 <h3 class="w-full text-4xl font-semibold my-8">Tabla de Precios💲</h3>
 <form [formGroup]="priceForm">

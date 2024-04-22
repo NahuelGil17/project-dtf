@@ -1,6 +1,10 @@
-<h2 class="text-center text-6xl tracking-tight font-semibold text-gray-900 dark:text-white mb-4 py-4">Precios💲</h2>
+<h2
+  class="text-center text-6xl tracking-tight font-semibold text-gray-900 dark:text-white mb-4 py-4"
+>
+  Precios💲
+</h2>
+@if (table.columns.length && table.rows.length) {
 <div class="overflow-x-auto shadow-md">
-  @if (table.columns.length && table.rows.length) {
   <table
     class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400 shadow-lg bg-white"
   >
@@ -28,7 +32,7 @@
           }"
         >
           @if(valueDolar ) {
-          {{ (value | valueDolar : valueDolar)}}
+          {{ value | valueDolar : valueDolar }}
           }@else {
           {{ value }}
           }
@@ -38,9 +42,11 @@
       }
     </tbody>
   </table>
-  } @else {
-  <p class="text-center text-gray-500 dark:text-gray-400">
-    No hay datos para mostrar
-  </p>
-  }
 </div>
+} @else {
+<div class="flex justify-center">
+  <app-loading
+    classes="inline w-14 h-14 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+  ></app-loading>
+</div>
+}

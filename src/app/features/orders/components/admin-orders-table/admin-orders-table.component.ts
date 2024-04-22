@@ -22,19 +22,21 @@ import {
 import { OrdersState } from '../../state/orders.state';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { Status } from './../../../../shared/enums/status.enum';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-admin-orders-table',
   standalone: true,
+  templateUrl: './admin-orders-table.component.html',
+  styleUrl: './admin-orders-table.component.css',
   imports: [
     CommonModule,
     FormatDatePipe,
     OrderStatusPipe,
     RouterModule,
     MatTooltipModule,
+    LoadingComponent,
   ],
-  templateUrl: './admin-orders-table.component.html',
-  styleUrl: './admin-orders-table.component.css',
 })
 export class AdminOrdersTableComponent {
   @Select(OrdersState.isLoading) isLoading$!: Observable<boolean>;
@@ -182,7 +184,7 @@ export class AdminOrdersTableComponent {
     return this.store.dispatch(new ChangeStatus(orderID, statusValue));
   }
 
-  deleteOrder(orderId: string, custId:string): void {
+  deleteOrder(orderId: string, custId: string): void {
     Swal.fire({
       title: 'Estas seguro?',
       text: `Estas seguro que quieres eliminar la orden id: ${custId}?`,

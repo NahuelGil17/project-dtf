@@ -2,7 +2,9 @@
   <h1 class="text-6xl font-bold mb-4 text-center">Perfil</h1>
   <div class="flex justify-center rounded-md p-10 m-10 w-full">
     @if (loading) {
-    <app-loading></app-loading>
+    <app-loading
+      classes="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+    ></app-loading>
     } @else {
     <div
       class="flex flex-col justify-center gap-6 bg-white h-[40rem] w-[30rem] rounded-md p-4 shadow-lg"
@@ -19,8 +21,11 @@
         </div>
         <section class="flex flex-col gap-4">
           <div class="flex flex-col">
-            <form [formGroup]="profileForm" class="flex flex-col align-middle gap-4">
-              <div class="flex flex-col">    
+            <form
+              [formGroup]="profileForm"
+              class="flex flex-col align-middle gap-4"
+            >
+              <div class="flex flex-col">
                 <label class="mb-0 text-2xl font-bold">Nombre:</label>
                 @if (isEditing) {
                 <input
