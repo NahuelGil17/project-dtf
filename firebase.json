@@ -5,5 +5,11 @@
       "source": ".",
       "frameworksBackend": {}
     }
-  ]
+  ],
+  "extensions": {
+    "mailersend-email": "mailersend/mailersend-email@0.1.7"
+  },
+    "functions": {
+      "source": "functions"
+    }
 }

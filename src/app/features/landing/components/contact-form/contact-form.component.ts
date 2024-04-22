@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ContactFormService } from '../../services/contact-form.service';
+
 
 @Component({
   selector: 'app-contact-form',
@@ -9,19 +11,25 @@ import { CommonModule } from '@angular/common';
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css'
 })
-export class ContactFormComponent {
+export class ContactFormComponent implements OnInit {
 
   @Output() contactFormEmitter: EventEmitter<any> = new EventEmitter();
 
   public contactForm!: FormGroup;
   
-  constructor(private fb: FormBuilder) { 
+  constructor(private fb: FormBuilder, private contactFormService: ContactFormService,) { 
     this.contactForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', Validators.required],
     });
   }
+  ngOnInit(): void {
+   this.contactFormService.sendContactForm('Nico','nicogilardonik@gmail.com','Hola');
+  }
+
+
+  
 
   onSubmit(event: Event): void {
     event.preventDefault();
