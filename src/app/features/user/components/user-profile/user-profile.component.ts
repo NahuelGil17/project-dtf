@@ -16,13 +16,17 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { Preferences } from '../../intefaces/preferences.interface';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
-
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [ButtonComponent, CommonModule, ReactiveFormsModule,LoadingComponent],
+  imports: [
+    ButtonComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    LoadingComponent,
+  ],
 })
 export class UserProfileComponent {
   isEditing: boolean = false;
@@ -44,7 +48,15 @@ export class UserProfileComponent {
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes['preferences']) {
-      this.nameFirstLetter = this.preferences?.fullName[0] || '';
+      if (this.preferences?.fullName) {
+        this.nameFirstLetter = this.preferences.fullName
+          .split(' ')
+          .map((name) => name[0])
+          .join('');
+      } else {
+        this.nameFirstLetter = '';
+      }
+
       this.uid = this.preferences?.uid || '';
       if (this.preferences) {
         this.profileForm.setValue({
