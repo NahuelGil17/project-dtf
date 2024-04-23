@@ -23,6 +23,7 @@ import { OrdersState } from '../../state/orders.state';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { Status } from './../../../../shared/enums/status.enum';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-admin-orders-table',
@@ -36,6 +37,7 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
     RouterModule,
     MatTooltipModule,
     LoadingComponent,
+    MatMenuModule,
   ],
 })
 export class AdminOrdersTableComponent {
