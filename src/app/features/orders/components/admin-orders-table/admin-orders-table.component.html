@@ -1,11 +1,11 @@
-<div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+<div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
   <div
-    class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg overflow-hidden"
+    class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg overflow-hidden "
   >
     <div
-      class="relative z-0 flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
+      class="relative z-0 flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 "
     >
-      <div class="w-full md:w-1/2">
+      <div class="w-full md:w-1/2 ">
         <form class="flex items-center">
           <label for="simple-search" class="sr-only">Search</label>
           <div class="relative w-full">
@@ -38,12 +38,12 @@
         </form>
       </div>
     </div>
-    <div class="h-[40rem]">
+    <div class="h-[40rem]  overflow-y-auto">
       <table
         class="relative z-0 w-full text-sm text-left text-gray-500 dark:text-gray-400"
       >
         <thead
-          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 "
         >
           <tr>
             <th scope="col" class="px-4 py-3"></th>
@@ -114,7 +114,7 @@
             </td>
             <td class="px-4 py-3">
               <button
-                (click)="openChangeStatusDropdown(order.id)"
+                [matMenuTriggerFor]="menu"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 type="button"
               >
@@ -135,6 +135,19 @@
                   />
                 </svg>
               </button>
+              <mat-menu #menu="matMenu">
+                  @for (status of statusArray; track $index) {
+                  <button mat-menu-item
+                    [value]="status.value"
+                    class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                    (click)="
+                      confirmChangeStatus(order.id, status.value, status.text)
+                    "
+                  >
+                    {{ status.text }}
+                  </button>
+                  }
+              </mat-menu>
               @if(order.showDropdownChangeStatus){
               <div
                 id="dropdownMenu"
