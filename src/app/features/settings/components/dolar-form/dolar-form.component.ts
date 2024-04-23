@@ -71,11 +71,6 @@ export class DolarFormComponent implements OnInit, OnChanges {
           valueDolar: this.valueDolar.value.value,
           id: this.valueDolarInput.id,
         };
-        console.log(
-          '🚀 ~ DolarFormComponent ~ changeValueDolar ~ valueData:',
-          valueData
-        );
-
         this.store.dispatch(new UpdateValueDolar(valueData));
         this.actions
           .pipe(ofActionSuccessful(UpdateValueDolar))

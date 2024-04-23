@@ -8,7 +8,7 @@
       <!-- Modal header -->
       <div class="flex justify-between mb-16 rounded-t sm:mb-5">
         <div class="text-lg text-gray-900 md:text-xl dark:text-white">
-          <h3 class="font-bold text-xl ">
+          <h3 class="font-bold text-xl">
             DETALLE DEL PEDIDO
             <span class="font-light text-sm text-gray-500 dark:text-gray-400"
               >#{{ data.order.id }}</span
@@ -75,7 +75,7 @@
             Fecha de creación 🗓️
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-            {{ data.order.creationDate | date:'dd-MM-yyyy hh:mm a' }}
+            {{ data.order.creationDate | date : "dd-MM-yyyy hh:mm a" }}
           </dd>
 
           <dt
@@ -87,20 +87,52 @@
             <span [innerHTML]="data.order.status | orderStatus"></span>
           </dd>
 
-          <dt
-          >
-          <span   class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
-          >  Archivos 📁</span> <button class="text-blue-500 underline cursor-pointer ml-2" (click)="downloadFiles()">Descargar todos </button>⬇️
+          <dt>
+            <span
+              class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            >
+              Archivos 📁</span
+            >
+            <button
+              class="text-blue-500 underline cursor-pointer ml-2"
+              (click)="downloadFiles()"
+            >
+              Descargar todos</button
+            >⬇️
           </dt>
+          <mat-list role="list" class="overflow-auto h-48">
+            @for (file of data.order.files; track file) {
+            <mat-list-item>
+              <div matListItemAvatar>
+                <a [href]="file.file" target="_blank">
+                  <img
+                    [src]="file.file"
+                    alt="Imagen de la orden"
+                    class="w-10 h-10 rounded-lg"
+                  />
+                </a>
+              </div>
+              <div matListItemLine>
+                <span class="text-black font-bold">
+                  {{ file.count | repetition }} 
+                </span> 
+            </div>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+            }
+            
+          </mat-list>
 
-          <dd class="mb-2 max-h-30 overflow-auto font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+          <!-- <dd
+            class="mb-2 max-h-30 overflow-auto font-light text-gray-500 sm:mb-5 dark:text-gray-400"
+          >
             <div class="grid grid-cols-2 gap-2">
               <div *ngFor="let file of data.order.files">
                 @if(file.type.match('image')){
                 <a [href]="file.file" target="_blank">
                   <img
                     [src]="file.file"
-                  alt="Imagen de la orden"
+                    alt="Imagen de la orden"
                     class="w-10 h-10 rounded-lg"
                   />
                 </a>
@@ -114,14 +146,14 @@
                 <span class="ml-2">{{ file.count }} repetición</span>
               </div>
             </div>
-          </dd>
+          </dd> -->
         </dl>
       </div>
       <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
         Nota 📝
       </dt>
       <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-        {{ data.order.note }} 
+        {{ data.order.note }}
       </dd>
     </div>
   </div>
