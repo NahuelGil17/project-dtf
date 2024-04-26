@@ -72,7 +72,6 @@ export class SettingsState {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
-        console.log(settings);
         const stateToUpdate: any = {};
         settings.forEach((setting: any) => {
           if (setting.rows && setting.columns) {

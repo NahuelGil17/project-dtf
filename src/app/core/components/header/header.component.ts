@@ -63,6 +63,14 @@ export class HeaderComponent {
         tap(() => {
           const userPreferences = this.store.selectSnapshot(UserState);
           this.userNameFirstLetter = userPreferences.fullName[0];
+          if (userPreferences.fullName) {
+            this.userNameFirstLetter = userPreferences.fullName
+              .split(' ')
+              .map((name: any[]) => name[0])
+              .join('');
+          } else {
+            this.userNameFirstLetter = '';
+          }
           this.fullName = userPreferences.fullName;
         })
       )

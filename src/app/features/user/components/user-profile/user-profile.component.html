@@ -1,5 +1,5 @@
 <div class="m-5 p-5 rounded-lg w-[90rem]">
-  <h1 class="text-6xl font-bold mb-4 text-center">Perfil 👤</h1>
+  <h1 class="text-6xl pl-20 text-center tracking-tight font-semibold text-gray-900 dark:text-white mb-4">Perfil👤</h1>
   <div class="flex justify-center rounded-md p-10 m-10 w-full">
     @if (loading) {
     <app-loading
@@ -12,10 +12,10 @@
       <div>
         <div class="flex w-full justify-center mb-4">
           <section
-            class="w-36 h-36 rounded-full text-center bg-gray-700 center items-center"
+            class="w-24 h-24 rounded-full text-center bg-gray-700 center items-center"
           >
-            <span class="text-6xl text-white">{{
-              nameFirstLetter | titlecase
+            <span class="text-3xl text-white">{{
+              nameFirstLetter
             }}</span>
           </section>
         </div>
@@ -26,29 +26,29 @@
               class="flex flex-col align-middle gap-4"
             >
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold">Nombre:</label>
+                <label class="mb-0 text-xl font-bold">Nombre:</label>
                 @if (isEditing) {
                 <input
                   formControlName="fullName"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
-                <span class="mb-2">{{ preferences?.fullName }}</span>
+                <span class="mb-2 text-lg font-semibold text-gray-800">{{ preferences?.fullName }}</span>
                 }
               </div>
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold">Email:</label>
+                <label class="mb-0 text-xl font-bold">Email:</label>
                 @if (isEditing) {
                 <input
                   formControlName="email"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
-                <span class="mb-2">{{ preferences?.email }}</span>
+                <span class="mb-2 text-lg font-semibold text-gray-800">{{ preferences?.email }}</span>
                 }
               </div>
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold"
+                <label class="mb-0 text-xl font-bold"
                   >Cedula de Identidad:</label
                 >
                 @if (isEditing) {
@@ -57,18 +57,18 @@
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
-                <span class="mb-2">{{ preferences?.ci }}</span>
+                <span class="mb-2 text-lg font-semibold text-gray-800">{{ preferences?.ci }}</span>
                 }
               </div>
               <div class="flex flex-col">
-                <label class="mb-0 text-2xl font-bold">Celular:</label>
+                <label class="mb-0 text-xl font-bold">Celular:</label>
                 @if (isEditing) {
                 <input
                   formControlName="phoneNumber"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light ng-pristine ng-invalid ng-touched"
                 />
                 } @else {
-                <span class="mb-2">{{ preferences?.phoneNumber }}</span>
+                <span class="mb-2 text-lg font-semibold text-gray-800">{{ preferences?.phoneNumber }}</span>
                 }
               </div>
             </form>

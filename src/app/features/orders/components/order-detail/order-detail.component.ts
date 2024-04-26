@@ -7,7 +7,8 @@ import { OrderTypePipe } from '../../pipes/order-type.pipe';
 import { CommonModule } from '@angular/common';
 import { OrderModePipe } from '../../../../shared/pipes/order-mode.pipe';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
-
+import { MatListModule } from '@angular/material/list';
+import { RepetitionPipe } from "../../../../shared/pipes/reps.pipe";
 @Component({
     selector: 'app-order-detail',
     standalone: true,
@@ -19,10 +20,12 @@ import { ButtonComponent } from "../../../../shared/components/button/button.com
         FormatDatePipe,
         OrderTypePipe,
         OrderModePipe,
-        ButtonComponent
+        ButtonComponent,
+        MatListModule,
+        RepetitionPipe
     ]
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent {
   isOpen = false;
 
   constructor(
@@ -35,9 +38,6 @@ export class OrderDetailComponent implements OnInit {
       const link = document.createElement('a');
       window.open(file.file, '_blank');
     });
-  }
-  ngOnInit() {
-    console.log(this.data);
   }
 
   close() {
