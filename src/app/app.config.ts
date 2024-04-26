@@ -17,6 +17,7 @@ import {
 import { SettingsState } from './features/settings/state/setting.state';
 import { OrdersState } from './features/orders/state/orders.state';
 import { UserState } from './features/user/state/user.state';
+import { ContactState } from './features/landing/state/contact.state';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 export const appConfig: ApplicationConfig = {
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
           SettingsState,
           OrdersState,
           UserState,
+          ContactState,
         ]
         // {
         //   developmentMode: true,
@@ -50,12 +52,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       provideFirebaseApp(() =>
         initializeApp({
-          apiKey: "AIzaSyDGORIzdj3Qs3N_3_K_Yl_PKKCXirX50mI",
-          authDomain: "dtf-central.firebaseapp.com",
-          projectId: "dtf-central",
-          storageBucket: "dtf-central.appspot.com",
-          messagingSenderId: "510031789892",
-          appId: "1:510031789892:web:e94133dadaaaee83372111"
+          apiKey: 'AIzaSyDGORIzdj3Qs3N_3_K_Yl_PKKCXirX50mI',
+          authDomain: 'dtf-central.firebaseapp.com',
+          projectId: 'dtf-central',
+          storageBucket: 'dtf-central.appspot.com',
+          messagingSenderId: '510031789892',
+          appId: '1:510031789892:web:e94133dadaaaee83372111',
         })
       )
     ),

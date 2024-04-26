@@ -3,30 +3,29 @@ import { Action, Selector, State } from '@ngxs/store';
 
 import { ContactFormService } from '../services/contact-form.service';
 
-import { OrdersStateModel } from './contact.model';
+import { ContactModel } from './contact.model';
 
 import { catchError, tap, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SendContactForm } from './contact.actions';
 
-@State<OrdersStateModel>({
-  name: 'orders',
+@State<ContactModel>({
+  name: 'Contact',
   defaults: {
     loading: false,
   },
 })
 @Injectable({ providedIn: 'root' })
-export class OrdersState {
+export class ContactState {
   contactFormService = inject(ContactFormService);
 
   @Selector()
-  static isLoading(state: OrdersStateModel): boolean | undefined {
+  static isLoading(state: ContactModel): boolean | undefined {
     return state.loading;
   }
 
   @Action(SendContactForm, { cancelUncompleted: true })
   SendContactForm(ctx: any, action: SendContactForm) {
-    console.log('STATE: POR ENVIAR EL EMAIL');
     ctx.patchState({ loading: true });
     return this.contactFormService
       .sendContactForm(action.contactEmail)

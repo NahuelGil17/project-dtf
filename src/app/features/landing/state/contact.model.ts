@@ -1,3 +1,3 @@
-export class OrdersStateModel {
+export class ContactModel {
     loading?: boolean;
 }

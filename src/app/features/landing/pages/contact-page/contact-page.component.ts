@@ -15,7 +15,7 @@ import { ContactEmail } from '../../interfaces/contactemail.interface';
 export class ContactPageComponent {
   constructor(private store: Store) {}
 
-  handleContactForm(contactEmail: ContactEmail) {
+  handleContactForm(contactEmail: ContactEmail) {  
     this.store.dispatch(new SendContactForm(contactEmail));
   }
 }

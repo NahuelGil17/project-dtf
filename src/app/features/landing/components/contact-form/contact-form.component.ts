@@ -28,7 +28,6 @@ export class ContactFormComponent {
   onSubmit(event: Event): void {
     event.preventDefault();
     if (this.contactForm.valid) {
-      //hacer output para avisarle a este
       this.contactFormEmitter.emit(this.contactForm.value);
     } else {
       this.markFormGroupTouched(this.contactForm);
