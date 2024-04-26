@@ -11,7 +11,7 @@ import { ContactFormService } from '../../services/contact-form.service';
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css'
 })
-export class ContactFormComponent implements OnInit {
+export class ContactFormComponent {
 
   @Output() contactFormEmitter: EventEmitter<any> = new EventEmitter();
 
@@ -24,13 +24,7 @@ export class ContactFormComponent implements OnInit {
       message: ['', Validators.required],
     });
   }
-  ngOnInit(): void {
-   this.contactFormService.sendContactForm('Nico','nicogilardonik@gmail.com','Hola');
-  }
-
-
-  
-
+ 
   onSubmit(event: Event): void {
     event.preventDefault();
     if (this.contactForm.valid) {
