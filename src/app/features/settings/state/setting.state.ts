@@ -72,7 +72,6 @@ export class SettingsState {
     ctx.patchState({ loading: true });
     return this.settingsService.getSettings().pipe(
       tap((settings: any) => {
-        console.log(settings);
         const stateToUpdate: any = {};
         settings.forEach((setting: any) => {
           if (setting.rows && setting.columns) {
@@ -242,7 +241,9 @@ export class SettingsState {
     ctx.patchState({ videoLoading: true });
     return this.settingsService.updateVideo(videoId, url).pipe(
       tap((settings: any) => {
-        ctx.patchState(settings);
+        if (settings) {
+          ctx.patchState(settings);
+        }
         ctx.patchState({ videoLoading: false });
         Swal.fire({
           position: 'top-end',
@@ -306,7 +307,9 @@ export class SettingsState {
     ctx.patchState({ valueDolarLoading: true });
     return this.settingsService.updateValueDolar(id, valueDolar).pipe(
       tap((settings: any) => {
-        ctx.patchState(settings);
+        if (settings) {
+          ctx.patchState(settings);
+        }
         ctx.patchState({ valueDolarLoading: false });
         Swal.fire({
           position: 'top-end',
