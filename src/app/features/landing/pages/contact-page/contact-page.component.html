@@ -13,7 +13,7 @@
     </div>
     <div class=" grid grid-cols-1 md:grid-cols-2 lg:gap-10">
       <app-contact-form class="bg-white px-8 py-6 rounded-lg shadow-md"
-        (contactFormEmitter)="handleContactForm($event)"
+        (contactFormEmitter)="handleContactForm($event)" [isLoading]="loading$ | async"
       ></app-contact-form>
       <div class="flex flex-col items-center justify-center lg:items-center">
         <h3 class="text-2xl font-semibold text-center mb-2">
