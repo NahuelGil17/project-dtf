@@ -17,7 +17,7 @@ import { ContactState } from '../../state/contact.state';
 })
 export class ContactPageComponent implements OnInit {
   @Select(ContactState.isLoading) loading$!: Observable<boolean>;
-
+  resetForm: boolean = false;
   constructor(private store: Store, private actions: Actions) {}
 
   ngOnInit(): void {
@@ -30,8 +30,7 @@ export class ContactPageComponent implements OnInit {
             text: 'Email enviado correctamente',
             icon: 'success',
           });
-          //TODO: NO SE COMO REINICIAR EL FORMULARIO DESDE OTRO COMPONENTE
-          ContactFormComponent.prototype.resetForm();
+          this.resetForm = true;
         })
       )
       .subscribe(() => {});
