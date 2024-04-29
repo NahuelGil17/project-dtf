@@ -172,6 +172,36 @@
               </div>
               }
             </td>
+            <td class="px-4 py-3">
+              <!-- NAHUE, AGREGA EL NUMERO DE WHATSAPP ACA {{ order.user.phoneNumber }} -->
+               <a
+              href="https://wa.me/AGREGA ACA LA VARIABLE/?text=Hola, tenemos una consulta sobre el pedido ID: {{ order.id }}" 
+                target="_blank"
+                class="flex items-center rounded-lg px-1 py-1 bg-blue-500 hover:bg-blue-700 text-white"
+              > 
+                <picture class="w-6 h-6 mx-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-brand-whatsapp"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+                    <path
+                      d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"
+                    />
+                  </svg>
+                </picture>
+                <span class="text-md font-semibold">Consultar</span>
+               </a>
+            </td>
             <td>
               <button
                 matTooltip="Cancelar pedido"

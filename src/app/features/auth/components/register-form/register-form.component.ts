@@ -47,7 +47,7 @@ export class RegisterFormComponent {
       {
         fullName: new FormControl('', [Validators.required]),
         ci: new FormControl('', [Validators.required]),
-        phoneNumber: new FormControl('', [Validators.required]),
+        phoneNumber: new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [
           Validators.required,
@@ -60,8 +60,14 @@ export class RegisterFormComponent {
     );
   }
 
+  phoneConverter(phoneNumber: string):string {
+    let phone = phoneNumber.replace('0', '+598').replace(/\s/g, '');
+    return phone;
+  }
+
   emitFormValues() {
     if (this.registerForm.valid) {
+      this.registerForm.value.phoneNumber = this.phoneConverter(this.registerForm.value.phoneNumber);
       this.formValues.emit(this.registerForm.value);
     } else {
       // Manejar la presentación de errores de validación
