@@ -141,7 +141,7 @@
                     [value]="status.value"
                     class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
                     (click)="
-                      confirmChangeStatus(order.id, status.value, status.text)
+                      confirmChangeStatus(order.id,order.user.email, status.value, status.text)
                     "
                   >
                     {{ status.text }}
@@ -162,7 +162,7 @@
                     [value]="status.value"
                     class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
                     (click)="
-                      confirmChangeStatus(order.id, status.value, status.text)
+                      confirmChangeStatus(order.id, order.user.email, status.value, status.text)
                     "
                   >
                     {{ status.text }}
@@ -175,7 +175,7 @@
             <td>
               <button
                 matTooltip="Cancelar pedido"
-                (click)="confirmChangeStatus(order.id, 4, 'Cancelado')"
+                (click)="confirmChangeStatus(order.id, order.user.email, 4, 'Cancelado')"
                 class="flex items-center rounded-lg px-2 py-1 bg-red-500 hover:bg-red-700 text-white"
               >
                 <picture class="w-6 h-6 mx-4">

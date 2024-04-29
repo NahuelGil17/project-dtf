@@ -63,6 +63,7 @@ export class AdminOrdersTableComponent {
     { value: Status.DELIVERED, text: 'Entregado' },
   ];
   showDropdownChangeStatus: boolean = false;
+  currentUserEmail: string = '';
 
   constructor(
     private orderService: OrderService,
@@ -87,14 +88,28 @@ export class AdminOrdersTableComponent {
       this.calculateLastPage();
     });
 
-    this.actions.pipe(ofActionSuccessful(ChangeStatus)).subscribe(() => {
-      this.emailService.sendEmail(
-        'nahuelgil98@gmail.com',
-        'Cambio de estado',
-        'El estado de tu orden ha sido cambiado.'
-      ).subscribe(() => {
-        console.log('Email enviado');
-      });
+    this.actions.pipe(ofActionSuccessful(ChangeStatus)).subscribe((res) => {
+      console.log(res);
+      this.emailService
+        .sendEmail(
+          res.userEmail,
+          `¡Importante! El estado de tu orden ha cambiado`,
+          `<p>Hola,</p>
+
+<p>Queremos informarte que el estado de tu orden <strong>${
+            res.orderId
+          }</strong> ha sido actualizado a: "<em>${
+            this.statusArray[res.statusValue].text
+          }</em>".</p>
+
+<p>Gracias por confiar en nosotros.</p>
+
+<p>Atentamente,<br>
+CENTRAL DTF</p>`
+        )
+        .subscribe(() => {
+          console.log('Email enviado');
+        });
     });
   }
 
@@ -169,6 +184,7 @@ export class AdminOrdersTableComponent {
 
   confirmChangeStatus(
     orderID: string,
+    userEmail: string,
     statusValue: number,
     statusText: string
   ): void {
@@ -182,7 +198,8 @@ export class AdminOrdersTableComponent {
       confirmButtonText: 'Si, cambiar!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.changeStatus(orderID, statusValue).subscribe(() => {
+        console.log(userEmail);
+        this.changeStatus(orderID, statusValue, userEmail).subscribe(() => {
           this.getOrderByPage(null);
         });
         Swal.fire({
@@ -194,8 +211,14 @@ export class AdminOrdersTableComponent {
     });
   }
 
-  changeStatus(orderID: string, statusValue: number): Observable<void> {
-    return this.store.dispatch(new ChangeStatus(orderID, statusValue));
+  changeStatus(
+    orderID: string,
+    statusValue: number,
+    userEmail: string
+  ): Observable<void> {
+    return this.store.dispatch(
+      new ChangeStatus(orderID, statusValue, userEmail)
+    );
   }
 
   deleteOrder(orderId: string, custId: string): void {
