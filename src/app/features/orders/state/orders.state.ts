@@ -293,7 +293,6 @@ export class OrdersState {
     );
   }
 
-
   getErrorMessage(error: any): string {
     let errorMessage = 'An unknown error occurred!';
     if (error.code) {

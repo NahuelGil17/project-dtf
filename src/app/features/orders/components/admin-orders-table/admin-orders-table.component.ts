@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { Actions, Select, Store } from '@ngxs/store';
+import { Actions, Select, Store, ofActionSuccessful } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../environment/environment.develop';
@@ -24,6 +24,7 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { Status } from './../../../../shared/enums/status.enum';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { EmailService } from '../../../../core/services/email.service';
 
 @Component({
   selector: 'app-admin-orders-table',
@@ -65,6 +66,7 @@ export class AdminOrdersTableComponent {
 
   constructor(
     private orderService: OrderService,
+    private emailService: EmailService,
     private store: Store,
     private dialog: Dialog,
     private actions: Actions
@@ -83,6 +85,16 @@ export class AdminOrdersTableComponent {
       this.getOrderByPage(null);
       this.calculateEndIndex();
       this.calculateLastPage();
+    });
+
+    this.actions.pipe(ofActionSuccessful(ChangeStatus)).subscribe(() => {
+      this.emailService.sendEmail(
+        'nahuelgil98@gmail.com',
+        'Cambio de estado',
+        'El estado de tu orden ha sido cambiado.'
+      ).subscribe(() => {
+        console.log('Email enviado');
+      });
     });
   }
 
@@ -191,7 +203,6 @@ export class AdminOrdersTableComponent {
       title: 'Estas seguro?',
       text: `Estas seguro que quieres eliminar la orden id: ${custId}?`,
       icon: 'warning',
-      //showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, eliminar!',
