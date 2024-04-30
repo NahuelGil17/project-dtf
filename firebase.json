@@ -1,15 +1,25 @@
 {
-  "hosting": [
-    {
-      "target": "project-dtf",
-      "source": ".",
-      "frameworksBackend": {}
-    }
-  ],
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
   "extensions": {
     "mailersend-email": "mailersend/mailersend-email@0.1.7"
   },
-    "functions": {
-      "source": "functions"
-    }
+  "functions": {
+    "source": "functions"
+  },
+  "emulators": {
+    "hosting": {
+      "port": 5033
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
 }

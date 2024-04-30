@@ -1,4 +1,8 @@
 {
+  "projects": {
+    "default": "dtf-central",
+    "central-dtf": "dtf-central"
+  },
   "targets": {
     "uruguaydft": {
       "hosting": {
@@ -8,7 +12,5 @@
       }
     }
   },
-  "projects": {
-    "default": "uruguaydft"
-  }
+  "etags": {}
 }

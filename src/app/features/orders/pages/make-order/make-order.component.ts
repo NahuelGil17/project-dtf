@@ -8,7 +8,6 @@ import { OrderForm } from '../../interfaces/order.interface';
 import { OrdersState } from '../../state/orders.state';
 import { AuthState } from '../../../auth/state/auth.state';
 import { Observable, take } from 'rxjs';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { IdGeneratorService } from '../../services/idGeneretor.service';
@@ -18,7 +17,7 @@ import { IdGeneratorService } from '../../services/idGeneretor.service';
   standalone: true,
   templateUrl: './make-order.component.html',
   styleUrl: './make-order.component.css',
-  imports: [MakeOrderFormComponent, AsyncPipe, SweetAlert2Module],
+  imports: [MakeOrderFormComponent, AsyncPipe],
 })
 export class MakeOrderComponent {
   @Select(OrdersState.isLoading) loading$!: Observable<boolean>;
