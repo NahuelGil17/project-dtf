@@ -18,6 +18,8 @@ import { IMaskModule } from 'angular-imask';
   imports: [ReactiveFormsModule, ButtonComponent, IMaskModule],
 })
 export class RegisterFormComponent {
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
   cedulaMask = {
     mask: '0.000.000-0',
     lazy: false, // hace que la máscara sea visible incluso si el input está vacío

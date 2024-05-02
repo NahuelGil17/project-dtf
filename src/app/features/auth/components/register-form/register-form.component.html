@@ -17,12 +17,9 @@
       />
       @if(registerForm.get('fullName')?.invalid &&
       registerForm.get('fullName')?.touched) {
-        <div
-          
-        class="text-sm text-[#eb445a] pt-1"
-        >
-          Por favor, introduce tu nombre completo.
-        </div>
+      <div class="text-sm text-[#eb445a] pt-1">
+        Por favor, introduce tu nombre completo.
+      </div>
       }
     </div>
   </div>
@@ -43,9 +40,10 @@
           class="block w-full lg:min-w-[15rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
       </div>
-      @if(registerForm.get('ci')?.invalid &&
-      registerForm.get('ci')?.touched) {
-      <div class="text-sm text-[#eb445a] pt-1">Por favor, introduce una cedula valido.</div>
+      @if(registerForm.get('ci')?.invalid && registerForm.get('ci')?.touched) {
+      <div class="text-sm text-[#eb445a] pt-1">
+        Por favor, introduce una cedula valido.
+      </div>
       }
     </div>
     <div class="mt-5 lg:mt-0">
@@ -65,13 +63,11 @@
           required
           class="block w-full lg:min-w-[16rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
-        @if(  registerForm.get('phoneNumber')?.invalid &&
+        @if( registerForm.get('phoneNumber')?.invalid &&
         registerForm.get('phoneNumber')?.touched) {
-          <div
-          class="text-sm text-[#eb445a] pt-1"
-          >
-            Por favor, introduce tu numero de celular.
-          </div>
+        <div class="text-sm text-[#eb445a] pt-1">
+          Por favor, introduce tu numero de celular.
+        </div>
         }
       </div>
     </div>
@@ -94,91 +90,178 @@
       registerForm.get('email')?.touched) {
       <div class="text-sm text-[#eb445a] pt-1">
         {{
-          registerForm.get('email')?.hasError('required')
-        ? 'El email es requerido'
-        : registerForm.get('email')?.hasError('email')
-        ? 'Email invalido debe contener \'@\'.'
-        : ''
-      }}
+          registerForm.get("email")?.hasError("required")
+            ? "El email es requerido"
+            : registerForm.get("email")?.hasError("email")
+            ? "Email invalido debe contener '@'."
+            : ""
+        }}
       </div>
       }
     </div>
   </div>
   <div>
-    <label
-      for="password"
-      class="block text-sm font-medium leading-6 text-gray-900"
-      >Contraseña</label
-    >
-    <div class="mt-2">
-      <input
-        id="password"
-        name="password"
-        type="password"
-        autocomplete="current-password"
-        formControlName="password"
-        required
-        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      />
-    </div>
-    @if(  registerForm.get('password')?.invalid &&
-    registerForm.get('password')?.touched) {
-      <div
-      class="text-sm text-[#eb445a] pt-1"
+    <div class="relative">
+      <label
+        for="password"
+        class="block text-sm font-medium leading-6 text-gray-900"
+        >Contraseña</label
       >
-      {{  registerForm.get('password')?.hasError('required')
-      ? 'La contraseña es requerida'
-      : registerForm.get('password')?.hasError('invalidPassword')
-      ? registerForm.get('password')?.getError('invalidPassword')
-          .message
-      : ''}}
+      <div class="mt-2 relative">
+        <input
+          id="password"
+          name="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          autocomplete="current-password"
+          formControlName="password"
+          required
+          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        />
+        <button
+          type="button"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+          (click)="hidePassword = !hidePassword"
+        >
+          @if(hidePassword) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+            <path
+              d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+            />
+          </svg>
+          }@else{
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+            <path
+              d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"
+            />
+            <path d="M3 3l18 18" />
+          </svg>
+          }
+        </button>
       </div>
+    </div>
+    @if( registerForm.get('password')?.invalid &&
+    registerForm.get('password')?.touched) {
+    <div class="text-sm text-[#eb445a] pt-1">
+      {{
+        registerForm.get("password")?.hasError("required")
+          ? "La contraseña es requerida"
+          : registerForm.get("password")?.hasError("invalidPassword")
+          ? registerForm.get("password")?.getError("invalidPassword").message
+          : ""
+      }}
+    </div>
     }
-    
   </div>
 
   <div>
-    <label
-      for="confirmPassword"
-      class="block text-sm font-medium leading-6 text-gray-900"
-      >Confirmar contraseña</label
-    >
-    <div class="mt-2">
-      <input
-        id="confirmPassword"
-        name="confirmPassword"
-        type="password"
-        autocomplete="current-password"
-        formControlName="confirmPassword"
-        required
-        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      />
-      @if (
-        this.registerForm.get('confirmPassword')?.hasError &&
-        this.registerForm.get('confirmPassword')?.touched
-      ) {
-      <span
-      class="text-sm text-[#eb445a] pt-1"
-     
-      >{{
-        registerForm.get("confirmPassword")?.hasError("required")
-          ? "La contraseña es requerida"
-          : registerForm
-              .get("confirmPassword")
-              ?.hasError("invalidPassword")
-          ? registerForm
-              .get("confirmPassword")
-              ?.getError("invalidPassword").message
-          : ""
-      }}
-    </span>
-}
+    <div class="relative">
+      <label
+        for="password"
+        class="block text-sm font-medium leading-6 text-gray-900"
+        >Confirmar contraseña</label
+      >
+      <div class="mt-2 relative">
+        <input
+          id="confirmPassword"
+          name="confirmPassword"
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          autocomplete="current-password"
+          formControlName="confirmPassword"
+          required
+          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        />
+        <button
+          type="button"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+          (click)="hideConfirmPassword = !hideConfirmPassword"
+        >
+          @if(hideConfirmPassword) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+            <path
+              d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+            />
+          </svg>
+          }@else{
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+            <path
+              d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"
+            />
+            <path d="M3 3l18 18" />
+          </svg>
+          }
+        </button>
+      </div>
+      @if ( this.registerForm.get('confirmPassword')?.hasError &&
+      this.registerForm.get('confirmPassword')?.touched ) {
+      <span class="text-sm text-[#eb445a] pt-1"
+        >{{
+          registerForm.get("confirmPassword")?.hasError("required")
+            ? "La contraseña es requerida"
+            : registerForm.get("confirmPassword")?.hasError("invalidPassword")
+            ? registerForm.get("confirmPassword")?.getError("invalidPassword")
+                .message
+            : ""
+        }}
+      </span>
+      }
     </div>
   </div>
 
   <div>
     <app-button
-    classes="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      classes="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
       (click)="emitFormValues()"
       [isDisabled]="registerForm.invalid"
       [isLoading]="isLoading"
