@@ -16,6 +16,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 })
 export class LoginFormComponent {
   loginForm: FormGroup;
+  hidePassword = true;
   @Input() isLoading: boolean | null = false;
   @Output() formValues: EventEmitter<any> = new EventEmitter();
 
