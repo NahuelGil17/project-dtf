@@ -11,9 +11,18 @@ export interface Order {
   id: string;
   creationDate: Date;
   status: Status;
-  userId: string;
+  user: User;
   custId: string;
   showDropdownChangeStatus: boolean;
+}
+
+export interface User {
+  userId: string;
+  name: string;
+  email: string;
+  ci: string;
+  phoneNumber: string;
+
 }
 
 export interface OrderForm {

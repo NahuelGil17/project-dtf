@@ -52,7 +52,11 @@ export class GetAvatarUrl {
 
 export class ChangeStatus {
   static readonly type = '[Orders] Change Status';
-  constructor(public readonly orderId: string, public readonly statusValue: number) {}
+  constructor(
+    public readonly orderId: string,
+    public readonly statusValue: number,
+    public readonly userEmail: string
+  ) {}
 }
 
 export class DeleteOrder {
