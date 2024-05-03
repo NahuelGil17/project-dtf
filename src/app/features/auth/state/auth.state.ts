@@ -132,7 +132,7 @@ export class AuthState {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'Error al actualizar tabla',
+          title: errMessage,
           validationMessage: errMessage,
           showConfirmButton: false,
           timer: 1500,
@@ -159,7 +159,7 @@ export class AuthState {
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'Error al actualizar tabla',
+          title: errMessage,
           validationMessage: errMessage,
           showConfirmButton: false,
           timer: 1500,
