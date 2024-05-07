@@ -62,6 +62,13 @@ export class AdminOrdersTableComponent {
     { value: Status.FINISHED, text: 'Terminado' },
     { value: Status.DELIVERED, text: 'Entregado' },
   ];
+  statusArrayText: any[] = [
+    { value: Status.PENDING, text: 'Pendiente' },
+    { value: Status.INPROGRESS, text: 'En Proceso' },
+    { value: Status.FINISHED, text: 'Terminado' },
+    { value: Status.DELIVERED, text: 'Entregado' },
+    { value: Status.CANCELLED, text: 'Cancelado' },
+  ];
   showDropdownChangeStatus: boolean = false;
   currentUserEmail: string = '';
 
@@ -89,7 +96,6 @@ export class AdminOrdersTableComponent {
     });
 
     this.actions.pipe(ofActionSuccessful(ChangeStatus)).subscribe((res) => {
-      console.log(res);
       this.emailService
         .sendEmail(
           res.userEmail,
@@ -99,17 +105,17 @@ export class AdminOrdersTableComponent {
 <p>Queremos informarte que el estado de tu orden <strong>${
             res.orderId
           }</strong> ha sido actualizado a: "<em>${
-            this.statusArray[res.statusValue].text
+            this.statusArrayText[res.statusValue].text
           }</em>".</p>
+
+<p>Si tienes alguna consulta o necesitas asistencia adicional, no dudes en comunicarte con nosotros a través de WhatsApp al número 099246183.</p>
 
 <p>Gracias por confiar en nosotros.</p>
 
 <p>Atentamente,<br>
 CENTRAL DTF</p>`
         )
-        .subscribe(() => {
-          console.log('Email enviado');
-        });
+        .subscribe();
     });
   }
 
@@ -198,7 +204,6 @@ CENTRAL DTF</p>`
       confirmButtonText: 'Si, cambiar!',
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(userEmail);
         this.changeStatus(orderID, statusValue, userEmail).subscribe(() => {
           this.getOrderByPage(null);
         });

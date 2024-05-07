@@ -52,6 +52,7 @@ export class MakeOrderComponent {
           files: filesUrl,
           status: 0,
           creationDate: new Date().valueOf(),
+          userId: this.store.selectSnapshot(AuthState).preferences.uid,
           user: {
             userId: this.store.selectSnapshot(AuthState).preferences.uid,
             name: this.store.selectSnapshot(AuthState).preferences.fullName,
