@@ -48,6 +48,7 @@ export class UserOrdersTableComponent {
   isLastPage: boolean = false;
   isFirstPage: boolean = true;
   onpenModal: boolean = false;
+  phone: number = environment.PHONE;
 
   constructor(
     private orderService: OrderService,

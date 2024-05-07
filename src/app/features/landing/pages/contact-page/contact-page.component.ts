@@ -8,6 +8,7 @@ import { ContactEmail } from '../../interfaces/contactemail.interface';
 import { Observable, tap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ContactState } from '../../state/contact.state';
+import { environment } from '../../../../environment/environment.develop';
 @Component({
   selector: 'app-contact-page',
   standalone: true,
@@ -18,6 +19,7 @@ import { ContactState } from '../../state/contact.state';
 export class ContactPageComponent implements OnInit {
   @Select(ContactState.isLoading) loading$!: Observable<boolean>;
   resetForm: boolean = false;
+  phone = environment.PHONE;
   constructor(private store: Store, private actions: Actions) {}
 
   ngOnInit(): void {
