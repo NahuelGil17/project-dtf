@@ -7,7 +7,7 @@
     <div class="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
       <!-- Modal header -->
       <div class="flex justify-between mb-16 rounded-t sm:mb-5">
-        <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+        <div class=" text-gray-900 md:text-xl dark:text-white">
           <h3 class="font-bold text-xl">
             DETALLE DEL PEDIDO
             <span class="font-light text-sm text-gray-500 dark:text-gray-400"
@@ -40,8 +40,16 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <dl class="space-y-4">
+
+          <dt class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white">
+            Nombre del cliente 🧑‍💼
+          </dt>
+          <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            {{ data.order.user.name }}
+          </dd>
+
           <dt
-            class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
           >
             Nombre del trabajo 🏷️
           </dt>
@@ -50,7 +58,7 @@
           </dd>
 
           <dt
-            class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
           >
             Tipo 📑
             <!-- {{ data.order.type | orderType }} -->
@@ -60,7 +68,7 @@
           </dd>
 
           <dt
-            class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
           >
             Modo ⌚
           </dt>
@@ -70,7 +78,15 @@
         </dl>
         <dl>
           <dt
-            class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
+          >
+            Correo electrónico 📧
+          </dt>
+          <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            {{ data.order.user.email}}
+          </dd>
+          <dt
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
           >
             Fecha de creación 🗓️
           </dt>
@@ -79,7 +95,7 @@
           </dd>
 
           <dt
-            class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+            class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
           >
             Estado 🗃️
           </dt>
@@ -89,7 +105,7 @@
 
           <dt>
             <span
-              class="mb-2 font-semibold text-lg leading-none text-gray-900 dark:text-white"
+              class="mb-2 font-semibold  leading-none text-gray-900 dark:text-white"
             >
               Archivos 📁</span
             >

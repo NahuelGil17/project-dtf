@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
+<div class="mx-auto max-w-screen-3xl px-4 lg:px-22">
   <div
     class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg overflow-hidden"
   >
@@ -46,27 +46,28 @@
           class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
         >
           <tr>
-            <th scope="col" class="px-4 py-3"></th>
-            <th scope="col" class="px-4 py-3">Id pedido</th>
-            <th scope="col" class="px-4 py-3">Nombre pedido</th>
-            <th scope="col" class="px-4 py-3">Fecha de pedido</th>
-            <th scope="col" class="px-4 py-3">Estado</th>
-            <th scope="col" class="px-4 py-3"></th>
-            <th scope="col" class="px-4 py-3"></th>
-            <th scope="col" class="px-4 py-3"></th>
-            <th scope="col" class="px-4 py-3"></th>
+            <th scope="col" class="px-2 py-3"></th>
+            <th scope="col" class="px-2 py-3">Id pedido</th>
+            <th scope="col" class="px-2 py-3">Nombre pedido</th>
+            <th scope="col" class="px-2 py-3">Usuario</th>
+            <th scope="col" class="px-2 py-3">Fecha de pedido</th>
+            <th scope="col" class="px-2 py-3">Estado</th>
+            <th scope="col" class="px-2 py-3"></th>
+            <th scope="col" class="px-2 py-3"></th>
+            <th scope="col" class="px-2 py-3"></th>
+            <th scope="col" class="px-2 py-3"></th>
           </tr>
         </thead>
         <tbody class="relative z-0 overflow-y-auto">
           @if (isLoading$ | async) {
-          <td class="px-4 py-3 text-center" colspan="5">
+          <td class="px-2 py-3 text-center" colspan="5">
             <app-loading
               classes="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
             ></app-loading>
           </td>
           }@else { @if(!(orders$ | async)?.length){
           <tr class="border-b dark:border-gray-700">
-            <td class="px-4 py-3 text-center" colspan="5">
+            <td class="px-2 py-3 text-center" colspan="5">
               No se encontraron resultados
             </td>
           </tr>
@@ -75,7 +76,7 @@
             *ngFor="let order of orders$ | async"
             class="border-b dark:border-gray-700"
           >
-            <td class="px-4 py-3">
+            <td class="px-2 py-3">
               @if(order.files[0]){ @if(order.files[0].type.match('image')){
 
               <a [href]="order.files[0].file" target="_blank">
@@ -96,26 +97,27 @@
             </td>
             <td
               scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {{ order.id }}
             </td>
-            <td class="px-4 py-3">{{ order.workName | titlecase }}</td>
-            <td class="px-4 py-3">
+            <td class="px-2 py-3">{{ order.workName | titlecase }}</td>
+            <td class="px-2 py-3">{{ order.user.name }}</td>
+            <td class="px-2 py-3">
               {{ order.creationDate | date : "dd-MM-yyyy hh:mm a" }}
             </td>
-            <td class="px-4 py-3" [innerHTML]="order.status | orderStatus"></td>
-            <td class="px-4 py-3">
+            <td class="py-3" [innerHTML]="order.status | orderStatus"></td>
+            <td class="px-2 py-3">
               <span
                 (click)="openOrderDetails(order)"
                 class="text-blue-500 hover:text-blue-800 cursor-pointer"
                 >VER DETALLES</span
               >
             </td>
-            <td class="px-4 py-3">
+            <td class="px-2 py-3">
               <button
                 [matMenuTriggerFor]="menu"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 type="button"
               >
                 Cambio de estado
@@ -140,7 +142,7 @@
                 <button
                   mat-menu-item
                   [value]="status.value"
-                  class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="block px-2 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
                   (click)="
                     confirmChangeStatus(
                       order.id,
@@ -166,7 +168,7 @@
                   @for (status of statusArray; track $index) {
                   <li
                     [value]="status.value"
-                    class="block px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                    class="block px-2 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
                     (click)="
                       confirmChangeStatus(
                         order.id,
@@ -183,7 +185,7 @@
               </div>
               }
             </td>
-            <td class="px-4 py-3">
+            <td class="px-2 py-3">
               <a
                 href="https://wa.me/{{
                   order.user.phoneNumber
@@ -191,7 +193,7 @@
                   order.id
                 }}"
                 target="_blank"
-                class="flex items-center rounded-lg px-1 py-1 bg-blue-500 hover:bg-blue-700 text-white"
+                class="flex items-center rounded-lg px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white"
               >
                 <picture class="w-4 h-6 mx-4">
                   <svg
@@ -308,7 +310,7 @@
         <li>
           <a
             (click)="previousPage()"
-            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            class="flex items-center justify-center h-full py-1.5 px-2 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span class="sr-only">Previous</span>
             <svg
@@ -330,7 +332,7 @@
 
         <li>
           <a
-            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            class="flex items-center justify-center text-sm py-2 px-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >{{ currentPage }}</a
           >
         </li>
@@ -338,7 +340,7 @@
           @if(!isLastPage){
           <a
             (click)="nextPage()"
-            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            class="flex items-center justify-center h-full py-1.5 px-2 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span class="sr-only">Next</span>
             <svg
