@@ -71,7 +71,7 @@
       class="flex justify-center items-center md:justify-start md:items-start"
     >
       <app-button
-        classes="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded mt-1 mb-2 md:mt-0 cursor-pointer"
+        classes="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded mt-1 mb-2 md:mt-0 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-300"
         (click)="onSubmit($event)"
         [isLoading]="isLoading"
         [isDisabled]="contactForm.invalid"
