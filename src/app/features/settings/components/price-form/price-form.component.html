@@ -6,7 +6,7 @@
 <h3 class="w-full text-4xl font-semibold my-8">Tabla de Precios💲</h3>
 <form [formGroup]="priceForm">
   <div
-    class="flex w-[60rem] max-h-[30rem] overflow-x-auto overflow-y-auto bg-white shadow-lg px-6 py-8 rounded-lg mb-8"
+    class="flex md:min-w-2xl max-w-[400px] md:max-w-2xl max-h-[30rem] overflow-x-auto overflow-y-auto bg-white shadow-lg px-6 py-8 rounded-lg mb-8"
   >
     @if(loading$ | async) { } @else { }
     <div>
