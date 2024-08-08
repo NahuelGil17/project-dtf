@@ -104,7 +104,6 @@ export class OrderService {
         orderBy('__name__')
       );
     }
-    //creationDate
     this.lastDoc = null;
 
     // Combino ambos resultados de ambas consultas en un solo observable
