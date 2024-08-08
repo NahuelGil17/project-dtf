@@ -104,7 +104,7 @@ export class OrderService {
         orderBy('__name__')
       );
     }
-
+    //creationDate
     this.lastDoc = null;
 
     // Combino ambos resultados de ambas consultas en un solo observable
@@ -154,7 +154,7 @@ export class OrderService {
       if (isNextPage === 'next' && this.lastDoc) {
         ordersQuery = query(
           ordersRef,
-          orderBy('workName'),
+          orderBy('creationDate','desc'),
           startAfter(this.lastDoc),
           limit(pageSize)
         );
@@ -162,20 +162,20 @@ export class OrderService {
       if (isNextPage === 'prev' && this.lastDoc) {
         ordersQuery = query(
           ordersRef,
-          orderBy('workName'),
+          orderBy('creationDate','desc'),
           endBefore(this.lastDoc),
           limit(pageSize)
         );
       }
       if (isNextPage === null) {
-        ordersQuery = query(ordersRef, orderBy('workName'), limit(pageSize));
+        ordersQuery = query(ordersRef, orderBy('creationDate','desc'), limit(pageSize));
       }
     } else {
       if (isNextPage === 'next' && this.lastDoc) {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('workName'),
+          orderBy('creationDate','desc'),
           startAfter(this.lastDoc),
           limit(pageSize)
         );
@@ -184,7 +184,7 @@ export class OrderService {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('workName'),
+          orderBy('creationDate','desc'),
           endBefore(this.lastDoc),
           limit(pageSize)
         );
@@ -193,7 +193,7 @@ export class OrderService {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('workName'),
+          orderBy('creationDate','desc'),
           limit(pageSize)
         );
       }
