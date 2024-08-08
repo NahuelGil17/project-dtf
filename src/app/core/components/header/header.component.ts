@@ -9,13 +9,12 @@ import { getUserPreferencesByUid } from '../../../features/user/state/user.actio
 import { UserState } from '../../../features/user/state/user.state';
 import { UserPreferences } from '../../../features/auth/interfaces/auth.interface';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-
-
+import { environment } from '../../../environment/environment.develop';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, CommonModule,ButtonComponent],
+  imports: [RouterLink, CommonModule, ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -31,6 +30,7 @@ export class HeaderComponent {
   fullName: string = '';
   uid: string = '';
   auth: any;
+  phone: number = environment.PHONE;
 
   constructor(private store: Store, private actions: Actions) {}
 

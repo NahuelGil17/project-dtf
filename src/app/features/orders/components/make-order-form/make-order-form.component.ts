@@ -5,6 +5,7 @@ import {
   FormArray,
   ReactiveFormsModule,
   Validators,
+  FormControl,
 } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { OrderType } from '../../../../shared/enums/order-type.enum';
@@ -18,11 +19,11 @@ import { OrderType } from '../../../../shared/enums/order-type.enum';
 export class MakeOrderFormComponent {
   typesEnum = OrderType;
   TYPE_VALUES = [
-    { value: this.typesEnum.PAPEL, label: 'Papel' },
     { value: this.typesEnum.DTF, label: 'DTF' },
-    { value: this.typesEnum.TELA, label: 'Tela' },
-    { value: this.typesEnum.YZBEK, label: 'Yzbek' },
-    { value: this.typesEnum.DEPORTIVAS, label: 'Deportivas' },
+    // { value: this.typesEnum.PAPEL, label: 'Papel' },
+    // { value: this.typesEnum.TELA, label: 'Tela' },
+    // { value: this.typesEnum.YZBEK, label: 'Yzbek' },
+    // { value: this.typesEnum.DEPORTIVAS, label: 'Deportivas' },
   ];
   form!: FormGroup;
   @Input() isLoading: boolean | null = false;
@@ -34,7 +35,7 @@ export class MakeOrderFormComponent {
       workName: ['', Validators.required],
       mode: [null, Validators.required],
       type: [null, Validators.required],
-      note: [''],
+      note: new FormControl(''),
       filesCount: [
         '1',
         [Validators.required, Validators.min(1), Validators.max(10)],
