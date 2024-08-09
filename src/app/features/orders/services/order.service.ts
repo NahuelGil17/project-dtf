@@ -174,7 +174,7 @@ export class OrderService {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('creationDate','desc'),
+          orderBy('workName'),
           startAfter(this.lastDoc),
           limit(pageSize)
         );
@@ -183,7 +183,7 @@ export class OrderService {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('creationDate','desc'),
+          orderBy('workName'),
           endBefore(this.lastDoc),
           limit(pageSize)
         );
@@ -192,7 +192,7 @@ export class OrderService {
         ordersQuery = query(
           ordersRef,
           where('userId', '==', userId),
-          orderBy('creationDate','desc'),
+          orderBy('workName'),
           limit(pageSize)
         );
       }
