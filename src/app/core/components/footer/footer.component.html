@@ -1,8 +1,6 @@
 <footer class="border-t border-gray-200 bg-white">
   <div class="px-4 sm:px-6 lg:px-8 py-4">
-    <div
-      class="flex flex-col lg:flex-row justify-between items-center lg:py-8"
-    >
+    <div class="flex flex-col lg:flex-row justify-between items-center lg:py-8">
       <div class="flex items-center">
         <img
           src="../../../../assets/logo/logo-size.webp"
@@ -17,7 +15,9 @@
         </div>
       </div>
 
-      <div class="mt-6 lg:mt-0 flex items-center justify-center lg:justify-start lg:ml-auto">
+      <div
+        class="mt-6 lg:mt-0 flex items-center justify-center lg:justify-start lg:ml-auto"
+      >
         <div class="flex items-center space-x-4">
           <a
             href="https://www.instagram.com/dtf.central.uy/?hl=es-la"
@@ -45,7 +45,7 @@
             </svg>
           </a>
           <a
-            href="https://wa.me/{{phone}}"
+            href="https://wa.me/{{ phone }}"
             target="_blank"
             class="bg-black text-white rounded-full p-2"
           >
@@ -75,7 +75,7 @@
       <a
         routerLink="/"
         class="text-sm font-medium text-gray-700 hover:text-gray-900"
-        >Home</a
+        >Inicio</a
       >
       <a
         routerLink="/contacto"
@@ -85,25 +85,28 @@
       <a
         routerLink="/precio"
         class="text-sm font-medium text-gray-700 hover:text-gray-900 ml-4"
-        >Precio</a
+        >Precios</a
       >
       @if (!(isAdmin$ | async)) {
       <a
         routerLink="/usuario/ordenes"
         class="text-sm font-medium text-gray-700 hover:text-gray-900 ml-4"
-        >Mis Pedidos</a>
-      }
-      @if (isAdmin$ | async ) {
+        >Mis Pedidos</a
+      >
+      } @if (isAdmin$ | async ) {
       <a
         routerLink="/admin/ordenes"
         class="text-sm font-medium text-gray-700 hover:text-gray-900 ml-4"
-        >Pedidos</a>
+        >Pedidos</a
+      >
       }
     </nav>
-    <div class="w-full border-t mt-3 border-gray-200 text-center text-sm text-gray-700">
-      <p class="mt-3">© {{ currentYear }} GIGIGO. Todos los derechos reservados.</p> 
+    <div
+      class="w-full border-t mt-3 border-gray-200 text-center text-sm text-gray-700"
+    >
+      <p class="mt-3">
+        © {{ currentYear }} GIGIGO. Todos los derechos reservados.
+      </p>
     </div>
   </div>
 </footer>
-
-
