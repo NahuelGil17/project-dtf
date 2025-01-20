@@ -4,11 +4,12 @@ import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
 import { GetSettings } from '../../../settings/state/setting.action';
 import { tap } from 'rxjs';
 import { SettingsState } from '../../../settings/state/setting.state';
+import { ClarificationSectionComponent } from '../clarification-section/clarification-section.component';
 
 @Component({
   selector: 'app-video-section',
   standalone: true,
-  imports: [VideoComponent],
+  imports: [VideoComponent, ClarificationSectionComponent],
   templateUrl: './video-section.component.html',
   styleUrl: './video-section.component.css',
 })
