@@ -19,11 +19,8 @@ import { OrderType } from '../../../../shared/enums/order-type.enum';
 export class MakeOrderFormComponent {
   typesEnum = OrderType;
   TYPE_VALUES = [
-    { value: this.typesEnum.DTF, label: 'DTF' },
-    // { value: this.typesEnum.PAPEL, label: 'Papel' },
-    // { value: this.typesEnum.TELA, label: 'Tela' },
-    // { value: this.typesEnum.YZBEK, label: 'Yzbek' },
-    // { value: this.typesEnum.DEPORTIVAS, label: 'Deportivas' },
+    { value: this.typesEnum.DTF_TEXTIL, label: 'DTF Textil' },
+    { value: this.typesEnum.DTF_UV, label: 'DTF UV' },
   ];
   form!: FormGroup;
   @Input() isLoading: boolean | null = false;

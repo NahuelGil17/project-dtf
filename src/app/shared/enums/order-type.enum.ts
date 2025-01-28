@@ -1,7 +1,4 @@
 export enum OrderType {
-    PAPEL, 
-    DTF,
-    TELA,
-    YZBEK,
-    DEPORTIVAS,
+  DTF_TEXTIL,
+  DTF_UV,
 }

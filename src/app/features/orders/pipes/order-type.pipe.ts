@@ -10,16 +10,10 @@ export class OrderTypePipe implements PipeTransform {
 
   transform(value: any): string {
     switch (value) {
-      case this.OrderType.PAPEL:
-        return 'PAPEL';
-      case this.OrderType.DTF:
-        return 'DTF';
-      case this.OrderType.TELA:
-        return 'TELA';
-      case this.OrderType.YZBEK:
-        return 'YZBEK';
-      case this.OrderType.DEPORTIVAS:
-        return 'DEPORTIVAS';
+      case this.OrderType.DTF_TEXTIL:
+        return 'DTF TEXTIL';
+      case this.OrderType.DTF_UV:
+        return 'DTF UV';
       default:
         return 'Desconocido';
     }
