@@ -1,0 +1,19 @@
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: #1a202c;
+}
+
+p {
+    color: #4a5568;
+}
+
+iframe {
+    border: 0;
+}

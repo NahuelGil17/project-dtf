@@ -9,6 +9,7 @@ import { ContactPageComponent } from './features/landing/pages/contact-page/cont
 import { HomePageComponent } from './features/landing/pages/home-page/home-page.component';
 import { PricePageComponent } from './features/landing/pages/price-page/price-page.component';
 import { isAdmin } from './core/guards/is-admin.guard';
+import { LocationPageComponent } from './features/landing/pages/location-page/location-page.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,7 @@ export const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'contacto', component: ContactPageComponent },
+      { path: 'ubicacion', component: LocationPageComponent },
       { path: 'precio', component: PricePageComponent },
       {
         path: 'registro',

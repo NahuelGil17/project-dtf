@@ -1,0 +1,12 @@
+<section class="bg-gray-50 rounded-lg w-[22rem]">
+  <div class="border rounded-lg px-2 py-1">
+    @for(day of businessHours; track day){
+    <div class="flex justify-between p-2 border-b border-gray-200">
+      <span class="text-gray-800 dark:text-gray-300 font-medium">{{
+        day.day
+      }}</span>
+      <span class="text-gray-600 dark:text-gray-400">{{ day.hours }}</span>
+    </div>
+    }
+  </div>
+</section>

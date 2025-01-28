@@ -1,3 +1,4 @@
+@import url("https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

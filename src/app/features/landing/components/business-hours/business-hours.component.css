@@ -1,0 +1,12 @@
+section {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.border-b:last-child {
+    border-bottom: none;
+}
+
+span {
+    font-size: 1rem;
+}

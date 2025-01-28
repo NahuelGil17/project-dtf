@@ -1,0 +1,44 @@
+<section class="h-full bg-gray-50 dark:bg-gray-900">
+  <div class="py-8 lg:py-8 px-12 mx-auto w-full max-w-6xl">
+    <div class="text-center mb-8 lg:mb-10">
+      <h2
+        class="text-6xl tracking-tight font-semibold text-gray-900 dark:text-white mb-4"
+      >
+        Nuestra ubicación
+      </h2>
+      <p class="font-light text-gray-500 dark:text-gray-600 text-lg">
+        Encuentra nuestra dirección y contáctanos para cualquier consulta.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:gap-10">
+      <div class="flex flex-col items-start">
+        <h3 class="text-2xl font-semibold mb-4">
+          <i class="ph-map-pin"></i> Dirección
+        </h3>
+        <p class="text-gray-700 text-lg mb-6">
+          {{ address }}
+        </p>
+        <h3 class="text-2xl font-semibold mb-4">
+          <i class="ph-phone"></i> Teléfono
+        </h3>
+        <a href="tel:+123456789" class="text-blue-600 text-lg hover:underline">
+          {{ phone }}
+        </a>
+        <div class="mt-6">
+          <h3 class="text-2xl font-semibold mb-4">
+            <i class="ph-clock"></i> Horarios de atención
+          </h3>
+          <app-business-hours></app-business-hours>
+        </div>
+      </div>
+      <div>
+        <iframe
+          class="w-full h-full rounded-lg shadow-md"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3272.910628182679!2d-56.180384023519835!3d-34.88359047233394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x959f8041b0d0d6b9%3A0x8f22a4eec8c70d57!2sDr.%20Domingo%20Aramburu%201847%2C%2011800%20Montevideo%2C%20Departamento%20de%20Montevideo!5e0!3m2!1ses!2suy!4v1738102158762!5m2!1ses!2suy"
+          allowfullscreen=""
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
