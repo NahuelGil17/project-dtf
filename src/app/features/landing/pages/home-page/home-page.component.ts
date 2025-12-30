@@ -24,14 +24,10 @@ export class HomePageComponent implements AfterViewInit {
   @ViewChild(ImageModalComponent) imageModal!: ImageModalComponent;
 
   ngAfterViewInit() {
-    const hasSeenModal = sessionStorage.getItem('hasSeenHomeModal');
-    if (!hasSeenModal) {
-      setTimeout(() => {
-        if (this.imageModal) {
-          this.imageModal.open();
-          sessionStorage.setItem('hasSeenHomeModal', 'true');
-        }
-      }, 1000);
-    }
+    setTimeout(() => {
+      if (this.imageModal) {
+        this.imageModal.open();
+      }
+    }, 1000);
   }
 }
