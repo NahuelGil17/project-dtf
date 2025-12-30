@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { HeroComponent } from '../../components/hero/hero.component';
 import { MakeOrderComponent } from '../../components/make-order/make-order.component';
 import { StepsComponent } from '../../components/steps/steps.component';
 import { VideoSectionComponent } from '../../components/video-section/video-section.component';
 import { PriceSectionComponent } from '../../components/price-section/price-section.component';
+import { ImageModalComponent } from '../../../../shared/components/image-modal/image-modal.component';
+
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -13,8 +15,23 @@ import { PriceSectionComponent } from '../../components/price-section/price-sect
     StepsComponent,
     VideoSectionComponent,
     PriceSectionComponent,
+    ImageModalComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css',
 })
-export class HomePageComponent {}
+export class HomePageComponent implements AfterViewInit {
+  @ViewChild(ImageModalComponent) imageModal!: ImageModalComponent;
+
+  ngAfterViewInit() {
+    const hasSeenModal = sessionStorage.getItem('hasSeenHomeModal');
+    if (!hasSeenModal) {
+      setTimeout(() => {
+        if (this.imageModal) {
+          this.imageModal.open();
+          sessionStorage.setItem('hasSeenHomeModal', 'true');
+        }
+      }, 1000);
+    }
+  }
+}
